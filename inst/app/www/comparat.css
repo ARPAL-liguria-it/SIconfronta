@@ -1,0 +1,9 @@
+/* Impostazioni CSS per l'app Shiny dedicata all'area Multedo */
+  
+/* Regolo l'altezza della barra in alto */
+.navbar-nav > li > a, .navbar-brand {
+                            padding-top:2px !important;
+                            padding-bottom:5px !important;
+                            height: 20px;
+                            }
+.navbar {min-height:10px !important;}
