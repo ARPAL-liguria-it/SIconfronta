@@ -2,18 +2,25 @@ Package: comparat
 Title: comparat
 Version: 0.0.0.9000
 Authors@R: person('Andrea', 'Bazzano', email = 'andrea.bazzano@arpal.liguria.it', role = c('cre', 'aut'))
-Description: Comparat provides a Shiny application for t-test and F-test
+Description: Comparat provides a Shiny application for comparing means and variances for two indipendent samples.
 License: AGPL (>= 3)
 Imports: 
     config (>= 0.3.1),
+    data.table,
+    DT,
+    ggplot2,
     golem (>= 0.3.5),
-    shiny (>= 1.7.4)
+    plotly,
+    shiny (>= 1.7.4),
+    stats
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

@@ -25,34 +25,16 @@ library(comparat)
 * Set the first page of the UI.
 * Added a module for loading data.
 * Added basic automated tests for the loading data module.
-
-## Things to be done
 * Add test to the loading data module:
-    1. find a suitable dataset to put in a helper function and file;
-    2. decimal separator as .
-    3. decimal separator as ,
-    4. column separator as ,
-    5. column separator as ;
-    6. with headers
-    7. without headers
+    1. find a suitable dataset to put in a helper function and file.
 * Add documentation to the loading data module
 * Write the main non reactive functions for:
-    1. boxplots in plotly
-    2. normalised to mean = 0 boxplots in plotlye
-    3. t-test
-        3.1 find a suitable dataset to put in a helper function and file (Box, Hunter?)
-        3.2 test with mean 1 = mean 2
-        3.3 test with mean 1 > mean 2
-        3.4 test with mean 2 < mean 1
-        3.5 test with sd 1 = sd 2 and mean 1 > mean 2
-        3.6 test with sd 1 != sd2 and mean 1 > mean 2
-    4. F-test
-        4.1 find a suitable dataset to put in helper function and file (Box, Hunter?)
-        4.2 test with sd 1 = sd 2
-        4.3 test with sd 1 > sd 2
-        4.4 test with sd 1 < sd 1
-* Add the t-test and F-test function to a singole module (test?)
-* Add documentation to the function and test module
+1. Added boxplots in plotly
+3.1 t-test: find a suitable dataset to put in a helper function and file
+4.1 F-test: find a suitable dataset to put in helper function and file (Box, Hunter?)
+4.2 F-test: test with sd 1 = sd 2
+* Add the t-test and F-test function to a singole module (compare)
+* Add documentation to the functions and test the compare module
 * Adapt and add the save module from calibrat
     1. change the list structure to store:
         1.1 the number of values for each group
@@ -67,9 +49,22 @@ library(comparat)
     2. import and adapt the tests from Calibrat
     3. document the save module
 * Adapt and add the report module from Calibrat
-* Add tests for the report module
 * Document the report module
 * Adapt the Rmd report template from Calibrat
 * Add tests to the Rmd report template
 * Add validation check to the Rmd report template
+* Add tests for the report module
 * Put all pieces in the app_server.R
+
+## Things to be done
+
+* Setting of a GitHub/GitLab repository
+* enable GitHub/GitLab CI/CD
+
+* Include the app in a wider app with
+- an interface for selecting how to input the data
+  -- two samples with data (current app)
+  -- one sample with data and values from sample for mean, sd AND n
+  -- one sample with data and reference value from population mean, OR sd
+  -- both data as mean1, sd1 AND n1 and mean2, sd2 AND n2.
+  -- data as mean, sd AND n vs population mean OR sd

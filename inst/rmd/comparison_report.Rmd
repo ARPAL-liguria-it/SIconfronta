@@ -1,0 +1,296 @@
+---
+documentclass: scrartcl
+output:
+   pdf_document:
+     latex_engine: pdflatex
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage[italian]{babel}
+  - \usepackage{microtype}
+  - \usepackage{tgpagella}
+  - \usepackage{fancyhdr}
+  - \usepackage{lastpage}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+params:
+  title: NA
+  description: NA
+  content: NA
+  data: NA
+  info: NA
+title: "`r params$title`"
+---
+\addtolength{\headheight}{0.8cm} <!--  make more space for the header -->
+\pagestyle{fancyplain} <!-- use fancy for all pages except chapter start -->
+\lhead{\includegraphics[height=0.8cm]{logoarpal}} <!-- left logo -->
+\rhead{} <!-- right empty -->
+\renewcommand{\headrulewidth}{0pt} <!-- remove rule below header -->
+\let\oldrule=\rule \renewcommand{\rule}[1]{\vspace{-25pt}\oldrule{\linewidth}}
+\cfoot{\thepage\ di \pageref{LastPage}} <!-- page 1 of n pages -->
+
+---
+```{r libraries, include=FALSE}
+library(comparat)
+library(data.table)
+library(magrittr)
+```
+
+```{r context, echo=FALSE, results = "asis"}
+cat("**Descrizione:** ", params$description, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+---
+\newpage
+
+```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", names(params$data)), "Boxplot per l'analita ", names(params$data), ".")}
+data_caption <- "Valori a confronto per l'analita %s."
+summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
+boxplot_caption <- "Boxplot per l'analita %s."
+
+for (i in names(params$data)) {
+  if (params$data[[i]]$state == 1) {
+    
+  # title with analyte name
+  cat(paste("#", i, "\n"))
+    
+  # table with raw data
+  print(knitr::kable(params$data[[i]]$data,
+                     caption = sprintf(data_caption, i)))
+  
+  # table with summary statistics
+  print(knitr::kable(params$data[[i]]$summarytbl,
+                     caption = sprintf(summary_caption, i)))
+  
+  # boxplot
+  print(params$data[[i]]$boxplot)
+  
+  if("shapirotest" %in% params$content) {
+    
+  # checking normality with Shapiro-Wilk test
+  cat(paste("#", "Test per la verifica della normalità (Shapiro-Wilk)", "\n"))
+  cat(params$data[[i]]$shapirotest)
+  cat('\n\n<!-- -->\n\n')
+  
+  } else {
+    
+  cat('\n\n<!-- -->\n\n')
+    
+  }
+  
+  
+  if("ttest" %in% params$content) {
+    
+  # comparing means by t-test
+  cat(params$data[[i]]$ttest)
+  cat('\n\n<!-- -->\n\n')
+  
+  } else {
+    
+  cat('\n\n<!-- -->\n\n')  
+    
+  }
+  
+  
+  if("ftest" %in% params$content) {
+    
+  # comparing variances by F-test
+  cat(params$data[[i]]$ftest)
+  cat('\n\n<!-- -->\n\n')
+  
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+    
+  }
+  
+  } else {
+    
+  cat('\n\n<!-- -->\n\n')
+    
+  }
+  cat("\\newpage")
+}
+```
+\newpage
+
+# Validazione dei calcoli
+
+In questa sezione vengono mostrati gli esiti dei calcoli effettuati su una serie di dati di riferimento, al fine di dimostrare la loro correttezza e consistenza nel tempo.
+
+```{r shapirotest, echo=FALSE}
+shapirocomparison <- comparat::shapirotest_reference %>%
+                      comparat::fct_shapiro()
+shapirotable <- data.frame(id = c("W", "p-value"), 
+                           calc = c(shapirocomparison$W %>% round(2), 
+                                    shapirocomparison$pvalue %>% round(2)),
+                           ref = c(0.79, 0.01))
+
+# minimum relative value for which the error can be noticed
+shapirotable_minerror <- 0.01 / min(as.numeric(shapirotable$ref))
+shapirotable_error <- max(abs(as.numeric(shapirotable$calc) - as.numeric(shapirotable$ref)))
+shapirotable_conclusion <- ifelse(shapirotable_error > shapirotable_minerror, "Non validato", "Validato")
+```
+
+```{r summarytest, echo=FALSE}
+summarytable <- comparat::tomato_yields %>%
+                  comparat::rowsummary("pounds", "fertilizer")
+summarytable$a_ref <- c("5", "29.9", "20.8", "21.1", "11.4", "7.25")
+summarytable$b_ref <- c("6", "28.5", "22.5", "24.0", "14.2", "5.43")
+summarytable$statistica <- c("n", "massimo (libbre)", "media (libbre)", 
+                           "mediana (libbre)", "minimo (libbre)", "dev. std. (libbre)")
+
+# minimum relative value for which the error can be noticed
+summary_minerror <- 0.01 / min(as.numeric(summarytable$b_ref))
+summary_error <- max(c(abs(as.numeric(summarytable$a) - as.numeric(summarytable$a_ref)),
+                       abs(as.numeric(summarytable$b) - as.numeric(summarytable$b_ref))))
+summary_conclusion <- ifelse(summary_error > summary_minerror, "Non validato", "Validato")
+```
+
+```{r meantest, echo=FALSE}
+meancomparison <- comparat::tomato_yields %>%
+                  comparat::fct_ttest("pounds", "fertilizer", alternative = "greater")
+meantable <- data.frame(id = c("differenza", "t", "p-value"), 
+                        calc = c(meancomparison$difference[[1]], 
+                                 meancomparison$test[[3]], meancomparison$test[[5]]),
+                        ref = c(1.693, 0.4313, 0.3393))
+
+# minimum relative value for which the error can be noticed
+meantable_minerror <- 0.001 / min(meantable$ref)
+meantable_error <- max(abs(as.numeric(meantable$calc) - meantable$ref))
+meantable_conclusion <- ifelse(meantable_error > meantable_minerror, "Non validato", "Validato")
+```
+
+```{r vartest, echo=FALSE}
+varcomparison <- comparat::ftest_reference %>%
+                  comparat::fct_ftest("value", "group")
+vartable <- data.frame(id = c("rapporto", "F", "p-value"), 
+                        calc = c(varcomparison$ratio[[1]], 
+                                 varcomparison$test$fsper, varcomparison$test$pvalue),
+                        ref = c("1.628", 1.6281, 0.6483))
+
+# minimum relative value for which the error can be noticed
+vartable_minerror <- 0.0001 / min(as.numeric(vartable$ref))
+vartable_error <- max(abs(as.numeric(vartable$calc) - as.numeric(vartable$ref)))
+vartable_conclusion <- ifelse(vartable_error > vartable_minerror, "Non validato", "Validato")
+```
+
+`r ifelse(summary_conclusion == "Validato" & meantable_conclusion == "Validato" & shapirotable_conclusion == "Validato" & vartable_conclusion == "Validato", "Le differenze tra valori calcolati e di riferimento risultano trascurabili", "Le differenze tra valori calcolati e di riferimento NON risultano trascurabili")`
+
+## Validazione dei risultati per la verifica della normalità dei dati
+
+I dati di riferimento sono reperibili in _An analysis of variance test for normality (complete samples)_,
+[Biometrika (1965), 52, 3 and 2, p. 591. Sezione 4 - Examples, pag. 606, Esempio 1](http://links.jstor.org/sici?sici=0006-3444%28196512%2952%3A3%2F4%3C591%3AAAOVTF%3E2.0.CO%3B2-B) e riguardano il peso di 11 uomini, espresso in libbre.
+
+`r ifelse(shapirotable_conclusion == "Validato", "Le differenze tra valori calcolati e di riferimento risultano trascurabili", "Le differenze tra valori calcolati e di riferimento NON risultano trascurabili")`
+
+```{r shapirotable, echo=FALSE}
+shapirotable %>%
+  knitr::kable(
+    col.names = c("statistica", 
+                  "calcolato", "riferimento"),
+    caption = "Validazione del risultato del test di normalità di Shapiro-Wilk"
+               )
+```
+
+\newpage
+
+## Validazione dei risultati per il confronto delle medie
+
+I dati di riferimento sono reperibili in _Statistics for Experimenters, Design, Innovation and Discovery._
+Wiley, Second Edition, 2005. ISBN: 978-0-471-71813-0. Sezione 3.1, pag. 78, tabella 3.3 e riguardano 11 valori di peso in libbre di pomodori ottenuti su piante sottoposte a due differenti regimi di fertilizzazione.
+
+`r ifelse(summary_conclusion == "Validato" & meantable_conclusion == "Validato", "Le differenze tra valori calcolati e di riferimento risultano trascurabili", "Le differenze tra valori calcolati e di riferimento NON risultano trascurabili")`
+
+```{r tomato_table, echo=FALSE}
+summarytable[, .(statistica, a, a_ref, b, b_ref)] %>%
+  knitr::kable(
+    col.names = c("statistica", 
+                  "a (calcolato)", "a (riferimento)", 
+                 "b (calcolato)", "b (riferimento)"),
+    caption = "Validazione della tabella di riassunto."
+               )
+```
+
+```{r mean_table, echo=FALSE}
+meantable %>%
+  knitr::kable(
+    col.names = c("statistica", 
+                  "calcolato", "riferimento"),
+    caption = "Validazione del risultato del _t_-test per $\\alpha$ = 0.95 e **H1:** media di _b_ > media di _a_."
+               )
+```
+
+\newpage
+
+## Validazione dei risultati per il confronto delle varianze
+
+I dati di riferimento sono reperibili nel manuale della funzione `F.test` del programma Excel, disponibile anche [online](https://support.microsoft.com/en-us/office/f-test-function-100a59e7-4108-46f8-8443-78ffacb6c0a7) e comprendono dieci valori divisi in due gruppi da cinque valori ciascuno.
+
+`r ifelse(vartable_conclusion == "Validato", "Le differenze tra valori calcolati e di riferimento risultano trascurabili", "Le differenze tra valori calcolati e di riferimento NON risultano trascurabili")`
+
+```{r vartable, echo=FALSE}
+vartable %>%
+  knitr::kable(
+    col.names = c("statistica", 
+                  "calcolato", "riferimento"),
+    caption = "Validazione del risultato dell' _F_-test per $\\alpha$ = 0.975 e **H1:** varianza di _b_ $\\neq$ varianza di _a_."
+               )
+```
+
+\newpage
+
+## Informazioni sulla sessione
+
+Al fine di migliorare la riproducibilità dei risultati e risalire alla causa di
+eventuali problemi, in questa sezione vengono riportate alcune informazioni di 
+base sulla sessione dell'utente che ha richiesto la generazione di
+questo report.
+
+\renewcommand{\arraystretch}{0.8} <!-- decrease line spacing for the table -->
+```{r session_platform, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
+
+df_session_platform <- params$info$platform %>% 
+  unlist(.) %>%
+  data.frame(.) %>%
+  data.table::data.table(keep.rownames = TRUE)
+
+colnames(df_session_platform) <- c("Impostazione", "Valore")
+
+knitr::kable(
+        df_session_platform, 
+        booktabs = T, 
+        align = "l",
+        caption = "Informazioni sulla sessione: sistema operativo e varibili di sistema."
+)
+```
+
+\renewcommand{\arraystretch}{0.6} <!-- decrease line spacing for the table -->
+```{r session_packages, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
+df_session_packages <- params$info$packages %>% 
+  data.table::data.table(keep.rownames = TRUE) %>%
+  .[attached == TRUE, .(package, loadedversion, date)]
+
+colnames(df_session_packages) <- c("Pacchetto", "Versione caricata", "Data")
+
+knitr::kable(
+        df_session_packages, 
+        booktabs = T, 
+        align = "l",
+        caption = "Informazione sulla sessione: pacchetti caricati."
+)
+```
+\renewcommand{\arraystretch}{1} <!-- reset row height/line spacing -->
+
+Report creato il `r Sys.Date()` alle `r strsplit(as.character(Sys.time()), " ")[[1]][2]`.
+
+\vfill
+```{r end, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+cat(
+  paste0(
+  "© 2023. Questo report è stato prodotto con il pacchetto Comparat ",
+  utils::packageVersion("comparat"), 
+  " e rilasciato con licenza [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). Per informazioni o segnalazioni, rivolgersi ad Andrea Bazzano ([andrea.bazzano@arpal.liguria.it](mailto:andre.bazzano@arpal.liguria.it))."
+  )
+)
+```

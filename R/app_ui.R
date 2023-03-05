@@ -2,25 +2,34 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny
+#'
 #' @noRd
+#'
+#' @import shiny
+#' @import plotly
+#' @importFrom future plan multisession
+#' @importFrom shinyjs hidden
+#' @importFrom bslib bs_theme
+future::plan(future::multisession)
+
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
 
-    navbarPage(
+    bslib::page_navbar(
       theme = bslib::bs_theme(version = 5, bootswatch = "sandstone"),
       title = tags$div(class = "navbar-brand", href = "#",
                        tags$img(src = "www/comparatlogo.png",
                                 alt = "Comparat",
                                 height = 50)),
-
-       position = "static-top",
-       fluid = TRUE,
-       collapsible = TRUE,
-       lang = "it",
+      window_title = "Comparat",
+      inverse = FALSE,
+      position = "static-top",
+      fluid = TRUE,
+      collapsible = TRUE,
+      lang = "it",
 
       #### Tab for data loading ----
       tabPanel("Dati",
@@ -31,7 +40,7 @@ app_ui <- function(request) {
                      ## 1. Load a csv file
                      mod_loadfile_ui("loadfile_1"),
 
-                     ## 2. Select the variable of the parameter
+               ## 2. Select the variable of the parameter
                shinyjs::hidden(
                  selectizeInput(
                    "parvar",
@@ -42,22 +51,22 @@ app_ui <- function(request) {
                    options = list(maxItems = 1)
                  )
                ),
-               ## 3. Select the variable for group 1
+               ## 3. Select the variable for response
                shinyjs::hidden(
                  selectizeInput(
-                   "group1",
-                   label = "Serie 1",
+                   "response",
+                   label = "Risposte",
                    selected = NULL,
                    choices = NULL,
                    multiple = TRUE,
                    options = list(maxItems = 1)
                  )
                ),
-               ## 4. Select the variable for group 2
+               ## 4. Select the grouping variable
                shinyjs::hidden(
                  selectizeInput(
-                   "group2",
-                   label = "Serie 2",
+                   "group",
+                   label = "Gruppo",
                    selected = NULL,
                    choices = NULL,
                    multiple = TRUE,
@@ -66,39 +75,60 @@ app_ui <- function(request) {
                )
                ),
               # Output: table with input data
-                 mainPanel(width = 9, DT::dataTableOutput("inputdata"))
+                 mainPanel(width = 9, DT::DTOutput("inputdata"))
                )
-               )#,
+               ),
 
       #### Results ----
-      # tabPanel("Grafici",
-      #            sidebarLayout(
-      #              sidebarPanel(
-      #                width = 2,
-      #                # User inputs
-      #                ## 1. Filter by parameter
-      #                selectizeInput(
-      #                  "parameter",
-      #                  label = "Analita",
-      #                  selected = NULL,
-      #                  choices = NULL,
-      #                  multiple = TRUE,
-      #                  options = list(maxItems = 1)
-      #                )#,
-      #                ## 2. Save the results
-      #                #calibrationsaveUI("save", "Salva", "Cancella")
-      #              ),
-      #              mainPanel(width = 10, "PROVA")
-      #            )
-      #          ),
-      #
-      # #### Reporting ----
-      # tabPanel("Report",
-      #          fluidPage()),
-      #
+      tabPanel("Confronti",
+                 sidebarLayout(
+                   sidebarPanel(
+                     width = 2,
+                     # User inputs
+                     ## 1. Filter by parameter
+                     selectizeInput(
+                       "parameter",
+                       label = "Analita",
+                       selected = NULL,
+                       choices = NULL,
+                       multiple = TRUE,
+                       options = list(maxItems = 1)
+                     ),
+                     # Module with plots and test results
+                     mod_compareinput_ui("tests_1"),
+                     ## 2. Save the results
+                     mod_save_ui("save_1", "Salva", "Cancella")
+                   ),
+                   mainPanel(width = 10,
+                             fluidRow(
+                             column(4,
+                              mod_comparesummary_ui("tests_1")
+                                    ),
+                             column(8,
+                                  tabsetPanel(id = "testpanel",
+                                              type = "tabs",
+                                              tabPanel("Normalità", mod_compareshapirotest_ui("tests_1")),
+                                              tabPanel("Medie", mod_comparettest_ui("tests_1")),
+                                              tabPanel("Varianze", mod_compareftest_ui("tests_1"))
+                                              )
+
+                                    )
+                             )
+                   )
+                 )
+               ),
+
+      #### Reporting ----
+       tabPanel("Report",
+                fluidPage(mod_makereport_ui("makereport_1"))),
+
       # #### Readme ----
-      # tabPanel("Leggimi",
-      #          fluidPage())
+      tabPanel("Leggimi",
+               fluidPage(includeMarkdown(
+                 system.file("rmd",
+                             "readme.Rmd",
+                             package = "comparat")
+               )))
 
     )
   )
@@ -111,6 +141,7 @@ app_ui <- function(request) {
 #'
 #' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
+#' @importFrom shinyjs useShinyjs
 #' @noRd
 golem_add_external_resources <- function() {
   add_resource_path(
