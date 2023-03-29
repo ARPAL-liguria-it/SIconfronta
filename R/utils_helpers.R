@@ -116,8 +116,6 @@ htmltormarkdown <- function(htmlstring){
     { gsub("\u21e8", "\n $\\\\Rightarrow$", .) } %>%
     { gsub("\u00b1", "$\\\\pm$", .) } %>%
     { gsub("R\u00B2", "$\\\\mathrm{R}^2$", .) } %>%
-    { gsub("≠", "$\\\\neq$", .) } %>%
-    { gsub("≤", "$\\\\leq$", .) } %>%
     { gsub("\u2264", "$\\\\leq$", .) } %>%
     { gsub("\u2260", "$\\\\neq$", .) } %>%
     { gsub("<b>", "**", .) } %>%

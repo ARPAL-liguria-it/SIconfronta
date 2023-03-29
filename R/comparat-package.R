@@ -14,5 +14,6 @@
 #' @importFrom stats sd
 #' @importFrom stats t.test
 #' @importFrom stats var.test
+#' @importFrom stats shapiro.test
 ## usethis namespace: end
 NULL

@@ -101,7 +101,7 @@ mod_save_server <- function(id,
       # raw data table properly formatted
       dataset <- inputlist()$data()[, c("group", "response", "outlier")]
       colnames(dataset) <- c(group(), ylabtitle, "rimosso")
-      dataset$rimosso <- gsub("TRUE", "sì", dataset$rimosso)
+      dataset$rimosso <- gsub("TRUE", "s\u00EC", dataset$rimosso)
       dataset$rimosso <- gsub("FALSE", "no", dataset$rimosso)
 
       # summary data table properly formatted
@@ -127,7 +127,6 @@ mod_save_server <- function(id,
     # the click on the delete button triggers the deletion of stored data
     observeEvent(input$delete, {
       savedoutput$list[[selected_parameter()]] <- NULL
-      print(savedoutput$list)
     })
 
     # display save OR delete action button

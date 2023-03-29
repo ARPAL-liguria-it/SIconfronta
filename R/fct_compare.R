@@ -98,14 +98,14 @@ fct_ttest <- function(data,
 
   # recoding the alternative hypothesis
   h1 <- switch (alternative,
-    "different" = "two.sided",
-    "greater" = "greater"
+                "different" = "two.sided",
+                "greater" = "greater"
   )
 
   # recoding the significance level based on alternative hypothesis
   alpha <- switch (alternative,
-                    "different" = significance + (1 - significance)/2,
-                    "greater" = significance
+                   "different" = significance + (1 - significance)/2,
+                   "greater" = significance
   )
 
   # defining the formula for groups
@@ -136,16 +136,26 @@ fct_ttest <- function(data,
 
   # Being clear with some text
   h0_text <- switch (alternative,
-    "different" = sprintf("media di %s = media di %s", max_mean, min_mean),
-    "greater" = sprintf("media di %s \u2264 media di %s", max_mean, min_mean),
+                     "different" = sprintf("media di %s = media di %s", max_mean, min_mean),
+                     "greater" = sprintf("media di %s \u2264 media di %s", max_mean, min_mean),
   )
 
   h1_text <- switch (alternative,
-    "different" = sprintf("media di %s \u2260 media di %s", max_mean, min_mean),
-    "greater" = sprintf("media di %s > media di %s", max_mean, min_mean)
+                     "different" = sprintf("media di %s \u2260 media di %s", max_mean, min_mean),
+                     "greater" = sprintf("media di %s > media di %s", max_mean, min_mean)
   )
 
-  result <- ifelse(tvalue < tcritical, "Non rigetto H0", "Rigetto H0")
+  positive <- switch (alternative,
+                      "different" = sprintf("la media di %s e la media di %s sono statisticamente differenti", max_mean, min_mean),
+                      "greater" = sprintf("la media di %s \u00E8 statisticamente maggiore della media di %s", max_mean, min_mean)
+  )
+
+  negative <- switch (alternative,
+                      "different" = sprintf("la media di %s e la media di %s non sono statisticamente differenti", max_mean, min_mean),
+                      "greater" = sprintf("la media di %s non \u00E8 statisticamente maggiore della media di %s", max_mean, min_mean)
+  )
+
+  result <- ifelse(tvalue < tcritical, negative, positive)
 
   list(hypotheses = c("h0" = h0_text,
                       "h1" = h1_text),
@@ -247,7 +257,7 @@ fct_ftest <- function(data,
   lower_sd <- data[which(data[[group]] == min_sd),][[response]]
   # # F-test results
   ftest <- var.test(x = higher_sd, y = lower_sd,
-                  alternative = h1, conf.level = significance)
+                    alternative = h1, conf.level = significance)
   ratio <- (sd(higher_sd)^2 / sd(lower_sd)^2) %>% sprintf("%.*f", signiftodigits(., 4L), .)
   ratioconfint <- c(NA, NA)
   ratioconfint[1] <- ftest$conf.int[1] %>% sprintf("%.*f", signiftodigits(., 4L), .)
@@ -269,18 +279,28 @@ fct_ftest <- function(data,
                      "greater" = sprintf("varianza di %s > varianza di %s", max_sd, min_sd)
   )
 
+  positive <- switch (alternative,
+                      "different" = sprintf("la varianza di %s e la varianza di %s sono statisticamente differenti", max_sd, min_sd),
+                      "greater" = sprintf("la varianza di %s \u00E8 statisticamente maggiore della varianza di %s", max_sd, min_sd)
+  )
+
+  negative <- switch (alternative,
+                      "different" = sprintf("la varianza di %s e la varianza di %s non sono statisticamente differenti", max_sd, min_sd),
+                      "greater" = sprintf("la varianza di %s non \u00E8 statisticamente maggiore della varianza di %s", max_sd, min_sd)
+  )
+
   result <- switch (alternative,
                     "different" = ifelse(fvalue > fcritical[1] & fvalue < fcritical[2],
-                                         "Non rigetto H0",
-                                         "Rigetto H0"),
+                                         negative,
+                                         positive),
                     "greater" = ifelse(fvalue < fcritical[2],
-                                       "Non rigetto H0",
-                                       "Rigetto H0")
+                                       negative,
+                                       positive)
   )
 
   ftheo <- switch (alternative,
-                    "different" = paste0(fcritical[1], ", ", fcritical[2]),
-                    "greater" = paste0(fcritical[2])
+                   "different" = paste0(fcritical[1], ", ", fcritical[2]),
+                   "greater" = paste0(fcritical[2])
   )
 
 
@@ -288,14 +308,14 @@ fct_ftest <- function(data,
   list(hypotheses = c("h0" = h0_text,
                       "h1" = h1_text),
        ratio = c("mean" = ratio,
-                      "lwrci" = ratioconfint[1],
-                      "uprci" = ratioconfint[2]),
+                 "lwrci" = ratioconfint[1],
+                 "uprci" = ratioconfint[2]),
        test = list("dof" = c("numeratore" = dof[[1]],
                              "denominatore" = dof[[2]]),
-                "alpha" = alpha,
-                "fsper" = unname(fvalue),
-                "ftheo" = ftheo,
-                "pvalue" = pvalue),
+                   "alpha" = alpha,
+                   "fsper" = unname(fvalue),
+                   "ftheo" = ftheo,
+                   "pvalue" = pvalue),
        result = unname(result))
 
 }

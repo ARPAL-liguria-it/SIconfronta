@@ -21,7 +21,7 @@ mod_makereport_ui <- function(id){
 
     tags$h2("Cosa includere nel report"),
     checkboxGroupInput(ns("content"), label = "Test",
-                       choices = c("Normalità" = "shapirotest",
+                       choices = c("Normalit\u00E0" = "shapirotest",
                                    "Confronto tra medie" = "ttest",
                                    "Confronto tra varianze" = "ftest"),
                        selected = c("shapirotest",
