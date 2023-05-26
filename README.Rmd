@@ -2,7 +2,9 @@
 title: "Leggimi"
 author: "Andrea Bazzano"
 date: "2023-03-29"
-output: html_document
+output:
+  md_document:
+    variant: markdown_github
 ---
 ## CompaRat
 
@@ -26,7 +28,7 @@ Un file .csv con almeno:
 
 <details>
 <summary> Un esempio è meglio di mille parole: clicca! </summary>
-<img src="../extdata/inputcsv.png">
+<img src="./inst/extdata/inputcsv.png">
 </details>
 
 #### Come funziona Comparat?
@@ -38,7 +40,7 @@ L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in se
   
 <details>
 <summary> Clicca per un esempio </summary>
-<img src="../extdata/dati.png">
+<img src="./inst/extdata/dati.png">
 </details>
 
 2. Dalla scheda **Confronti**
@@ -55,7 +57,7 @@ L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in se
   
 <details>
 <summary> Che ne diresti di un esempio? Clicca </summary>
-<img src="../extdata/confronti.png">
+<img src="./inst/extdata/confronti.png">
 </details>
   
 3. Dalla scheda **Report**
@@ -66,7 +68,7 @@ L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in se
 
 <details>
 <summary> Ormai hai capito. Clicca! </summary>
-<img src="../extdata/report.png" width="50%">
+<img src="./inst/extdata/report.png" width="50%">
 </details>
 
 #### CompaRat è validato?
@@ -78,7 +80,7 @@ Ad ogni modo, è sempre meglio rimanere allerta: [segnala eventuali bachi](mailt
 #### Con quale licenza è rilasciato CompaRat?
 Con la Affero GPL versione 3.
 
-![gplv3](../extdata/agplv3.png)
+![gplv3](./inst/extdata/agplv3.png)
 
 <details>
 <summary> Ecco il testo integrale della licenza </summary>
