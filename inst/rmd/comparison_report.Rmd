@@ -22,7 +22,7 @@ title: "`r params$title`"
 ---
 \addtolength{\headheight}{0.8cm} <!--  make more space for the header -->
 \pagestyle{fancyplain} <!-- use fancy for all pages except chapter start -->
-\lhead{\includegraphics[height=0.8cm]{logoarpal}} <!-- left logo -->
+<!-- left logo --> \lhead{\includegraphics[height=0.8cm]{logo}} <!-- left logo -->
 \rhead{} <!-- right empty -->
 \renewcommand{\headrulewidth}{0pt} <!-- remove rule below header -->
 \let\oldrule=\rule \renewcommand{\rule}[1]{\vspace{-25pt}\oldrule{\linewidth}}

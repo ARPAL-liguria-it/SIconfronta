@@ -67,11 +67,11 @@ mod_makereport_server <- function(id, inputreport){
         # user permission issues
         reportpath <- system.file("rmd", "comparison_report.Rmd",
                                   package = "comparat")
-        logopath <- system.file("rmd", "logoarpal.pdf",
+        logopath <- system.file("rmd", "logo.pdf",
                                 package = "comparat")
 
-        tempReport <- file.path(tempdir(), "comparison_report.Rmd")
-        tempLogo <- file.path(tempdir(), "logoarpal.pdf")
+        tempReport <- tempfile(fileext = ".Rmd")
+        tempLogo <- tempfile(fileext = ".pdf")
         file.copy(reportpath, tempReport, overwrite = TRUE)
         file.copy(logopath, tempLogo, overwrite = TRUE)
 
@@ -83,6 +83,13 @@ mod_makereport_server <- function(id, inputreport){
           data = inputreport(),
           info = devtools::session_info()
         )
+
+        id <- showNotification(
+        	"Preparazione del report...",
+                duration = NULL,
+                closeButton = FALSE
+                            )
+        on.exit(removeNotification(id), add = TRUE)
 
         # the report is compiled in a separate R environment with a future promise
         render_report(input = tempReport,

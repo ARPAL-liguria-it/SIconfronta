@@ -76,7 +76,7 @@ In aggiunta, la correttezza dei risultati forniti viene valutata ad ogni nuova g
 Ad ogni modo, è sempre meglio rimanere allerta: [segnala eventuali bachi](mailto:andrea.bazzano@arpal.liguria.it).
 
 #### Con quale licenza è rilasciato CompaRat?
-Con la Affero GPL versione 3. In attesa di predisporre un luogo adatto per ospitare i codici sorgenti, [puoi richiederli via e-mail](mailto:andrea.bazzano@arpal.liguria.it).
+Con la Affero GPL versione 3.
 
 ![gplv3](../extdata/agplv3.png)
 

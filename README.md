@@ -769,4 +769,4 @@ necessary. For more information on this, and how to apply and follow the
 GNU AGPL, see <https://www.gnu.org/licenses/>.
 </details>
 
-Copyright (C) 2023, Andrea Bazzano, <andrea.bazzano@arpal.liguria.it>.
+Copyright (C) 2023, Andrea Bazzano.
