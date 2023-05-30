@@ -127,6 +127,7 @@ mod_save_server <- function(id,
     # the click on the delete button triggers the deletion of stored data
     observeEvent(input$delete, {
       savedoutput$list[[selected_parameter()]] <- NULL
+      print(savedoutput$list)
     })
 
     # display save OR delete action button
