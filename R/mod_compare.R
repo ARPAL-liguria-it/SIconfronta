@@ -354,7 +354,7 @@ mod_compare_server <- function(id, data, response, group, analyte) {
 <b>H0:</b> %s </br>
 <b>H1:</b> %s
 <ul>
-  <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s – %s %s</li>
+  <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
   <li> <i>t</i> sperimentale = %.3f </li>
   <li> <i>t</i> critico (\u03b1 = %.3f, \u03bd = %.3f) = %.3f </li>
   <li> <i>p</i>-value = %.4f </li>
@@ -396,7 +396,7 @@ mod_compare_server <- function(id, data, response, group, analyte) {
 <b>H0:</b> %s </br>
 <b>H1:</b> %s
 <ul>
-  <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s – %s</li>
+  <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>
   <li> <i>F</i> sperimentale = %.3f </li>
   <li> <i>F</i> critico (\u03b1 = %.3f, \u03bd = %.0f, %.0f) = %s </li>
   <li> <i>p</i>-value = %.4f </li>
