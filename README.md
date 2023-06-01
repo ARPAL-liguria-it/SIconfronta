@@ -1,5 +1,11 @@
 ## CompaRat
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml)
+[![test-coverage](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml)
+<!-- badges: end -->
+
 Il software CompaRat è stato sviluppato allo scopo di effettuare
 confronti di medie e varianze per coppie di campioni.
 
