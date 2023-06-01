@@ -6,6 +6,8 @@ output:
 header-includes:
   - \usepackage{graphicx}
   - \usepackage[italian]{babel}
+  - \usepackage[utf8]{inputenc}
+  - \usepackage[T1]{fontenc}
   - \usepackage{microtype}
   - \usepackage{tgpagella}
   - \usepackage{fancyhdr}
