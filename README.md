@@ -23,12 +23,14 @@ confronti di medie e varianze per coppie di campioni.
 
 #### Di cosa ha bisogno CompaRat?
 
-Un file .csv con almeno: \* una colonna testuale con i nomi degli
-analiti di interesse; \* una colonna testuale che permetta di
-identificare a quale gruppo appartengano i singoli valori; \* una
-colonna numerica con i valori di interesse; \* il punto (.) come un
-separatore decimale per i valori numerici; \* intestazioni testuali
-delle colonne.
+Un file .csv con almeno:
+
+-   una colonna testuale con i nomi degli analiti di interesse;
+-   una colonna testuale che permetta di identificare a quale gruppo
+    appartengano i singoli valori;
+-   una colonna numerica con i valori di interesse;
+-   il punto (.) come un separatore decimale per i valori numerici;
+-   intestazioni testuali delle colonne.
 
 <details>
 <summary>
@@ -42,9 +44,10 @@ Un esempio è meglio di mille parole: clicca!
 L’applicazione è suddivisa in tre schede con cui l’utente deve
 interagire in sequenza.
 
-1.  Dalla scheda **Dati**
-2.  caricare il file .csv;
-3.  controllare e selezionare le variabili di interesse nei menù a
+Dalla scheda **Dati**
+
+1.  caricare il file .csv;
+2.  controllare e selezionare le variabili di interesse nei menù a
     tendina.
 
 <details>
@@ -54,17 +57,18 @@ Clicca per un esempio
 <img src="./inst/extdata/dati.png">
 </details>
 
-1.  Dalla scheda **Confronti**
-2.  selezionare l’analita di interesse;
-3.  visualizzare il grafici e le statistiche di base;
-4.  digitare le unità di misura;
-5.  eventualmente rimuovere dei punti cliccando su di essi;
-6.  visualizzare gli esiti del test per la verifica della normalità;
-7.  scegliere l’ipotesi alternativa e il livello di confidenza dei test;
-8.  visualizzare gli esiti del test per il confronto delle medie;
-9.  visualizzare gli esiti del test per il confronto delle varianze;
-10. salvare il risultato;
-11. ripetere i punti dall’1. al 9. per tutti gli analiti di interesse.
+Dalla scheda **Confronti**
+
+1.  selezionare l’analita di interesse;
+2.  visualizzare il grafici e le statistiche di base;
+3.  digitare le unità di misura;
+4.  eventualmente rimuovere dei punti cliccando su di essi;
+5.  visualizzare gli esiti del test per la verifica della normalità;
+6.  scegliere l’ipotesi alternativa e il livello di confidenza dei test;
+7.  visualizzare gli esiti del test per il confronto delle medie;
+8.  visualizzare gli esiti del test per il confronto delle varianze;
+9.  salvare il risultato;
+10. ripetere i punti dall’1. al 9. per tutti gli analiti di interesse.
 
 <details>
 <summary>
@@ -73,11 +77,12 @@ Che ne diresti di un esempio? Clicca
 <img src="./inst/extdata/confronti.png">
 </details>
 
-1.  Dalla scheda **Report**
-2.  completare i campi con le informazioni accessorie;
-3.  selezionare le sezioni da includere nel report;
-4.  generare il report;
-5.  aspettare che il file .pdf compaia tra i file scaricati.
+Dalla scheda **Report**
+
+1.  completare i campi con le informazioni accessorie;
+2.  selezionare le sezioni da includere nel report;
+3.  generare il report;
+4.  aspettare che il file .pdf compaia tra i file scaricati.
 
 <details>
 <summary>
