@@ -77,6 +77,7 @@ mod_makereport_server <- function(id, inputreport){
 
         # input parameters for the rmd file
         params <- list(
+          logo = logopath,
           title = input$title,
           description = input$description,
           content = input$content,
