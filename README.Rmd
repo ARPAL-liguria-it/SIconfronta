@@ -15,20 +15,21 @@ output:
 Il software CompaRat è stato sviluppato allo scopo di effettuare confronti di medie e varianze per coppie di campioni.
 
 #### Cosa può fare CompaRat?
-* ottenere statistiche di base sulle due serie di valori;
-* escludere manualmente valori potenzialmente anomali;
-* effettuare un test di normalità (Shapiro-Wilk) per le due serie di valori;
-* effettuare un test (_t_-test o Welch test) per confrontare le medie delle due serie di valori;
-* effettuare un test (_F_-test) per confrontare le varianze delle due serie di valori;
-* esportare i risultati in un report .pdf.
+  * ottenere statistiche di base sulle due serie di valori;
+  * escludere manualmente valori potenzialmente anomali;
+  * effettuare un test di normalità (Shapiro-Wilk) per le due serie di valori;
+  * effettuare un test (_t_-test o Welch test) per confrontare le medie delle due serie di valori;
+  * effettuare un test (_F_-test) per confrontare le varianze delle due serie di valori;
+  * esportare i risultati in un report .pdf.
 
 #### Di cosa ha bisogno CompaRat?
 Un file .csv con almeno:
-* una colonna testuale con i nomi degli analiti di interesse;
-* una colonna testuale che permetta di identificare a quale gruppo appartengano i singoli valori;
-* una colonna numerica con i valori di interesse;
-* il punto (.) come un separatore decimale per i valori numerici; 
-* intestazioni testuali delle colonne.
+
+  * una colonna testuale con i nomi degli analiti di interesse;
+  * una colonna testuale che permetta di identificare a quale gruppo appartengano i singoli valori;
+  * una colonna numerica con i valori di interesse;
+  * il punto (.) come un separatore decimale per i valori numerici; 
+  * intestazioni testuali delle colonne.
 
 <details>
 <summary> Un esempio è meglio di mille parole: clicca! </summary>
@@ -38,7 +39,8 @@ Un file .csv con almeno:
 #### Come funziona Comparat?
 L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in sequenza.
 
-1. Dalla scheda **Dati**
+Dalla scheda **Dati**
+
   1. caricare il file .csv;
   2. controllare e selezionare le variabili di interesse nei menù a tendina.
   
@@ -47,7 +49,8 @@ L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in se
 <img src="./inst/extdata/dati.png">
 </details>
 
-2. Dalla scheda **Confronti**
+Dalla scheda **Confronti**
+
   1. selezionare l'analita di interesse;
   2. visualizzare il grafici e le statistiche di base;
   3. digitare le unità di misura;
@@ -64,7 +67,8 @@ L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in se
 <img src="./inst/extdata/confronti.png">
 </details>
   
-3. Dalla scheda **Report**
+Dalla scheda **Report**
+
   1. completare i campi con le informazioni accessorie;
   2. selezionare le sezioni da includere nel report;
   3. generare il report;
