@@ -45,6 +45,7 @@ jobs:
           tlmgr install lastpage
           tlmgr install booktabs
           tlmgr install koma-script
+          tlmgr install hyphen-italian
           tlmgr list --only-installed
 
       - uses: r-lib/actions/setup-r@v2
