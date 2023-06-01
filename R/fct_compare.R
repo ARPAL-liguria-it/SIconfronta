@@ -36,6 +36,53 @@ fct_shapiro <- function(values) {
 
 }
 
+#' Displays the results of Grubbs tests for outlier detection
+#'
+#' @description The function displays the results of repeated Grubbs test for
+#'  outlier detection.
+#'  The returned text is suitable for the {comparat} {shiny} app.
+#'
+#' @param values a \code{vector} with the values relevant for testing.
+#' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
+#'   indicating the confidence level for the test.
+#'
+#' @details the Grubbs test is calculated using the function \code{grubbs.test}
+#' provided by the \code{outliers} package.
+#' @return A string with the result of the test.
+#'
+#' @importFrom outliers grubbs.test
+#' @export
+
+fct_grubbs <- function(x, significance = 0.95) {
+
+  stopifnot(
+    is.vector(x),
+    is.numeric(significance),
+    isTRUE(significance > 0 & significance < 1)
+  )
+
+  outvalues <- NULL
+  test <- x
+  grubbs_result <- outliers::grubbs.test(test)
+  pv <- grubbs_result$p.value
+
+  # the test is repeated until no outliers are found at the required significance level
+  while(pv < 1-significance) {
+    outvalues <- c(outvalues, as.numeric(strsplit(grubbs_result$alternative," ")[[1]][3]))
+    test <- x[!x %in% outvalues]
+    grubbs_result <- outliers::grubbs.test(test)
+    pv <- grubbs_result$p.value
+  }
+
+  if (length(outvalues) == 0){
+    "nessun valore anomalo"
+  } else if (length(outvalues) == 1){
+    paste0(length(outvalues), " valore anomalo (", outvalues, ")")
+  } else {
+    paste0(length(outvalues), " valori anomali (", paste0(outvalues, collapse = ", "), ")")
+  }
+
+}
 
 #' Displays the results of a \eqn{t}-test
 #'
