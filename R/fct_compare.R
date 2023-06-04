@@ -47,40 +47,68 @@ fct_shapiro <- function(values) {
 #'   indicating the confidence level for the test.
 #'
 #' @details the Grubbs test is calculated using the function \code{grubbs.test}
-#' provided by the \code{outliers} package.
-#' @return A string with the result of the test.
+#' provided by the \code{outliers} package. The function checks whether
+#' a single or two values, both at the same or opposite sides of the remaining
+#' values can be considered outliers.
+#' @return A list  with the following items:
+#' \describe{
+#'    \item{G}{a numeric value with the test statistic.}
+#'    \item{pvalue}{a numeric value with the p-value of the test.}
+#'    \item{result}{A string with the result of the test.}
+#'  }
 #'
 #' @importFrom outliers grubbs.test
 #' @export
 
-fct_grubbs <- function(x, significance = 0.95) {
+fct_grubbs <- function(values, significance = 0.95) {
 
   stopifnot(
-    is.vector(x),
+    is.vector(values),
+    length(values) > 3 & length(values) < 30,
     is.numeric(significance),
-    isTRUE(significance > 0 & significance < 1)
+    significance >= 0.90 & significance < 1
   )
 
   outvalues <- NULL
-  test <- x
-  grubbs_result <- outliers::grubbs.test(test)
+  test <- values
+  # testing for a single outliers
+  gtest10 <- outliers::grubbs.test(test, type = 10)
+  # testing for two outliers on the opposite sides
+  gtest11 <- outliers::grubbs.test(test, type = 11)
+  gtest_list <- list(gtest10 = gtest10, gtest11 = gtest11)
+  # getting the test result with the lowest p-value
+  grubbs_result <- gtest_list[[which.min(sapply(gtest_list, function(x) x$p.value))]]
   pv <- grubbs_result$p.value
+  pvmin <- pv
+  gmax <- grubbs_result$statistic[[1]]
 
   # the test is repeated until no outliers are found at the required significance level
   while(pv < 1-significance) {
-    outvalues <- c(outvalues, as.numeric(strsplit(grubbs_result$alternative," ")[[1]][3]))
-    test <- x[!x %in% outvalues]
-    grubbs_result <- outliers::grubbs.test(test)
+    numvalues <- as.numeric(strsplit(gsub("[^0-9.-]+", " ", grubbs_result$alternative), " ")[[1]])
+    outvalues <- c(outvalues, numvalues[!is.na(numvalues)])
+    test <- values[!values %in% outvalues]
+    gtest10 <- outliers::grubbs.test(test, type = 10)
+    gtest11 <- outliers::grubbs.test(test, type = 11)
+    gtest_list <- list(gtest10 = gtest10, gtest11 = gtest11)
+    grubbs_result <- gtest_list[[which.min(sapply(gtest_list, function(x) x$p.value))]]
     pv <- grubbs_result$p.value
+    g <- grubbs_result$statistic[[1]]
+    gmax <- max(c(gmax, g))
+    pvmin <- min(c(pvmin, pv)) # minimum p-values for reporting
   }
 
-  if (length(outvalues) == 0){
-    "nessun valore anomalo"
-  } else if (length(outvalues) == 1){
-    paste0(length(outvalues), " valore anomalo (", outvalues, ")")
+  result <- if (length(outvalues) == 0) {
+    "nessun valore anomalo rilevato"
+  } else if (length(outvalues) == 1) {
+    paste0(length(outvalues), " possibile valore anomalo: ", outvalues)
   } else {
-    paste0(length(outvalues), " valori anomali (", paste0(outvalues, collapse = ", "), ")")
+    paste0(length(outvalues), " possibili valori anomali: ",
+           paste0(outvalues, collapse = ", "))
   }
+
+  list(G = gmax,
+       pvalue = pvmin,
+       result = result)
 
 }
 

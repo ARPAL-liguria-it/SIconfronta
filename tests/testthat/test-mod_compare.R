@@ -74,6 +74,12 @@ testServer(
     expect_equal(shapirotest_list()[[2]],
       "<b>Gruppo b:</b> I valori sono compatibili con una distribuzione normale (W = 0.926, <i>p</i>-value = 0.5512)</br>")
 
+    # testing grubbs test intermediate results
+    expect_equal(grubbstest_list()[[1]],
+      "<b>Gruppo a:</b> nessun valore anomalo rilevato (G = 2.553, <i>p</i>-value = 0.3588)</br>")
+    expect_equal(grubbstest_list()[[2]],
+      "<b>Gruppo b:</b> nessun valore anomalo rilevato (G = 1.534, <i>p</i>-value = 0.2547)</br>")
+
     # Testing the outputs
     ## Testing the boxplot output
     expect_true(inherits(output$boxplot, "json"))
@@ -89,7 +95,7 @@ testServer(
     expect_true(inherits(session$getReturned(), "list"))
     expect_equal(names(session$getReturned()),
                  c("data", "udm",
-                   "summarytbl", "shapirotest",
+                   "summarytbl", "shapirotest", "grubbstest",
                    "ttest", "ftest"))
 
     # - If ever your input updates a reactiveValues)
@@ -120,11 +126,11 @@ test_that("module comparesummary ui works", {
   }
 })
 
-test_that("module compareshapirotest ui works", {
-  ui <- mod_compareshapirotest_ui(id = "test")
+test_that("module compareshapirogrubbstest ui works", {
+  ui <- mod_compareshapirogrubbstest_ui(id = "test")
   golem::expect_shinytaglist(ui)
   # Check that formals have not been removed
-  fmls <- formals(mod_compareshapirotest_ui)
+  fmls <- formals(mod_compareshapirogrubbstest_ui)
   for (i in c("id")){
     expect_true(i %in% names(fmls))
   }

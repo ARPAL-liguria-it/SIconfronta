@@ -39,6 +39,7 @@ mod_save_ui <- function(id,
 #'    \item{summarytbl}{a summary table returned by \code{rowsummary}.}
 #'    \item{boxplot}{a {ggplot2} boxplot.}
 #'    \item{shapirotest}{a RMarkdown formatted string with the results for the normality test.}
+#'    \item{grubbstest}{a RMarkdown formatted string with the results for the outliers test.}
 #'    \item{ttest}{a RMarkdown formatted string with the results for the t-test.}
 #'    \item{ftest}{a RMarkdown formatted string with the results for the F-test.}
 #'  }
@@ -62,6 +63,8 @@ mod_save_server <- function(id,
       req(inputlist())
 
       shapirotest_markdown <- htmltormarkdown(inputlist()$shapirotest()) %>%
+                                paste(collapse = "")
+      grubbstest_markdown <- htmltormarkdown(inputlist()$grubbstest()) %>%
                                 paste(collapse = "")
       ttest_markdown <- htmltormarkdown(inputlist()$ttest()) %>%
                                 paste(collapse = "")
@@ -119,6 +122,7 @@ mod_save_server <- function(id,
       savedoutput$list[[selected_parameter()]]$summarytbl <- summarytbl
       savedoutput$list[[selected_parameter()]]$boxplot <- boxplot
       savedoutput$list[[selected_parameter()]]$shapirotest <- shapirotest_markdown
+      savedoutput$list[[selected_parameter()]]$grubbstest <- grubbstest_markdown
       savedoutput$list[[selected_parameter()]]$ttest <- ttest_markdown
       savedoutput$list[[selected_parameter()]]$ftest <- ftest_markdown
 
