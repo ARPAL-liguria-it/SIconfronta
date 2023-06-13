@@ -183,23 +183,37 @@ test_that("Calculations are correct for Shapiro-Wilk test", {
 # Some Grubbs-Type Statistics for the Detection of Outliers,
 # Technometrics, 14(3), pp. 583-597. Also available at
 # https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h1.htm
-test_that("Errors are correctly handled for Grubbs test", {
+test_that("Errors are correctly handled for GESD outlier test", {
   faildf <- data.frame(a = c(1, 2))
   faildf1 <- data.frame(a = 1:5)
-  expect_error(fct_grubbs(faildf$a), "")
-  expect_error(fct_grubbs(faildf1$a, signif = 0.05), "")
+  expect_error(fct_gesd(faildf$a), "")
+  expect_error(fct_GESD(faildf1$a, signif = 0.05), "")
 })
 
-test_that("Calculations are correct for Grubbs test", {
+test_that("Calculations are correct for GESD outlier test", {
   expect_equal(
-    fct_grubbs(uranium_cps)$G %>% round(4),
-    2.4688
+    fct_gesd(uranium_cps, 0.99)$I[which(fct_gesd(uranium_cps, 0.99)$outlier== TRUE)],
+    245.57
   )
-  expect_true(
-    fct_grubbs(uranium_cps)$pvalue < 0.0001
+})
+
+# Results from UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4:
+# Detection and treatment of outliers. Section 4.3.2.
+test_that("Calculations are correct for GESD outlier test", {
+  expect_equal(
+    fct_gesd(uniiso_16269_4_432)$I[1:3],
+    c(12.60, 5.80, -2.21)
   )
   expect_equal(
-    fct_grubbs(uranium_cps)$result,
-    "1 possibile valore anomalo: 245.57"
+    fct_gesd(uniiso_16269_4_432)$R[1:3] %>% round(4),
+    c(3.6559, 3.2634, 2.1761)
+  )
+  expect_equal(
+    fct_gesd(uniiso_16269_4_432)$lambda[1:3] %>% round(4),
+    c(2.7058, 2.6785, 2.6492)
+  )
+  expect_equal(
+    fct_gesd(uniiso_16269_4_432)$outlier[1:3],
+    c(TRUE, TRUE, FALSE)
   )
 })

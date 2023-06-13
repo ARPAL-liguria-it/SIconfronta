@@ -74,3 +74,19 @@
 #'  \url{https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h1.htm}.
 #' @keywords data
 "uranium_cps"
+
+#' Observations from UNI ISO 16269-4:2019 - Section 4.3.2
+#'
+#' A dataset containing 20 observations for outliers detection.
+#' The variable are as follows:
+#'
+#' @format a vector with 20 numerical values:
+#'
+#' @name uniiso_16269_4_432
+#' @docType data
+#' @author ISO/TC 69 - Applications of statistical methods
+#' @source UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4:
+#'  Detection and treatment of outliers. Section 4.3.2.
+#'  \url{https://store.uni.com/uni-iso-16269-4-2019}.
+#' @keywords data
+"uniiso_16269_4_432"

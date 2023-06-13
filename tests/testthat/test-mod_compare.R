@@ -75,10 +75,10 @@ testServer(
       "<b>Gruppo b:</b> I valori sono compatibili con una distribuzione normale (W = 0.926, <i>p</i>-value = 0.5512)</br>")
 
     # testing grubbs test intermediate results
-    expect_equal(grubbstest_list()[[1]],
-      "<b>Gruppo a:</b> nessun valore anomalo rilevato (G = 2.553, <i>p</i>-value = 0.3588)</br>")
-    expect_equal(grubbstest_list()[[2]],
-      "<b>Gruppo b:</b> nessun valore anomalo rilevato (G = 1.534, <i>p</i>-value = 0.2547)</br>")
+    expect_equal(gesdtest_list()[[1]],
+      "<b>Gruppo a:</b></br> nessun valore anomalo a un livello di confidenza del 95% </br> nessun valore anomalo a un livello di confidenza del 99% </br></br>")
+    expect_equal(gesdtest_list()[[2]],
+      "<b>Gruppo b:</b></br> nessun valore anomalo a un livello di confidenza del 95% </br> nessun valore anomalo a un livello di confidenza del 99% </br></br>")
 
     # Testing the outputs
     ## Testing the boxplot output
@@ -87,6 +87,8 @@ testServer(
     expect_true(inherits(output$summary, "json"))
     ## Testing the Shapiro-Wilk test output
     expect_true(inherits(output$shapirotest, "character"))
+    ## Testing the GESD test output
+    expect_true(inherits(output$gesdtest, "character"))
     ## Testing the t-test output
     expect_true(inherits(output$ttest, "character"))
     ## Testing the F-test output
@@ -95,7 +97,7 @@ testServer(
     expect_true(inherits(session$getReturned(), "list"))
     expect_equal(names(session$getReturned()),
                  c("data", "udm",
-                   "summarytbl", "shapirotest", "grubbstest",
+                   "summarytbl", "shapirotest", "gesdtest",
                    "ttest", "ftest"))
 
     # - If ever your input updates a reactiveValues)
@@ -127,10 +129,10 @@ test_that("module comparesummary ui works", {
 })
 
 test_that("module compareshapirogrubbstest ui works", {
-  ui <- mod_compareshapirogrubbstest_ui(id = "test")
+  ui <- mod_compareshapirogesdtest_ui(id = "test")
   golem::expect_shinytaglist(ui)
   # Check that formals have not been removed
-  fmls <- formals(mod_compareshapirogrubbstest_ui)
+  fmls <- formals(mod_compareshapirogesdtest_ui)
   for (i in c("id")){
     expect_true(i %in% names(fmls))
   }

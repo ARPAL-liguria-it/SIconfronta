@@ -107,7 +107,7 @@ app_ui <- function(request) {
                              column(8,
                                   tabsetPanel(id = "testpanel",
                                               type = "tabs",
-                                              tabPanel("Normalit\u00E0", mod_compareshapirogrubbstest_ui("tests_1")),
+                                              tabPanel("Normalit\u00E0", mod_compareshapirogesdtest_ui("tests_1")),
                                               tabPanel("Medie", mod_comparettest_ui("tests_1")),
                                               tabPanel("Varianze", mod_compareftest_ui("tests_1"))
                                               )

@@ -36,79 +36,92 @@ fct_shapiro <- function(values) {
 
 }
 
-#' Displays the results of Grubbs tests for outlier detection
+#' Displays the results of generelised extreme strudentized deviate (GESD) test
 #'
-#' @description The function displays the results of repeated Grubbs test for
-#'  outlier detection.
+#' @description The function displays the results of generelised
+#'  extreme strudentized deviate (GESD) test for outlier detection.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param values a \code{vector} with the values relevant for testing.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
+#' @param m maximum number of possible outliers to be tested.
+#'   Default is one third of the number of values.
 #'
-#' @details the Grubbs test is calculated using the function \code{grubbs.test}
-#' provided by the \code{outliers} package. The function checks whether
-#' a single or two values, both at the same or opposite sides of the remaining
-#' values can be considered outliers.
-#' @return A list  with the following items:
+#' @details the GESD test is performed according to secton 4.3.2 of
+#'  UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4: Detection
+#'  and treatment of outliers. The software implementation in performed in
+#'  accordance to Annex A of the same document.
+#' @return A dataframe  with the following columns:
 #' \describe{
-#'    \item{G}{a numeric value with the test statistic.}
-#'    \item{pvalue}{a numeric value with the p-value of the test.}
-#'    \item{result}{A string with the result of the test.}
+#'    \item{I}{Numeric values inspected by the test.}
+#'    \item{R}{Numeric values for the extreme studentized deviate.}
+#'    \item{lambda}{numberic values with the critical values of the test statistics.}
+#'    \item{outliers}{a logical vector with the result of the test.}
 #'  }
 #'
-#' @importFrom outliers grubbs.test
+#' @source UNI ISO 16269-4:2019 - Statistical interpretation of data -
+#'  Part 4: Detection and treatment of outliers. Section 4.3.2 and Annex A.
+#'  \url{https://store.uni.com/uni-iso-16269-4-2019}
 #' @export
 
-fct_grubbs <- function(values, significance = 0.95) {
+fct_gesd <- function(values,
+                     significance = 0.95,
+                     m = round(length(values)/3, 0)) {
 
   stopifnot(
     is.vector(values),
-    length(values) > 3 & length(values) < 30,
+    length(values) >= 5,
     is.numeric(significance),
-    significance >= 0.90 & significance < 1
+    significance >= 0.90 & significance < 1,
+    is.numeric(m),
+    m <= length(values)
   )
 
-  outvalues <- NULL
-  test <- values
-  # testing for a single outliers
-  gtest10 <- outliers::grubbs.test(test, type = 10)
-  # testing for two outliers on the opposite sides
-  gtest11 <- outliers::grubbs.test(test, type = 11)
-  gtest_list <- list(gtest10 = gtest10, gtest11 = gtest11)
-  # getting the test result with the lowest p-value
-  grubbs_result <- gtest_list[[which.min(sapply(gtest_list, function(x) x$p.value))]]
-  pv <- grubbs_result$p.value
-  pvmin <- pv
-  gmax <- grubbs_result$statistic[[1]]
+  # function for calculating the critical lambda value
+  lamba_l <- function(n_values,
+                      l_removed,
+                      signif) {
 
-  # the test is repeated until no outliers are found at the required significance level
-  while(pv < 1-significance) {
-    numvalues <- as.numeric(strsplit(gsub("[^0-9.-]+", " ", grubbs_result$alternative), " ")[[1]])
-    outvalues <- c(outvalues, numvalues[!is.na(numvalues)])
-    test <- values[!values %in% outvalues]
-    gtest10 <- outliers::grubbs.test(test, type = 10)
-    gtest11 <- outliers::grubbs.test(test, type = 11)
-    gtest_list <- list(gtest10 = gtest10, gtest11 = gtest11)
-    grubbs_result <- gtest_list[[which.min(sapply(gtest_list, function(x) x$p.value))]]
-    pv <- grubbs_result$p.value
-    g <- grubbs_result$statistic[[1]]
-    gmax <- max(c(gmax, g))
-    pvmin <- min(c(pvmin, pv)) # minimum p-values for reporting
+    alfa <- 1 - signif
+    n_l <- n_values - l_removed
+    p <- (1 - alfa/2)^(1/(n_l))
+    tp <- qt(p, n_l - 2)
+
+    ((n_l - 1) * tp) / sqrt((n_l - 2 + tp^2) * (n_l))
+
   }
 
-  result <- if (length(outvalues) == 0) {
-    "nessun valore anomalo rilevato"
-  } else if (length(outvalues) == 1) {
-    paste0(length(outvalues), " possibile valore anomalo: ", outvalues)
-  } else {
-    paste0(length(outvalues), " possibili valori anomali: ",
-           paste0(outvalues, collapse = ", "))
+  n <- length(values)
+  l <- 0
+  df <- data.frame(I = values)
+  df_result <- data.frame()
+
+  while (l <= m) {
+    # mean and std.deviation
+    x_mean <- mean(df$I)
+    x_sd <- sd(df$I)
+
+    # deviates from the mean
+    df$deviate <- abs(df$I - x_mean)
+
+    # maximum studentized deviate
+    df$R <- max(df$deviate)/x_sd
+
+    # attach the maximum stuntized deviate to the final results dataset
+    df_result <- rbind(df_result, df[which.max(df$deviate),])
+
+    # remove the value with the maximum deviate from the dataset
+    df <- df[-which.max(df$deviate),]
+
+    l <- l + 1
   }
 
-  list(G = gmax,
-       pvalue = pvmin,
-       result = result)
+ df_result$l <- 0:m
+ df_result$lambda <- lamba_l(n, df_result$l, signif = significance)
+ df_result$outlier <- ifelse(df_result$R > df_result$lambda, TRUE, FALSE)
+ df_result <- df_result[, c("I", "R", "lambda", "outlier")]
+ df_result
 
 }
 

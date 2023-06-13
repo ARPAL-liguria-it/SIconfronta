@@ -70,13 +70,13 @@ for (i in names(params$data)) {
   
   if("shapirotest" %in% params$content) {
     
-  # checking normality and outliers with Shapiro-Wilk and Grubbs test 
+  # checking normality and outliers with Shapiro-Wilk and GESD test 
   cat(paste("#", "Test per la verifica della normalità (Shapiro-Wilk)", "\n"))
   cat(params$data[[i]]$shapirotest)
   cat('\n\n<!-- -->\n\n')
   
-  cat(paste("#", "Test per l'identificazione di possibili outliers (Grubbs)", "\n"))
-  cat(params$data[[i]]$grubbstest)
+  cat(paste("#", "Test per l'identificazione di possibili outliers (GESD)", "\n"))
+  cat(params$data[[i]]$gesdtest)
   cat('\n\n<!-- -->\n\n')
   
   } else {

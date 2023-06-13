@@ -3,9 +3,9 @@
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by repeated Grubbs test and by boxplots,
-#'   and \eqn{t}-test and \eqn{F}-test for the mean and variance comparisons,
-#'   respectively. Test results are formatted in HTML.
+#'   outliers are inspected by generalized extreme studentized deviate test
+#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
+#'   variance comparisons, respectively. Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @return Two UI radiobuttons widget for alternative test hypothesis and
@@ -50,9 +50,9 @@ mod_compareinput_ui <- function(id){
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by repeated Grubbs test and by boxplots,
-#'   and \eqn{t}-test and \eqn{F}-test for the mean and variance comparisons,
-#'   respectively. Test results are formatted in HTML.
+#'   outliers are inspected by generalized extreme studentized deviate test
+#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
+#'   variance comparisons, respectively. Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @return A boxplot and a summary table.
@@ -82,22 +82,22 @@ mod_comparesummary_ui <- function(id){
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by repeated Grubbs test and by boxplots,
-#'   and \eqn{t}-test and \eqn{F}-test for the mean and variance comparisons,
-#'   respectively. Test results are formatted in HTML.
+#'   outliers are inspected by generalized extreme studentized deviate test
+#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
+#'   variance comparisons, respectively. Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @return HTML text with the Shapiro-Wilk and Grubbs test results.
+#' @return HTML text with the Shapiro-Wilk and GESD test results.
 #'
 #' @noRd
 #'
 #' @import shiny
-mod_compareshapirogrubbstest_ui <- function(id){
+mod_compareshapirogesdtest_ui <- function(id){
   ns <- NS(id)
   tagList(
 
     htmlOutput(ns("shapirotest")),
-    htmlOutput(ns("grubbstest"))
+    htmlOutput(ns("gesdtest"))
 
   )
 }
@@ -107,9 +107,9 @@ mod_compareshapirogrubbstest_ui <- function(id){
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by repeated Grubbs test and by boxplots,
-#'   and \eqn{t}-test and \eqn{F}-test for the mean and variance comparisons,
-#'   respectively. Test results are formatted in HTML.
+#'   outliers are inspected by generalized extreme studentized deviate test
+#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
+#'   variance comparisons, respectively. Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @return HTML text with the \eqn{t}-test results.
@@ -131,9 +131,9 @@ mod_comparettest_ui <- function(id){
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by repeated Grubbs test and by boxplots,
-#'   and \eqn{t}-test and \eqn{F}-test for the mean and variance comparisons,
-#'   respectively. Test results are formatted in HTML.
+#'   outliers are inspected by generalized extreme studentized deviate test
+#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
+#'   variance comparisons, respectively. Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @return HTML text with the \eqn{F}-test results.
@@ -155,9 +155,9 @@ mod_compareftest_ui <- function(id){
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by repeated Grubbs test and by boxplots,
-#'   and \eqn{t}-test and \eqn{F}-test for the mean and variance comparisons,
-#'   respectively. Test results are formatted in HTML.
+#'   outliers are inspected by generalized extreme studentized deviate test
+#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
+#'   variance comparisons, respectively. Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @param data a dataset with at least 2 character columns and a numeric columns.
@@ -176,7 +176,7 @@ mod_compareftest_ui <- function(id){
 #'      \item{summary}{a {DT} table with \code{max}, \code{mean}, \code{median},
 #'        \code{min} and \code{length} values.}
 #'      \item{shapirotest}{HTML text with the results for data normality by Shapiro-Wilk test.}
-#'      \item{grubbstest}{HTML text with the results for outliers detection by Grubbs test.}
+#'      \item{gesdtest}{HTML text with the results for outliers detection by generalized extreme studentized deviate test.}
 #'      \item{ttest}{HTML text with the results for mean comparison by \eqn{t}-test.}
 #'      \item{ftest}{HTML text with the results for variance comparison by \eqn{F}-test.}
 #'   }
@@ -188,7 +188,7 @@ mod_compareftest_ui <- function(id){
 #'      (\code{group}) on the columns and the different data values on the rows.}
 #'      \item{summarytbl}{a summary table returned by \code{rowsummary}.}
 #'      \item{shapirotest}{a HTML formatted string with the results for the normality test.}
-#'      \item{grubbstest}{a HTML formatted string with the results for the outliers test.}
+#'      \item{gesdtest}{a HTML formatted string with the results for the outliers test.}
 #'      \item{ttest}{a HTML formatted string with the results for the t-test.}
 #'      \item{ftest}{a HTML formatted string with the results for the F-test.}
 #'    }
@@ -349,27 +349,49 @@ mod_compare_server <- function(id, data, response, group, analyte) {
             paste(shapirotest_list(), collapse = ""))
     )
 
-    #### Grubbs test for outliers results ----
-    grubbs_text <- "<b>Gruppo %s:</b> %s (G = %.3f, <i>p</i>-value = %.4f)</br>"
+    #### GESD test for outliers results ----
+    gesd_text <- "<b>Gruppo %s:</b></br> %s a un livello di confidenza del 95%% </br> %s a un livello di confidenza del 99%% </br></br>"
 
-    grubbstest_list <- reactive({
+    gesdtest_list <- reactive({
       req(selected_data$data)
 
       sapply(lvl(), function(x) {
-        grubbs_output <- selected_data$data$response[which(selected_data$data$group == x)] %>%
-          fct_grubbs
+        gesd_output95 <- selected_data$data$response[which(selected_data$data$group == x)] %>%
+          fct_gesd(significance = 0.95)
 
-        sprintf(grubbs_text,
+        gesd_select95 <- gesd_output95[which(gesd_output95$outlier == TRUE),]
+
+        gesd_output99 <- selected_data$data$response[which(selected_data$data$group == x)] %>%
+          fct_gesd(significance = 0.99)
+
+        gesd_select99 <- gesd_output99[which(gesd_output99$outlier == TRUE),]
+
+        gesd_result95 <- if (dim(gesd_select95)[1] == 0) {
+          "nessun valore anomalo"
+        } else if (dim(gesd_select95)[1] == 1) {
+          paste0(gesd_select95$I, " \u00E8 un possibile valore anomalo")
+        } else {
+          paste0(paste(gesd_select95$I, collapse = ", "), " sono possibili valori anomali")
+        }
+
+        gesd_result99 <- if (dim(gesd_select99)[1] == 0) {
+          "nessun valore anomalo"
+        } else if (dim(gesd_select99)[1] == 1) {
+          paste0(gesd_select99$I, " \u00E8 un possibile valore anomalo")
+        } else {
+          paste0(paste(gesd_select99$I, collapse = ", "), " sono possibili valori anomali")
+        }
+
+        sprintf(gesd_text,
                 x,
-                grubbs_output$result,
-                grubbs_output$G,
-                grubbs_output$pvalue)
+                gesd_result95,
+                gesd_result99)
       })
     })
 
-    output$grubbstest <- renderText(
-      paste("<h4> Test per identificare possibili outliers (Grubbs) </h4></br>",
-            paste(grubbstest_list(), collapse = ""))
+    output$gesdtest <- renderText(
+      paste("<h4> Test per identificare possibili outliers (GESD) </h4></br>",
+            paste(gesdtest_list(), collapse = ""))
     )
 
     #### t-test results ----
@@ -460,7 +482,7 @@ mod_compare_server <- function(id, data, response, group, analyte) {
       udm = reactive(udmclean()),
       summarytbl = reactive(summarytable()),
       shapirotest = reactive(shapirotest_list()),
-      grubbstest = reactive(grubbstest_list()),
+      gesdtest = reactive(gesdtest_list()),
       ttest = reactive(ttest_html()),
       ftest = reactive(ftest_html())
     )
