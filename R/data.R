@@ -39,7 +39,6 @@
 #' @keywords data
 "ftest_reference"
 
-
 #' Shapiro-Wilk test data
 #'
 #' A dataset with 11 values of men weights expressed in pounds.
@@ -57,3 +56,21 @@
 #'  \url{http://links.jstor.org/sici?sici=0006-3444\%28196512\%2952\%3A3\%2F4\%3C591\%3AAAOVTF\%3E2.0.CO\%3B2-B}.
 #' @keywords data
 "shapirotest_reference"
+
+#' Mass spectrometer measurements on a Uranium isotope
+#'
+#' A dataset containing the results expressed counts per seconds for mass spectrometer measurements on a Uranium isotope.
+#' The variable are as follows:
+#'
+#' @format a vector with 8 numerical values:
+#'
+#' @name uranium_cps
+#' @docType data
+#' @author Gary L. Tietjen
+#' @author Roger H. Moore
+#' @source Some Grubbs-Type Statistics for the Detection of Several Outliers.
+#'  Technometrics, 14(3), 1972, pp. 583-597.
+#'  Also available at
+#'  \url{https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h1.htm}.
+#' @keywords data
+"uranium_cps"

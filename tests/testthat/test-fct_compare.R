@@ -178,3 +178,28 @@ test_that("Calculations are correct for Shapiro-Wilk test", {
     "I valori non sono compatibili con una distribuzione normale"
   )
 })
+
+# Results from  Tietjen and Moore (August 1972),
+# Some Grubbs-Type Statistics for the Detection of Outliers,
+# Technometrics, 14(3), pp. 583-597. Also available at
+# https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h1.htm
+test_that("Errors are correctly handled for Grubbs test", {
+  faildf <- data.frame(a = c(1, 2))
+  faildf1 <- data.frame(a = 1:5)
+  expect_error(fct_grubbs(faildf$a), "")
+  expect_error(fct_grubbs(faildf1$a, signif = 0.05), "")
+})
+
+test_that("Calculations are correct for Grubbs test", {
+  expect_equal(
+    fct_grubbs(uranium_cps)$G %>% round(4),
+    2.4688
+  )
+  expect_true(
+    fct_grubbs(uranium_cps)$pvalue < 0.0001
+  )
+  expect_equal(
+    fct_grubbs(uranium_cps)$result,
+    "1 possibile valore anomalo: 245.57"
+  )
+})
