@@ -31,52 +31,14 @@ app_ui <- function(request) {
       collapsible = TRUE,
       lang = "it",
 
+      #### Switch for input selection ----
+      tabPanel("Scopo",
+               mod_aim01_ui("scopo")
+               ),
+
       #### Tab for data loading ----
       tabPanel("Dati",
-                 sidebarLayout(
-                 sidebarPanel(
-                   width = 2,
-                     # User inputs
-                     ## 1. Load a csv file
-                     mod_loadfile_ui("loadfile_1"),
-
-               ## 2. Select the variable of the parameter
-               shinyjs::hidden(
-                 selectizeInput(
-                   "parvar",
-                   label = "Analiti",
-                   selected = NULL,
-                   choices = NULL,
-                   multiple = TRUE,
-                   options = list(maxItems = 1)
-                 )
-               ),
-               ## 3. Select the variable for response
-               shinyjs::hidden(
-                 selectizeInput(
-                   "response",
-                   label = "Risposte",
-                   selected = NULL,
-                   choices = NULL,
-                   multiple = TRUE,
-                   options = list(maxItems = 1)
-                 )
-               ),
-               ## 4. Select the grouping variable
-               shinyjs::hidden(
-                 selectizeInput(
-                   "group",
-                   label = "Gruppo",
-                   selected = NULL,
-                   choices = NULL,
-                   multiple = TRUE,
-                   options = list(maxItems = 1)
-                 )
-               )
-               ),
-              # Output: table with input data
-                 mainPanel(width = 9, DT::DTOutput("inputdata"))
-               )
+                mod_loadfile02_ui("dati")
                ),
 
       #### Results ----

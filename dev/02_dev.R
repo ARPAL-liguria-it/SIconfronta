@@ -20,6 +20,7 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
+golem::add_module(name = "01_aim", with_test = TRUE) # Name of the module
 golem::add_module(name = "loadfile", with_test = TRUE) # Name of the module
 golem::add_module(name = "compare", with_test = TRUE) # Name of the module
 golem::add_module(name = "save", with_test = TRUE) # Name of the module
