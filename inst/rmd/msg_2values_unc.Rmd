@@ -8,6 +8,8 @@ In attesa di un file .csv con tre colonne:
   - una colonna con i valori numerici derivanti dalle misure effettuate per i diversi parametri;
   - una colonna con i valori numerici di incertezza estesa associati alle misure.
   
+È ammesso un solo valore numerico per ogni coppia di parametro e gruppo.
+  
 Ad esempio:
 <style>
 

@@ -7,6 +7,8 @@ In attesa di un file .csv con tre colonne:
   - una colonna con il nome del gruppo da confrontare per cui si possiedono i singoli valori misurati;
   - una colonna con i valori numerici derivanti dalle misure effettuate per i diversi parametri.
   
+Non sono ammessi né meno di 5 valori, né più di 30 valori per ogni coppia di parametro e gruppo.
+
 Ad esempio:
 <style>
 

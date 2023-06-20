@@ -9,6 +9,8 @@ Portati avanti e prepara un file .csv organizzato su 3 colonne con separatore vi
   2. la seconda colonna conterrà un'intestazione e una variabile testuale indicante il nome del gruppo per il quale si possiedono i risultati delle misure;
   3. la terza colonna conterrà un'intestazione e una variabile numerica indicante i valori impiegati per effettuare il confronto. Il separatore decimale deve essere il punto (.).
   
+Non sono ammessi né meno di 5 valori, né più di 30 valori per ogni coppia di parametro e gruppo.
+
 Puoi creare i file .csv sia a mano in un editor di testo, come il Blocco note, sia esportarlo da programmi quali LibreOffice Calc o Office Excel, o ancora meglio. Tieni presente che molti strumenti analitici permettono già di esportare i dati in questo formato.
 
 In ogni caso, dovrai ottenere un file con un contenuto simile a questo:

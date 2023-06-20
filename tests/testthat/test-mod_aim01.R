@@ -1,33 +1,30 @@
 testServer(
   mod_aim01_server,
-  # Add here your module params
+  # adding module params
   args = list(r = reactiveValues())
   , {
+
     ns <- session$ns
-    expect_true(
-      inherits(ns, "function")
-    )
-    expect_true(
-      grepl(id, ns(""))
-    )
-    expect_true(
-      grepl("test", ns("test"))
-    )
+    expect_true(inherits(ns, "function"))
+    expect_true(grepl(id, ns("")))
+    expect_true(grepl("test", ns("test")))
+
+    # checking the output
     session$setInputs(aim = "2samples",
                       aimbtn = TRUE)
-    expect_true(r$aim == "2samples")
+    expect_true(r$aim01$aim == "2samples")
     session$setInputs(aim = "2samples_par",
                       aimbtn = TRUE)
-    expect_true(r$aim == "2samples_par")
+    expect_true(r$aim01$aim == "2samples_par")
     session$setInputs(aim = "1sample_mu",
                       aimbtn = TRUE)
-    expect_true(r$aim == "1sample_mu")
+    expect_true(r$aim01$aim == "1sample_mu")
     session$setInputs(aim = "1sample_sigma",
                       aimbtn = TRUE)
-    expect_true(r$aim == "1sample_sigma")
+    expect_true(r$aim01$aim == "1sample_sigma")
     session$setInputs(aim = "2values_unc",
                       aimbtn = TRUE)
-    expect_true(r$aim == "2values_unc")
+    expect_true(r$aim01$aim == "2values_unc")
 })
 
 test_that("module aim01 ui works", {

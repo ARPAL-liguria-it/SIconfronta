@@ -248,6 +248,34 @@ mod_loadfile02_server <- function(id, r) {
       )
     })
 
+    ## required minimum number of values
+    reqminvalues <- reactive({
+      req(r$aim01$aim)
+
+      switch(
+        r$aim01$aim,
+        "2samples" = 5,
+        "2samples_par" = 5,
+        "1sample_mu" = 5,
+        "1sample_sigma" = 5,
+        "2values_unc" = 1
+      )
+    })
+
+    ## required maximum number of values
+    reqmaxvalues <- reactive({
+      req(r$aim01$aim)
+
+      switch(
+        r$aim01$aim,
+        "2samples" = 30,
+        "2samples_par" = 30,
+        "1sample_mu" = 30,
+        "1sample_sigma" = 30,
+        "2values_unc" = 1
+      )
+    })
+
     ## numeric variables
     numcol <- reactive({
       colnames(dataframe())[sapply(dataframe(), is.numeric)]
@@ -334,9 +362,56 @@ mod_loadfile02_server <- function(id, r) {
 
     })
 
+    ## max number of values for each group and parameter pair
+    maxvalues <- reactive({
+      req(input$groupvar)
+      req(input$parvar)
+      req(input$responsevar)
+
+      aggregate(x = dataframe()[[input$responsevar]] ,
+                by = list(dataframe()[[input$parvar]], dataframe()[[input$groupvar]]),
+                FUN = length)$x |> max()
+    })
+
+    ## min number of values for each group and parameter pair
+    minvalues <- reactive({
+      req(input$groupvar)
+      req(input$parvar)
+      req(input$responsevar)
+
+      aggregate(x = dataframe()[[input$responsevar]] ,
+                by = list(dataframe()[[input$parvar]], dataframe()[[input$groupvar]]),
+                FUN = length)$x |> min()
+    })
+
+    ### checking how many values for the group and parameters pair are in the dataset
+    valuesok <- reactive({
+      validate(
+        need(maxvalues() <= reqmaxvalues(),
+             message = sprintf(
+               "Hai fornito un dataset con un massimo di %s valor%s per coppia di analita e gruppo ma posso gestirne al massimo fino a %s.",
+               maxvalues(),
+               ifelse(maxvalues() == 1, "e", "i"),
+               reqmaxvalues()
+             )),
+        need(minvalues() >= reqminvalues(),
+             message = sprintf(
+               "Hai fornito un dataset con un minimo di %s valor%s per coppia di analita e gruppo ma non posso gestirne meno di %s.",
+               minvalues(),
+               ifelse(minvalues() == 1, "e", "i"),
+               reqminvalues()
+             ))
+      )
+
+      maxvalues() <= reqmaxvalues() & minvalues() >= reqminvalues()
+
+    })
+
+
+
     ## checking that is all fine
     dataok <- reactive({
-      isTRUE(charok() & numok() & groupok())
+      charok() & numok() & groupok() & valuesok()
     })
 
 

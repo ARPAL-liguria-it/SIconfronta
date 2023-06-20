@@ -84,7 +84,9 @@ mod_aim01_ui <- function(id) {
 #' performed by the {Comparat} shinyAPP.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @return a list of radio buttons with the elaborations and an action button.
+#' @return a reactiveValues with the option chosen in UI stored into \code{r$aim01$aim}.
+#'  Possible values are \code{"2samples"}, \code{"2samples_par"}, \code{"1sample_mu"},
+#'  \code{"1sample_sigma"} and \code{"2values_unc"}.
 #'
 #' @noRd
 #'
