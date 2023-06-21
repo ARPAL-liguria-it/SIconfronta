@@ -43,41 +43,7 @@ app_ui <- function(request) {
 
       #### Results ----
       tabPanel("Confronti",
-                 sidebarLayout(
-                   sidebarPanel(
-                     width = 2,
-                     # User inputs
-                     ## 1. Filter by parameter
-                     selectizeInput(
-                       "parameter",
-                       label = "Analita",
-                       selected = NULL,
-                       choices = NULL,
-                       multiple = TRUE,
-                       options = list(maxItems = 1)
-                     ),
-                     # Module with plots and test results
-                     mod_compareinput_ui("tests_1"),
-                     ## 2. Save the results
-                     mod_save_ui("save_1", "Salva", "Cancella")
-                   ),
-                   mainPanel(width = 10,
-                             fluidRow(
-                             column(4,
-                              mod_comparesummary_ui("tests_1")
-                                    ),
-                             column(8,
-                                  tabsetPanel(id = "testpanel",
-                                              type = "tabs",
-                                              tabPanel("Normalit\u00E0", mod_compareshapirogesdtest_ui("tests_1")),
-                                              tabPanel("Medie", mod_comparettest_ui("tests_1")),
-                                              tabPanel("Varianze", mod_compareftest_ui("tests_1"))
-                                              )
-
-                                    )
-                             )
-                   )
-                 )
+               mod_compare03_ui("confronto")
                ),
 
       #### Reporting ----

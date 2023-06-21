@@ -13,8 +13,6 @@
 #'   Column headers and dot "." as decimal separator are mandatory.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @param r reactiveValues stores the information saved by other modules.
-#' In \code{r$aim01$aim} is stored the option selected in the {mod_aim01} module.
 #' @return A page with the following {shiny} widget:
 #'  \itemize{
 #'    \item{file} a fileInput widget for uploading the file;
@@ -63,7 +61,7 @@ mod_loadfile02_ui <- function(id) {
             label = "Analiti",
             selected = NULL,
             choices = NULL,
-            multiple = TRUE,
+            multiple = FALSE,
             options = list(maxItems = 1)
           ),
           ## 2. Select the grouping variable
@@ -72,7 +70,7 @@ mod_loadfile02_ui <- function(id) {
             label = "Gruppo",
             selected = NULL,
             choices = NULL,
-            multiple = TRUE,
+            multiple = FALSE,
             options = list(maxItems = 1)
           ),
           ## 3. Select the variable for response
@@ -81,7 +79,7 @@ mod_loadfile02_ui <- function(id) {
             label = "Risposte",
             selected = NULL,
             choices = NULL,
-            multiple = TRUE,
+            multiple = FALSE,
             options = list(maxItems = 1)
           )
         )
