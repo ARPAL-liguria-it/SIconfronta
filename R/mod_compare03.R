@@ -1,4 +1,4 @@
-#' compare UI Function: inputs
+#' compare UI Function:
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
@@ -54,178 +54,108 @@ mod_compare03_ui <- function(id) {
       ),
 
       # 2. write the unit of measurment (optional)
-      textInput(
-        ns("udm"),
-        "Unit\u00E0 di misura",
-        ""),
+      textInput(ns("udm"),
+                "Unit\u00E0 di misura",
+                ""),
 
-      # mu panel for mean values: for 2samples_par and 1sample_mu
+
+      # different controls for the different data options
       tabsetPanel(
-        id = ns("mucmd"),
+        id = ns("ctrls"),
         type = "hidden",
 
-        tabPanel("2samples"),
-
-        tabPanel("sample_mu",
-
-          numericInput(
-            ns("mutxt"),
-            "valore medio",
-            0,
-            min = 0)
-          )
-      ),
-
-      # sigma panel for sd values: for 2samples_par and 1sample_sigma
-      tabsetPanel(
-        id = ns("sigmacmd"),
-        type = "hidden",
-
-        tabPanel("2samples"),
-
-        tabPanel("sample_sigma",
-
-                 numericInput(
-                   ns("sigmatxt"),
-                   "Deviazione standard",
-                   0,
-                   min = 0)
-        )
-      ),
-
-      # panel for number of values: only for 2samples_par
-      tabsetPanel(
-        id = ns("ncmd"),
-        type = "hidden",
-
-        tabPanel("2samples"),
-
-        tabPanel("sample_n",
-
-                 numericInput(
-                   ns("ntxt"),
-                   "Numero di misure",
-                   0,
-                   min = 0)
-        )
-      ),
-
-
-      tabsetPanel(
-        id = ns("testcmd"),
-        type = "hidden",
-
-        # for 2 values comparisons, formal significance test is not performed
-        tabPanel("2values"),
-
-        # for other data comparison options formal significance tests are performed
         tabPanel(
-          "not_2values",
-          # 3. select the desidered test significance level
-          radioButtons(
-            ns("significance"),
-            "Livello di confidenza",
-            choices = c(
-              "90%" = 0.90,
-              "95%" = 0.95,
-              "99%" = 0.99
-            ),
-            selected = 0.95
-          ),
+          "2samples",
+          mod_compare031_2samples_inputs_ui("2samples_ctrl")
+        ),
 
-          # 4. select the test alternative hypothesis
-          radioButtons(
-            ns("alternative"),
-            "Ipotesi alternativa",
-            choices = c("\u2260" = "different",
-                        ">" = "greater"),
-            selected = "different"
-          )
-        )
+        tabPanel(
+          "2samples_par",
+          mod_compare032_2samples_par_inputs_ui("2samples_par_ctrl")
+        ),
+
+        tabPanel(
+          "1sample_mu",
+          mod_compare033_1sample_mu_inputs_ui("1sample_mu_ctrl")
+        ),
+
+        tabPanel(
+          "1sample_sigma",
+          mod_compare034_1sample_sigma_inputs_ui("1sample_sigma_ctrl")
+        ),
+
+        tabPanel("2values_unc",
+                 "")
 
       ),
 
-      tabsetPanel(
-        id = ns("savedel"),
-        type = "hidden",
 
-        # show the save button when data is not saved
-        tabPanel("save",
+    # save and delete buttons
+    tabsetPanel(
+      id = ns("savedel"),
+      type = "hidden",
 
-                 # 5. click on the save button
-                 actionButton(
-                   ns("save"),
-                   "Salva",
-                   icon = icon("floppy-disk")
-                 )),
+      # show the save button when data is not saved
+      tabPanel("save",
+               # 5. click on the save button
+               actionButton(
+                 ns("save"),
+                 "Salva",
+                 icon = icon("floppy-disk")
+               )),
 
-        # show the delete button when data has been saved
-        tabPanel("delete",
-
-                 # 6. click on the delete buttons (if you spot a mistake)
-                 actionButton(
-                   ns("delete"),
-                   "Cancella",
-                   icon = icon("eraser")
-                 ))
+      # show the delete button when data has been saved
+      tabPanel("delete",
+               # 6. click on the delete buttons (if you spot a mistake)
+               actionButton(
+                 ns("delete"),
+                 "Cancella",
+                 icon = icon("eraser")
+               ))
 
       )
-
     ),
+
+
     mainPanel(width = 10,
 
-              fluidRow(
-                column(4,
-                       ""),
+              fluidRow(column(4,
+                              ""),
 
-                column(10,
+                       column(
+                         10,
 
-                       tabsetPanel(
-                         id = ns("testoptions"),
-                         type = "hidden",
+                         # different outputs for the different data options
+                         tabsetPanel(
+                           id = ns("outputs"),
+                           type = "hidden",
 
-
-                         # test results for options 2samples or 2samples_par
-                         tabPanel(
-                           ns("2samples"),
-                           type = "tabs",
-
-                           tabPanel("Normalit\u00E0"),
-                           tabPanel("Medie"),
-                           tabPanel("Varianze")
-                           ),
-
-
-                          # test results for option 1sample_mu
-                          tabPanel(
-                            ns("1sample_mu"),
-                            type = "tabs",
-
-                            tabPanel("Normalit\u00E0"),
-                            tabPanel("Medie")
-                           ),
-
-
-                           # test results for option 1sample_sigma
                            tabPanel(
-                             ns("1sample_sigma"),
-                             type = "tabs",
-
-                             tabPanel("Normalit\u00E0"),
-                             tabPanel("Varianze")
+                             "2samples",
+                             mod_compare031_2samples_output_ui("2samples_out")
                            ),
 
-
-                           # test results for option 2values_unc
                            tabPanel(
-                             ns("2values"),
-                             type = "tabs",
+                             "2samples_par",
+                             mod_compare032_2samples_par_output_ui("2samples_par_out")
+                           ),
 
-                             tabPanel("Valori")
-                             )
+                           tabPanel(
+                             "1sample_mu",
+                             mod_compare033_1sample_mu_output_ui("1sample_mu_out")
+                           ),
+
+                           tabPanel(
+                             "1sample_sigma",
+                             mod_compare034_1sample_sigma_output_ui("1sample_sigma_out")
+                           ),
+
+                           tabPanel(
+                             "2values_unc",
+                             mod_compare035_2values_unc_output_ui("2values_unc_out")
+                           )
 
                          )
-
                        )))
   ))
 }
@@ -278,9 +208,23 @@ mod_compare03_ui <- function(id) {
 #' @import shiny
 #' @import data.table
 #' @importFrom plotly renderPlotly plot_ly add_boxplot add_markers layout config
-mod_compare_server <- function(id, data, response, group, analyte) {
+mod_compare03_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    r$compare03 <- reactiveValues()
+
+    observeEvent(r$aim01$aim, {
+
+      # trovare un modo per attendere che r$aim01$aim non sia nullo
+      updateTabsetPanel(inputId = "ctrls", selected = "2values_unc")
+    })
+
+    # observeEvent(r$aim01$aim, {
+    #   req(r$aim01$aim)
+    #
+    #   updateTabsetPanel(inputId = "output", selected = r$aim01$aim)
+    # })
 
 
   })
