@@ -227,14 +227,14 @@ mod_loadfile02_server <- function(id, r) {
     # validating the data ----
     ## required number of numerical columns
     reqsumnum <- reactive({
-      req(r$aim01$aim)
+      req(length(r$aim01$aim) == 1)
 
       ifelse(r$aim01$aim == "2values_unc", 2, 1)
     })
 
     ## required number of groups
     reqsumgroup <- reactive({
-      req(r$aim01$aim)
+      req(length(r$aim01$aim) == 1)
 
       switch(
         r$aim01$aim,
@@ -248,7 +248,7 @@ mod_loadfile02_server <- function(id, r) {
 
     ## required minimum number of values
     reqminvalues <- reactive({
-      req(r$aim01$aim)
+      req(length(r$aim01$aim) == 1)
 
       switch(
         r$aim01$aim,
@@ -262,7 +262,7 @@ mod_loadfile02_server <- function(id, r) {
 
     ## required maximum number of values
     reqmaxvalues <- reactive({
-      req(r$aim01$aim)
+      req(length(r$aim01$aim) == 1)
 
       switch(
         r$aim01$aim,
@@ -416,14 +416,14 @@ mod_loadfile02_server <- function(id, r) {
     # updating the UI with the new data ----
     ## trigger for the columnnames tabsetPanel
     isloaded <- reactive({
-      req(r$aim01$aim)
+      req(length(r$aim01$aim) == 1)
 
       ifelse(isTRUE(dataok()), "dataloaded", "")
     })
 
     ## trigger for the ext_unc tabsetPanel
     is2values <- reactive({
-      req(r$aim01$aim)
+      req(length(r$aim01$aim) == 1)
 
       ifelse(isTRUE(dataok()),
              ifelse(r$aim01$aim == "2values_unc", "2values", "not_2values"),
@@ -532,12 +532,7 @@ mod_loadfile02_server <- function(id, r) {
       )
     })
 
-    r$loadfile02 <- reactiveValues(data = reactiveValues(),
-                                   parvar = reactiveValues(),
-                                   parlist = reactiveValues(),
-                                   groupvar = reactiveValues(),
-                                   responsevar = reactiveValues(),
-                                   uncertaintyvar = reactiveValues())
+    r$loadfile02 <- reactiveValues()
 
     observeEvent(input$nextbtn, {
       req(isTRUE(dataok()))

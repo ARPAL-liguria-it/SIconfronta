@@ -59,29 +59,29 @@ mod_compare03_ui <- function(id) {
                 ""),
 
 
-      # different controls for the different data options
+      # different controls for the different data options ----
       tabsetPanel(
         id = ns("ctrls"),
         type = "hidden",
 
         tabPanel(
           "2samples",
-          mod_compare031_2samples_inputs_ui("2samples_ctrl")
+          mod_compare031_2samples_inputs_ui("2samples")
         ),
 
         tabPanel(
           "2samples_par",
-          mod_compare032_2samples_par_inputs_ui("2samples_par_ctrl")
+          mod_compare032_2samples_par_inputs_ui("2samples_par")
         ),
 
         tabPanel(
           "1sample_mu",
-          mod_compare033_1sample_mu_inputs_ui("1sample_mu_ctrl")
+          mod_compare033_1sample_mu_inputs_ui("1sample_mu")
         ),
 
         tabPanel(
           "1sample_sigma",
-          mod_compare034_1sample_sigma_inputs_ui("1sample_sigma_ctrl")
+          mod_compare034_1sample_sigma_inputs_ui("1sample_sigma")
         ),
 
         tabPanel("2values_unc",
@@ -119,41 +119,36 @@ mod_compare03_ui <- function(id) {
 
     mainPanel(width = 10,
 
-              fluidRow(column(4,
-                              ""),
+              fluidRow(
+                column(4,
+                       ""),
 
-                       column(
-                         10,
+                column(10,
 
-                         # different outputs for the different data options
-                         tabsetPanel(
-                           id = ns("outputs"),
-                           type = "hidden",
+                       # different outputs for the different data options
+                       tabsetPanel(
+                         id = ns("outputs"),
+                         type = "hidden",
 
-                           tabPanel(
-                             "2samples",
-                             mod_compare031_2samples_output_ui("2samples_out")
-                           ),
+                         tabPanel("2samples",
+                                  mod_compare031_2samples_output_ui("2samples")
+                                  ),
 
-                           tabPanel(
-                             "2samples_par",
-                             mod_compare032_2samples_par_output_ui("2samples_par_out")
-                           ),
+                         tabPanel("2samples_par",
+                                  mod_compare032_2samples_par_output_ui("2samples_par")
+                                  ),
 
-                           tabPanel(
-                             "1sample_mu",
-                             mod_compare033_1sample_mu_output_ui("1sample_mu_out")
-                           ),
+                         tabPanel("1sample_mu",
+                                  mod_compare033_1sample_mu_output_ui("1sample_mu")
+                                  ),
 
-                           tabPanel(
-                             "1sample_sigma",
-                             mod_compare034_1sample_sigma_output_ui("1sample_sigma_out")
-                           ),
+                         tabPanel("1sample_sigma",
+                                  mod_compare034_1sample_sigma_output_ui("1sample_sigma")
+                                  ),
 
-                           tabPanel(
-                             "2values_unc",
-                             mod_compare035_2values_unc_output_ui("2values_unc_out")
-                           )
+                         tabPanel("2values_unc",
+                                  mod_compare035_2values_unc_output_ui("2values_unc")
+                                  )
 
                          )
                        )))
@@ -212,20 +207,85 @@ mod_compare03_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    r$compare03 <- reactiveValues()
+    # updating the UI ----
 
+    # updating the controls in the sidebar
     observeEvent(r$aim01$aim, {
+      req(length(r$aim01$aim) == 1)
 
-      # trovare un modo per attendere che r$aim01$aim non sia nullo
-      updateTabsetPanel(inputId = "ctrls", selected = "2values_unc")
+      updateTabsetPanel(inputId = "ctrls", selected = r$aim01$aim)
     })
 
-    # observeEvent(r$aim01$aim, {
-    #   req(r$aim01$aim)
-    #
-    #   updateTabsetPanel(inputId = "output", selected = r$aim01$aim)
-    # })
+    # updating the output in the mainpanel
+    observeEvent(r$aim01$aim, {
+      req(length(r$aim01$aim) == 1)
 
+     updateTabsetPanel(inputId = "output", selected = r$aim01$aim)
+    })
+
+    # updating the list of parameters
+    parchoices <- reactive({
+      req(levels(r$loadfile02$parlist) != 0)
+
+      c("", levels(r$loadfile02$parlist))
+    })
+
+    observeEvent(r$loadfile02$parlist, {
+      req(parchoices())
+
+      updateSelectizeInput(session,
+                           "parameter",
+                           selected = "",
+                           choices = parchoices()
+                           )
+
+    })
+
+    # # create a separate reactiveValue for each parameter ----
+    observeEvent(r$loadfile02$parlist, {
+     req(parchoices())
+
+      parlvl <- as.list(levels(r$loadfile02$parlist))
+      names(parlvl) <-levels(r$loadfile02$parlist)
+
+      r$compare03 <- do.call("reactiveValues", parlvl)
+
+    })
+
+    # storing the selected parameter to the r reactiveValues
+    r$compare03 <- reactiveValues()
+
+    observeEvent(input$parameter, {
+      req(input$parameter)
+      req(input$parameter != "")
+
+      r$compare03$myparameter <- input$parameter
+
+    })
+
+    # storing the udm to the r reactiveValues
+    observeEvent(input$udm, {
+      req(input$parameter)
+      req(input$parameter != "")
+
+      r$compare03$myudm
+
+    })
+
+
+    # passing the r reactiveValues to different modules depending on the aim option ----
+    observeEvent(input$parameter, {
+      req(input$parameter)
+      req(input$parameter != "")
+
+    switch (r$aim01$aim,
+      "2samples" = mod_compare031_2samples_server("2samples", r),
+      "2samples_par" = mod_compare031_2samples_par_server("2samples_par", r),
+      "1sample_mu" = mod_compare031_2samples_par_server("1sample_mu", r),
+      "1sample_sigma" = mod_compare031_2samples_par_server("1sample_sigma", r),
+      "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r),
+    )
+    })
 
   })
 }

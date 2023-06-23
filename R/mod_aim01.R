@@ -105,7 +105,7 @@ mod_aim01_server <- function(id, r) {
 
 
     # adding the selected option to the r list ----
-    r$aim01 <- reactiveValues(aim = reactiveValues())
+    r$aim01 <- reactiveValues()
 
     observeEvent(input$aimbtn, {
       r$aim01$aim <- input$aim
