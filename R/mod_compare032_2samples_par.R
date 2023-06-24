@@ -12,8 +12,10 @@
 #'   Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @return Seven UI widgets:
+#' @return Eight UI widgets:
 #' \itemize{
+#'  \item{udm}{a text input for the unit of measurements.
+#'    It is used for axes description and reporting, it is optional and it can be left blank.}
 #'  \item{label}{a text input for typing the name of the second group of data.}
 #'  \item{mean}{a numeric input widget for typing the mean of the second group of data.}
 #'  \item{sd}{a numeric input widget for typing the standard deviation of the
@@ -34,32 +36,42 @@ mod_compare032_2samples_par_inputs_ui <- function(id) {
   ns <- NS(id)
   tagList(
 
+    # 1. write the unit of measurment (optional)
+    textInput(ns("udm"),
+              "Unit\u00E0 di misura",
+              ""),
+
     hr(style = "border-top: 1px solid #000000;"),
 
+    # 2. label for the second group
     textInput(
       ns("label"),
       "Nome del secondo gruppo",
       ""
     ),
 
+    # 3. mean value
     numericInput(
       ns("mean"),
       "Valore medio",
       0,
       min = 0),
 
+    # 4. sd value
     numericInput(
       ns("sd"),
       "Deviazione standard",
       0,
       min = 0),
 
+    # 5. number of measurements
     numericInput(
       ns("n"),
-      "valore medio",
+      "Numero di misure",
       5,
       min = 5),
 
+    # 6. submit button
     actionButton(
       ns("submit"),
       "Calcola",
@@ -68,7 +80,7 @@ mod_compare032_2samples_par_inputs_ui <- function(id) {
 
     hr(style = "border-top: 1px solid #000000;"),
 
-      # 1. select the test significant level
+      # 7. select the test significant level
       radioButtons(
         ns("significance"),
         "Livello di confidenza",
@@ -80,7 +92,7 @@ mod_compare032_2samples_par_inputs_ui <- function(id) {
         selected = 0.95
       ),
 
-      # 2. select the test alternative hypothesis
+      # 8. select the test alternative hypothesis
       radioButtons(
         ns("alternative"),
         "Ipotesi alternativa",

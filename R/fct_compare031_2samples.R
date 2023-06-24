@@ -433,3 +433,86 @@ fct_ftest_2samples <- function(data,
        result = unname(result))
 
 }
+
+#' Plotly boxplots for comparing two groups of values
+#'
+#' @description The function provides a simple {plotly} boxplot for comparing
+#' two groups of values
+#'
+#' @param data input data.frame with a column named *key* with progressive integers,
+#' a column named *group* with a two level factor label for the two groups
+#' to be compared, a column named *response* with the numeric values for
+#' the two groups and a column named *outlier* with a logical vector.
+#' @param group a character string for the label of the grouping variable.
+#' @param response a character string with the label for the response numeric variable.
+#' @param udm a character string with the unit of measurement.
+#'
+#' @return A {plotly} boxplot for comparing two group of values. Raw data values
+#' are overlayed on top of the boxes.
+#'  }
+#'
+#' @export
+#'
+#' @importFrom plotly plot_ly add_boxplot add_markers layout config
+
+boxplot_2samples <- function(data,
+                             group,
+                             response,
+                             udm) {
+  stopifnot(
+    is.data.frame(data),
+    is.character(response),
+    is.character(group),
+    is.character(udm),
+    colnames(data) %in% c("key", "outlier", "response", "group"),
+    dim(data)[2] == 4
+  )
+
+  quo_group <- enquote(group)
+  quo_response <- enquote(response)
+  quo_udm <- enquote(udm)
+
+  cols <- ifelse(data$outlier == TRUE,
+                          "#999999",
+                          "black")
+
+  ylabtitle <- paste0(response,
+           ifelse(udm != "", paste0(" (", udm, ")"), ""))
+
+
+  plotly::plot_ly(source = "boxplot") |>
+    plotly::add_boxplot(
+      data = data[data$outlier == FALSE, ],
+      y = ~ response,
+      x = ~ group,
+      name = "boxplot",
+      type = "box",
+      boxmean = TRUE,
+      boxpoints = FALSE,
+      color = I("#D55E00"),
+      showlegend = FALSE
+    ) |>
+    plotly::add_markers(
+      data = data,
+      y = ~ response,
+      x = ~ group,
+      name = "valori",
+      marker = list(
+        color = I(cols),
+        colors = I(cols),
+        size = 10
+      ),
+      key = ~ key,
+      hoverinfo = "y",
+      hovertemplate = paste('%{y:.3s}', udm)
+    ) |>
+    plotly::layout(
+      showlegend = FALSE,
+      title = NULL,
+      xaxis = list(title = group),
+      yaxis = list(title = ylabtitle)
+    ) |>
+    plotly::config(displayModeBar = FALSE)
+
+}
+

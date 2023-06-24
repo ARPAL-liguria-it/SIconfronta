@@ -12,8 +12,10 @@
 #'   Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @return Four UI widgets:
+#' @return Five UI widgets:
 #' \itemize{
+#'  \item{udm}{a text input for the unit of measurements.
+#'    It is used for axes description and reporting, it is optional and it can be left blank.}
 #'  \item{mean}{a numeric input widget for typing the known reference mean value.}
 #'  \item{submit}{an action button to submit the mean value to calculations.}
 #'  \item{alternative}{a radiobutton widget with alternative test hypothesis.
@@ -29,14 +31,21 @@ mod_compare033_1sample_mu_inputs_ui <- function(id) {
   ns <- NS(id)
   tagList(
 
+    # 1. write the unit of measurment (optional)
+    textInput(ns("udm"),
+              "Unit\u00E0 di misura",
+              ""),
+
     hr(style = "border-top: 1px solid #000000;"),
 
+    # 2. known reference mean value
     numericInput(
       ns("mean"),
       "Valore di riferimento",
       0,
       min = 0),
 
+    # 3. submit button
     actionButton(
       ns("submit"),
       "Calcola",
@@ -45,7 +54,7 @@ mod_compare033_1sample_mu_inputs_ui <- function(id) {
 
     hr(style = "border-top: 1px solid #000000;"),
 
-      # 1. select the test significant level
+      # 4. select the test significant level
       radioButtons(
         ns("significance"),
         "Livello di confidenza",
@@ -57,7 +66,7 @@ mod_compare033_1sample_mu_inputs_ui <- function(id) {
         selected = 0.95
       ),
 
-      # 2. select the test alternative hypothesis
+      # 5. select the test alternative hypothesis
       radioButtons(
         ns("alternative"),
         "Ipotesi alternativa",

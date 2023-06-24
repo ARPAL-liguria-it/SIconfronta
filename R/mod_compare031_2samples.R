@@ -12,9 +12,10 @@
 #'   Test results are formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @return Two UI radiobuttons widget for alternative test hypothesis and
-#' confidence level, respectively.
+#' @return Three UI {shiny} input widgets:
 #' \itemize{
+#'  \item{udm}{a text input for the unit of measurements.
+#'    It is used for axes description and reporting, it is optional and it can be left blank.}
 #'  \item{alternative}{a radiobutton widget with alternative test hypothesis.
 #'    Choices are "different" or "greater", default is "different".}
 #'  \item{significance}{a radiobutton widgted with test confidence levels.
@@ -28,7 +29,12 @@ mod_compare031_2samples_inputs_ui <- function(id) {
   ns <- NS(id)
   tagList(
 
-      # 1. select the test significant level
+      # 1. write the unit of measurment (optional)
+      textInput(ns("udm"),
+                "Unit\u00E0 di misura",
+                ""),
+
+      # 2. select the test significant level
       radioButtons(
         ns("significance"),
         "Livello di confidenza",
@@ -40,7 +46,7 @@ mod_compare031_2samples_inputs_ui <- function(id) {
         selected = 0.95
       ),
 
-      # 2. select the test alternative hypothesis
+      # 3. select the test alternative hypothesis
       radioButtons(
         ns("alternative"),
         "Ipotesi alternativa",
@@ -92,7 +98,7 @@ mod_compare031_2samples_output_ui <- function(id) {
     ))
 }
 
-#' compare Server Function
+#' compare Server Function for two groups of values
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
@@ -123,22 +129,35 @@ mod_compare031_2samples_server <- function(id, r) {
 
     r$compare03x <- reactiveValues()
 
+    # storing input values into r$compare03x reactiveValues ----
+
+    ## selected parameter
     observeEvent(r$compare03$myparameter, {
 
       r$compare03x$parameter <- r$compare03$myparameter
 
       r$compare03x$data <- r$loadfile02$data[
         get(r$loadfile02$parvar) == r$compare03$myparameter]
-
     })
 
-    observeEvent(r$compare03$myudm, {
-      req(length(r$compare03$myparameter) == 1)
+    ## unit of measurement
+    observeEvent(input$udm, {
 
-      r$compare03x$udm <- r$compare03$myudm
-
+      udmclean <- gsub("[()\\[\\]]", "", input$udm, perl = TRUE)
+      r$compare03x$udm <- udmclean
     })
 
+    ## alternative hypothesis
+    observeEvent(input$alternative, {
+
+      r$compare03x$alternative <- input$alternative
+    })
+
+    ## test confidence level
+    observeEvent(input$significance, {
+
+      r$compare03x$significance <- input$significance
+    })
 
 
 

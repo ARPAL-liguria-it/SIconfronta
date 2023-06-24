@@ -30,8 +30,6 @@
 #'    Choices are "different" or "greater", default is "different".}
 #'  \item{significance}{a radiobutton widgted with test confidence levels.
 #'    Choices are "90\%", "95\%", "99\%", default is "95\%".}
-#'  \item{udm}{a text input for the unit of measurements.
-#'  It is used for axes description and reporting, it is optional and it can be left blank.}
 #' }
 #'
 #' @noRd
@@ -43,7 +41,7 @@ mod_compare03_ui <- function(id) {
     sidebarPanel(
       width = 2,
 
-      # 1. select the parameter
+      # select the parameter
       selectizeInput(
         ns("parameter"),
         label = "Analita",
@@ -53,12 +51,6 @@ mod_compare03_ui <- function(id) {
         options = list(maxItems = 1)
       ),
 
-      # 2. write the unit of measurment (optional)
-      textInput(ns("udm"),
-                "Unit\u00E0 di misura",
-                ""),
-
-
       # different controls for the different data options ----
       tabsetPanel(
         id = ns("ctrls"),
@@ -66,22 +58,22 @@ mod_compare03_ui <- function(id) {
 
         tabPanel(
           "2samples",
-          mod_compare031_2samples_inputs_ui("2samples")
+          mod_compare031_2samples_inputs_ui(ns("2samples"))
         ),
 
         tabPanel(
           "2samples_par",
-          mod_compare032_2samples_par_inputs_ui("2samples_par")
+          mod_compare032_2samples_par_inputs_ui(ns("2samples_par"))
         ),
 
         tabPanel(
           "1sample_mu",
-          mod_compare033_1sample_mu_inputs_ui("1sample_mu")
+          mod_compare033_1sample_mu_inputs_ui(ns("1sample_mu"))
         ),
 
         tabPanel(
           "1sample_sigma",
-          mod_compare034_1sample_sigma_inputs_ui("1sample_sigma")
+          mod_compare034_1sample_sigma_inputs_ui(ns("1sample_sigma"))
         ),
 
         tabPanel("2values_unc",
@@ -131,23 +123,23 @@ mod_compare03_ui <- function(id) {
                          type = "hidden",
 
                          tabPanel("2samples",
-                                  mod_compare031_2samples_output_ui("2samples")
+                                  mod_compare031_2samples_output_ui(ns("2samples"))
                                   ),
 
                          tabPanel("2samples_par",
-                                  mod_compare032_2samples_par_output_ui("2samples_par")
+                                  mod_compare032_2samples_par_output_ui(ns("2samples_par"))
                                   ),
 
                          tabPanel("1sample_mu",
-                                  mod_compare033_1sample_mu_output_ui("1sample_mu")
+                                  mod_compare033_1sample_mu_output_ui(ns("1sample_mu"))
                                   ),
 
                          tabPanel("1sample_sigma",
-                                  mod_compare034_1sample_sigma_output_ui("1sample_sigma")
+                                  mod_compare034_1sample_sigma_output_ui(ns("1sample_sigma"))
                                   ),
 
                          tabPanel("2values_unc",
-                                  mod_compare035_2values_unc_output_ui("2values_unc")
+                                  mod_compare035_2values_unc_output_ui(ns("2values_unc"))
                                   )
 
                          )
@@ -249,15 +241,6 @@ mod_compare03_server <- function(id, r) {
       req(input$parameter != "")
 
       r$compare03$myparameter <- input$parameter
-
-    })
-
-    # storing the udm to the r reactiveValues
-    observeEvent(input$udm, {
-      req(input$parameter)
-      req(input$parameter != "")
-
-      r$compare03$myudm
 
     })
 

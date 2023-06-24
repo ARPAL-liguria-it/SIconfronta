@@ -7,6 +7,31 @@
 #'  The test result is formatted in HTML.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
+#' @return one UI widget {udm} in which the unit of measurements can be typed.
+#'
+#' @noRd
+#'
+#' @import shiny
+mod_compare035_2values_unc_inputs_ui <- function(id) {
+  ns <- NS(id)
+  tagList(
+
+    # 1. write the unit of measurment (optional)
+    textInput(ns("udm"),
+              "Unit\u00E0 di misura",
+              "")
+  )
+}
+
+#' compare UI Function: 2 values with given extended uncertainty option
+#'
+#' @description A shiny Module for comparing two measurement values with
+#'  given extended uncertainy.
+#'
+#' @details Comparison is performed by \eq{E_n} calculation.
+#'  The test result is formatted in HTML.
+#'
+#' @param id,input,output,session Internal parameters for {shiny}.
 #' @return A two column fluidrow. In the first column a boxplot and a summary table
 #' are reported, whereas in the second column test results are reported in two
 #' separate tabs.
