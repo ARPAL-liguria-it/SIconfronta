@@ -52,7 +52,13 @@ fct_shapiro <- function(values) {
 #'  UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4: Detection
 #'  and treatment of outliers. The software implementation in performed in
 #'  accordance to Annex A of the same document.
-#' @return A dataframe  with the following columns:
+#' @return A list with the following objects:
+#' \describe{
+#'    \item{data}{a dataframe with the test results.}
+#'    \item{text}{a string with a summary of the test results}
+#' }
+#'
+#' The {data} dataframe has the following columns:
 #' \describe{
 #'    \item{I}{Numeric values inspected by the test.}
 #'    \item{R}{Numeric values for the extreme studentized deviate.}
@@ -92,6 +98,22 @@ fct_gesd <- function(values,
 
   }
 
+  # function for result as italian text in HTML
+  text_result <- function(outlier_res) {
+
+    if (sum(outlier_res$outlier) == 0) {
+      "nessun valore anomalo"
+    } else if (sum(outlier_res$outlier) == 1) {
+      paste0(outlier_res[which(outlier_res$outlier == TRUE), "I"],
+             " \u00E8 un possibile valore anomalo")
+    } else {
+      paste0(
+        paste(outlier_res[which(outlier_res$outlier == TRUE), "I"], collapse = ", "),
+        " sono possibili valori anomali")
+    }
+
+  }
+
   n <- length(values)
   l <- 0
   df <- data.frame(I = values)
@@ -108,7 +130,7 @@ fct_gesd <- function(values,
     # maximum studentized deviate
     df$R <- max(df$deviate)/x_sd
 
-    # attach the maximum stuntized deviate to the final results dataset
+    # attach the maximum studentized deviate to the final results dataset
     df_result <- rbind(df_result, df[which.max(df$deviate),])
 
     # remove the value with the maximum deviate from the dataset
@@ -121,13 +143,17 @@ fct_gesd <- function(values,
  df_result$lambda <- lamba_l(n, df_result$l, signif = significance)
  df_result$outlier <- ifelse(df_result$R > df_result$lambda, TRUE, FALSE)
  df_result <- df_result[, c("I", "R", "lambda", "outlier")]
- df_result
+ txt_result <- text_result(df_result)
+
+ list(data = df_result,
+      text = txt_result)
 
 }
 
-#' Displays the results of a \eqn{t}-test
+#' Displays the results of a \eqn{t}-test for two groups of values
 #'
-#' @description The function displays the results of a \eqn{t}-test.
+#' @description The function displays the results of a \eqn{t}-test performed
+#'  on two groups of values.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
@@ -170,7 +196,7 @@ fct_gesd <- function(values,
 #'
 #' @export
 
-fct_ttest <- function(data,
+fct_ttest_2samples <- function(data,
                       response,
                       group,
                       significance = 0.95,
@@ -259,9 +285,10 @@ fct_ttest <- function(data,
 
 }
 
-#' Displays the results of a \eqn{F}-test
+#' Displays the results of a \eqn{F}-test for two groups of values
 #'
-#' @description The function displays the results of a \eqn{F}-test.
+#' @description The function displays the results of a \eqn{F}-test performed
+#'  on two groups of values.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
@@ -302,7 +329,7 @@ fct_ttest <- function(data,
 #'
 #' @export
 
-fct_ftest <- function(data,
+fct_ftest_2samples <- function(data,
                       response,
                       group,
                       significance = 0.95,

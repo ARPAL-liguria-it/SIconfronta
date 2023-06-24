@@ -138,16 +138,8 @@ mod_compare031_2samples_server <- function(id, r) {
       r$compare03x$udm <- r$compare03$myudm
 
     })
-# ATTENZIONE: per ogni campio in myparameter, r$compare03 viene aggiornato più volte,
-# tanti più sono i click sul nome parametro
 
-    observeEvent(r$compare03$myparameter, {
-      req(length(r$compare03$myparameter) == 1)
 
-      print(r$compare03x$data)
-      print(r$compare03x$parameter)
-
-    })
 
 
   })
