@@ -121,13 +121,13 @@ mod_compare031_2samples_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+    r$compare03x <- reactiveValues()
 
     observeEvent(r$compare03$myparameter, {
-      req(length(r$compare03$myparameter) == 1)
 
-      r$compare03[[r$compare03$myparameter]] <- reactiveValues()
+      r$compare03x$parameter <- r$compare03$myparameter
 
-      r$compare03[[r$compare03$myparameter]]$data <- r$loadfile02$data[
+      r$compare03x$data <- r$loadfile02$data[
         get(r$loadfile02$parvar) == r$compare03$myparameter]
 
     })
@@ -135,7 +135,7 @@ mod_compare031_2samples_server <- function(id, r) {
     observeEvent(r$compare03$myudm, {
       req(length(r$compare03$myparameter) == 1)
 
-      r$compare03[[r$compare03$myparameter]]$udm <- r$compare03$myudm
+      r$compare03x$udm <- r$compare03$myudm
 
     })
 # ATTENZIONE: per ogni campio in myparameter, r$compare03 viene aggiornato più volte,
@@ -144,8 +144,8 @@ mod_compare031_2samples_server <- function(id, r) {
     observeEvent(r$compare03$myparameter, {
       req(length(r$compare03$myparameter) == 1)
 
-      print(r$compare03)
-      print(r$compare03$myparameter)
+      print(r$compare03x$data)
+      print(r$compare03x$parameter)
 
     })
 

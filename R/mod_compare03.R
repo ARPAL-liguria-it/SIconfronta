@@ -241,17 +241,6 @@ mod_compare03_server <- function(id, r) {
 
     })
 
-    # # create a separate reactiveValue for each parameter ----
-    observeEvent(r$loadfile02$parlist, {
-     req(parchoices())
-
-      parlvl <- as.list(levels(r$loadfile02$parlist))
-      names(parlvl) <-levels(r$loadfile02$parlist)
-
-      r$compare03 <- do.call("reactiveValues", parlvl)
-
-    })
-
     # storing the selected parameter to the r reactiveValues
     r$compare03 <- reactiveValues()
 
@@ -274,17 +263,16 @@ mod_compare03_server <- function(id, r) {
 
 
     # passing the r reactiveValues to different modules depending on the aim option ----
-    observeEvent(input$parameter, {
-      req(input$parameter)
-      req(input$parameter != "")
+    observeEvent(parchoices(), {
 
     switch (r$aim01$aim,
       "2samples" = mod_compare031_2samples_server("2samples", r),
       "2samples_par" = mod_compare031_2samples_par_server("2samples_par", r),
       "1sample_mu" = mod_compare031_2samples_par_server("1sample_mu", r),
       "1sample_sigma" = mod_compare031_2samples_par_server("1sample_sigma", r),
-      "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r),
+      "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r)
     )
+
     })
 
   })
