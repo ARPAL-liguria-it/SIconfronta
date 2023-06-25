@@ -485,7 +485,8 @@ boxplot_2samples <- function(data,
       boxmean = TRUE,
       boxpoints = FALSE,
       color = I("#D55E00"),
-      showlegend = FALSE
+      showlegend = FALSE,
+      hoverinfo = "none"
     ) |>
     plotly::add_markers(
       data = data,

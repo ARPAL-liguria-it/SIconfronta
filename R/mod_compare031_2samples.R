@@ -97,10 +97,12 @@ mod_compare031_2samples_output_ui <- function(id) {
              tabPanel("Normalit\u00E0",
                       htmlOutput(ns("shapirotest")),
                       htmlOutput(ns("outliers"))
-
                       ),
-             tabPanel("Medie"),
-             tabPanel("Varianze")
+             tabPanel("Medie",
+                      htmlOutput(ns("ttest"))
+                      ),
+             tabPanel("Varianze",
+                      htmlOutput(ns("ftest")))
              )
            )
     ))
@@ -142,29 +144,24 @@ mod_compare031_2samples_server <- function(id, r) {
 
     ## selected parameter
     observeEvent(r$compare03$myparameter, {
-
       r$compare03x$parameter <- r$compare03$myparameter
 
-      r$compare03x$data <- r$loadfile02$data[
-        get(r$loadfile02$parvar) == r$compare03$myparameter]
+      r$compare03x$data <- r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03$myparameter]
     })
 
     ## unit of measurement
     observeEvent(input$udm, {
-
       udmclean <- gsub("[()\\[\\]]", "", input$udm, perl = TRUE)
       r$compare03x$udm <- udmclean
     })
 
     ## alternative hypothesis
     observeEvent(input$alternative, {
-
       r$compare03x$alternative <- input$alternative
     })
 
     ## test confidence level
     observeEvent(input$significance, {
-
       r$compare03x$significance <- input$significance
     })
 
@@ -174,27 +171,32 @@ mod_compare031_2samples_server <- function(id, r) {
       req(r$compare03x$data)
 
       nrow(r$compare03x$data)
-      })
+    })
 
     key <- reactive(seq(from = 1, to = rownumber()))
 
     # using the row index to identify outliers
     keys <- reactiveVal()
 
-    suppressWarnings(
-      observeEvent(plotly::event_data("plotly_click", source = "boxplot"), {
+    observeEvent(plotly::event_data("plotly_click", source = "boxplot"), {
+      req(plotly::event_data("plotly_click", source = "boxplot")$key)
 
-        key_new <- plotly::event_data("plotly_click", source = "boxplot")$key
-        key_old <- keys()
+      key_new <- plotly::event_data("plotly_click", source = "boxplot")$key
+      key_old <- keys()
 
-        if (key_new %in% key_old) {
-          keys(setdiff(key_old, key_new))
-        } else {
-          keys(c(key_new, key_old))
-        }
+      if (key_new %in% key_old) {
+        keys(setdiff(key_old, key_new))
+      } else {
+        keys(c(key_new, key_old))
+      }
 
-      }),
-      classes = "plotly_unregistered_event_warning")
+    })
+
+    # reset the keys index when changing the parameter
+    observeEvent(r$compare03x$parameter, {
+
+      keys(NULL)
+    })
 
     # flag per i punti selezionati
     is_outlier <- reactive(key() %in% keys())
@@ -213,7 +215,19 @@ mod_compare031_2samples_server <- function(id, r) {
     selected_data <- reactive({
       req(input_data())
 
-      input_data()[input_data()$outlier == FALSE, ]
+      input_data()[input_data()$outlier == FALSE,]
+    })
+
+    # min number of values for the two groups
+    minval <- reactive({
+      req(!is.null(selected_data()))
+
+      sapply(levels(selected_data()$group),
+                 function(x) {
+                   selected_data()[selected_data()$group == x, ] |>
+                     nrow()
+                   }) |>
+        min()
     })
 
 
@@ -229,7 +243,10 @@ mod_compare031_2samples_server <- function(id, r) {
       )
     })
 
-    output$boxplot <- plotly::renderPlotly(plotlyboxplot())
+    output$boxplot <- plotly::renderPlotly({
+
+      plotlyboxplot()
+      })
 
 
     # reactive summary table ----
@@ -251,7 +268,8 @@ mod_compare031_2samples_server <- function(id, r) {
 
 
     # results of normality check ----
-    shapiro_text <- "<b>Gruppo %s:</b> %s (W = %.3f, <i>p</i>-value = %.4f)</br>"
+    shapiro_text <-
+      "<b>Gruppo %s:</b> %s (W = %.3f, <i>p</i>-value = %.4f)</br>"
 
     # levels of the grouping factor
     lvl <- reactive({
@@ -268,31 +286,43 @@ mod_compare031_2samples_server <- function(id, r) {
                                           "response"] |>
           fct_shapiro()
 
-        sprintf(shapiro_text,
-                x,
-                shapiro_output$result,
-                shapiro_output$W,
-                shapiro_output$pvalue)
+        sprintf(
+          shapiro_text,
+          x,
+          shapiro_output$result,
+          shapiro_output$W,
+          shapiro_output$pvalue
+        )
       })
     })
 
-    output$shapirotest <- renderText(
-      paste("<h4> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h4></br>",
-            paste(shapirotest_list(), collapse = ""))
-    )
+    output$shapirotest <- renderText({
+      validate(
+        need(minval() >= 5,
+             message = "Servono almeno 5 valori per poter eseguire i test")
+      )
+
+      paste(
+        "<h5> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h5></br>",
+        paste(shapirotest_list(), collapse = "")
+      )
+    })
 
 
     # results for outliers check ----
-    out_text <- "<b>Gruppo %s:</b></br> %s a un livello di confidenza del 95%% </br> %s a un livello di confidenza del 99%% </br></br>"
+    out_text <-
+      "<b>Gruppo %s:</b></br> %s a un livello di confidenza del 95%% </br> %s a un livello di confidenza del 99%% </br></br>"
 
     outtest_list <- reactive({
       req(selected_data())
 
       sapply(lvl(), function(x) {
-        outtest_output95 <- selected_data()[which(selected_data()$group == x), "response"] |>
+        outtest_output95 <-
+          selected_data()[which(selected_data()$group == x), "response"] |>
           fct_gesd(significance = 0.95)
 
-        outtest_output99 <- selected_data()[which(selected_data()$group == x), "response"] |>
+        outtest_output99 <-
+          selected_data()[which(selected_data()$group == x), "response"] |>
           fct_gesd(significance = 0.99)
 
         sprintf(out_text,
@@ -302,16 +332,124 @@ mod_compare031_2samples_server <- function(id, r) {
       })
     })
 
-    output$outliers <- renderText(
-      paste("<h4> Test per identificare possibili outliers (GESD) </h4></br>",
-            paste(outtest_list(), collapse = ""))
-    )
+    output$outliers <- renderText({
+      validate(
+        need(minval() >= 5,
+             message = FALSE)
+      )
+
+      paste(
+        "<h5> Test per identificare possibili outliers (GESD) </h5></br>",
+        paste(outtest_list(), collapse = "")
+      )
+    })
 
 
+    #### results for the t-test ----
+    ttest_list <- reactive({
+      req(selected_data())
+
+      fct_ttest_2samples(
+        selected_data(),
+        "response",
+        "group",
+        significance = as.numeric(input$significance),
+        alternative = input$alternative
+      )
+    })
+
+    ttest_text <-
+      "<h5> Test per differenza tra le medie </h5>
+<b>H0:</b> %s </br>
+<b>H1:</b> %s
+<ul>
+  <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
+  <li> <i>t</i> sperimentale = %.3f </li>
+  <li> <i>t</i> critico (\u03b1 = %.3f, \u03bd = %.3f) = %.3f </li>
+  <li> <i>p</i>-value = %.4f </li>
+</ul>
+\u21e8 %s"
+
+    ttest_html <- reactive({
+      sprintf(
+        ttest_text,
+        ttest_list()$hypotheses[[1]],
+        ttest_list()$hypotheses[[2]],
+        ttest_list()$difference[[1]],
+        r$compare03x$udm,
+        ttest_list()$difference[[2]],
+        ttest_list()$difference[[3]],
+        r$compare03x$udm,
+        ttest_list()$test[[3]],
+        ttest_list()$test[[2]],
+        ttest_list()$test[[1]],
+        ttest_list()$test[[4]],
+        ttest_list()$test[[5]],
+        ttest_list()$result
+      )
+    })
+
+    output$ttest <- renderText({
+      validate(
+        need(minval() >= 5,
+             message = "Servono almeno 5 valori per poter eseguire i test")
+      )
+
+      ttest_html()
+      })
 
 
+    #### results for the F-test ----
+    ftest_list <- reactive({
+      req(selected_data())
 
+      fct_ftest_2samples(
+        selected_data(),
+        "response",
+        "group",
+        significance = as.numeric(input$significance),
+        alternative = input$alternative
+      )
+    })
 
+    ftest_text <-
+      "<h5> Test per rapporto tra le varianze </h5>
+<b>H0:</b> %s </br>
+<b>H1:</b> %s
+<ul>
+  <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>
+  <li> <i>F</i> sperimentale = %.3f </li>
+  <li> <i>F</i> critico (\u03b1 = %.3f, \u03bd = %.0f, %.0f) = %s </li>
+  <li> <i>p</i>-value = %.4f </li>
+</ul>
+\u21e8 %s"
+
+    ftest_html <- reactive({
+      sprintf(
+        ftest_text,
+        ftest_list()$hypotheses[[1]],
+        ftest_list()$hypotheses[[2]],
+        ftest_list()$ratio[[1]],
+        ftest_list()$ratio[[2]],
+        ftest_list()$ratio[[3]],
+        ftest_list()$test$fsper,
+        ftest_list()$test$alpha,
+        ftest_list()$test$dof[[1]],
+        ftest_list()$test$dof[[2]],
+        ftest_list()$test$ftheo,
+        ftest_list()$test$pvalue,
+        ftest_list()$result
+      )
+    })
+
+    output$ftest <- renderText({
+      validate(
+        need(minval() >= 5,
+             message = "Servono almeno 5 valori per poter eseguire i test")
+      )
+
+      ftest_html()
+      })
 
   })
 }
