@@ -56,20 +56,16 @@ mod_compare03_ui <- function(id) {
         id = ns("ctrls"),
         type = "hidden",
 
-        tabPanel(
-          "2samples",
-          mod_compare031_2samples_inputs_ui(ns("2samples"))
-        ),
+        tabPanel("2samples",
+                 mod_compare031_2samples_inputs_ui(ns("2samples"))),
 
         tabPanel(
           "2samples_par",
           mod_compare032_2samples_par_inputs_ui(ns("2samples_par"))
         ),
 
-        tabPanel(
-          "1sample_mu",
-          mod_compare033_1sample_mu_inputs_ui(ns("1sample_mu"))
-        ),
+        tabPanel("1sample_mu",
+                 mod_compare033_1sample_mu_inputs_ui(ns("1sample_mu"))),
 
         tabPanel(
           "1sample_sigma",
@@ -82,68 +78,60 @@ mod_compare03_ui <- function(id) {
       ),
 
 
-    # save and delete buttons
-    tabsetPanel(
-      id = ns("savedel"),
-      type = "hidden",
+      # save and delete buttons
+      tabsetPanel(
+        id = ns("savedel"),
+        type = "hidden",
 
-      # show the save button when data is not saved
-      tabPanel("save",
-               # 5. click on the save button
-               actionButton(
-                 ns("save"),
-                 "Salva",
-                 icon = icon("floppy-disk")
-               )),
+        # show the save button when data is not saved
+        tabPanel("save",
+                 # 5. click on the save button
+                 actionButton(
+                   ns("save"),
+                   "Salva",
+                   icon = icon("floppy-disk")
+                 )),
 
-      # show the delete button when data has been saved
-      tabPanel("delete",
-               # 6. click on the delete buttons (if you spot a mistake)
-               actionButton(
-                 ns("delete"),
-                 "Cancella",
-                 icon = icon("eraser")
-               ))
+        # show the delete button when data has been saved
+        tabPanel("delete",
+                 # 6. click on the delete buttons (if you spot a mistake)
+                 actionButton(
+                   ns("delete"),
+                   "Cancella",
+                   icon = icon("eraser")
+                 ))
 
       )
     ),
 
 
-    mainPanel(width = 10,
+    mainPanel(
+      width = 10,
 
-              fluidRow(
-                column(4,
-                       ""),
+      # different outputs for the different data options
+      tabsetPanel(
+        id = ns("outputs"),
+        type = "hidden",
 
-                column(10,
+        tabPanel("2samples",
+                 mod_compare031_2samples_output_ui(ns("2samples"))),
 
-                       # different outputs for the different data options
-                       tabsetPanel(
-                         id = ns("outputs"),
-                         type = "hidden",
+        tabPanel(
+          "2samples_par",
+          mod_compare032_2samples_par_output_ui(ns("2samples_par"))),
 
-                         tabPanel("2samples",
-                                  mod_compare031_2samples_output_ui(ns("2samples"))
-                                  ),
+        tabPanel("1sample_mu",
+                 mod_compare033_1sample_mu_output_ui(ns("1sample_mu"))),
 
-                         tabPanel("2samples_par",
-                                  mod_compare032_2samples_par_output_ui(ns("2samples_par"))
-                                  ),
+        tabPanel(
+          "1sample_sigma",
+          mod_compare034_1sample_sigma_output_ui(ns("1sample_sigma"))),
 
-                         tabPanel("1sample_mu",
-                                  mod_compare033_1sample_mu_output_ui(ns("1sample_mu"))
-                                  ),
+        tabPanel("2values_unc",
+                 mod_compare035_2values_unc_output_ui(ns("2values_unc")))
 
-                         tabPanel("1sample_sigma",
-                                  mod_compare034_1sample_sigma_output_ui(ns("1sample_sigma"))
-                                  ),
-
-                         tabPanel("2values_unc",
-                                  mod_compare035_2values_unc_output_ui(ns("2values_unc"))
-                                  )
-
-                         )
-                       )))
+      )
+    )
   ))
 }
 
@@ -215,20 +203,14 @@ mod_compare03_server <- function(id, r) {
      updateTabsetPanel(inputId = "output", selected = r$aim01$aim)
     })
 
-    # updating the list of parameters
-    parchoices <- reactive({
+    observeEvent(r$loadfile02$parlist, {
       req(levels(r$loadfile02$parlist) != 0)
 
-      c("", levels(r$loadfile02$parlist))
-    })
-
-    observeEvent(r$loadfile02$parlist, {
-      req(parchoices())
-
+      parchoices <- c("", levels(r$loadfile02$parlist))
       updateSelectizeInput(session,
                            "parameter",
                            selected = "",
-                           choices = parchoices()
+                           choices = parchoices
                            )
 
     })
@@ -237,16 +219,14 @@ mod_compare03_server <- function(id, r) {
     r$compare03 <- reactiveValues()
 
     observeEvent(input$parameter, {
-      req(input$parameter)
       req(input$parameter != "")
 
       r$compare03$myparameter <- input$parameter
 
     })
 
-
     # passing the r reactiveValues to different modules depending on the aim option ----
-    observeEvent(parchoices(), {
+    observeEvent(r$compare03$myparameter, {
 
     switch (r$aim01$aim,
       "2samples" = mod_compare031_2samples_server("2samples", r),

@@ -40,54 +40,6 @@ signiftodigits <- function(value,
   }
 }
 
-#' Summary arranged on rows for two or more groups
-#'
-#' @description The function returns a table with max, mean, median, min, sd and n
-#'  values arranged on rows while groups are on columns. Numbers are formatted as
-#'  text in order to provide the desired significant figures.
-#'
-#' @param data the \code{data.frame} or \code{data.table} to be summarised.
-#' @param response a string with the name of the variable to summarise.
-#' @param group a string with the name of the grouping variable.
-#' @param signif a integer with the number of desired significant figures.
-#'
-#' @return a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
-#'   levels of the group variable.
-#'
-#' @export
-rowsummary <- function(data,
-                       response,
-                       group,
-                       signif = 3L){
-
-  stopifnot(is.data.frame(data),
-            is.character(response),
-            is.character(group),
-            all.equal(signif, as.integer(signif)),
-            response %in% colnames(data),
-            group %in% colnames(data))
-
-  mydata <- data.table(data)
-  lvl <- levels(as.factor(mydata[[group]]))
-  roworder <- c("n", "max", "mean", "median", "min", "sd")
-  fm <- as.formula(paste("statistica", '~', group))
-
-  mydata[, lapply(.SD, function(x) {
-            c(
-              n = .N,
-              max = max(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              mean = mean(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              median = median(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              min = min(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              sd = sd(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .)
-            )
-              }),
-         by = group,
-         .SDcols = response][,
-          "statistica" := rep(roworder, length(lvl))] %>%
-   dcast(eval(fm), value.var = response) %>% .[roworder]
-}
-
 #' Conversion of an HTML formatted string to a RMarkdown string
 #'
 #' @description The function substitutes some common HTML tag to their

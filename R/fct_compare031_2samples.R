@@ -16,7 +16,6 @@
 #'  }
 #'
 #' @export
-
 fct_shapiro <- function(values) {
 
   stopifnot(
@@ -70,7 +69,6 @@ fct_shapiro <- function(values) {
 #'  Part 4: Detection and treatment of outliers. Section 4.3.2 and Annex A.
 #'  \url{https://store.uni.com/uni-iso-16269-4-2019}
 #' @export
-
 fct_gesd <- function(values,
                      significance = 0.95,
                      m = round(length(values)/3, 0)) {
@@ -195,7 +193,6 @@ fct_gesd <- function(values,
 #'  }
 #'
 #' @export
-
 fct_ttest_2samples <- function(data,
                       response,
                       group,
@@ -328,7 +325,6 @@ fct_ttest_2samples <- function(data,
 #'  }
 #'
 #' @export
-
 fct_ftest_2samples <- function(data,
                       response,
                       group,
@@ -454,7 +450,6 @@ fct_ftest_2samples <- function(data,
 #' @export
 #'
 #' @importFrom plotly plot_ly add_boxplot add_markers layout config
-
 boxplot_2samples <- function(data,
                              group,
                              response,
@@ -514,5 +509,72 @@ boxplot_2samples <- function(data,
     ) |>
     plotly::config(displayModeBar = FALSE)
 
+}
+
+#' Summary arranged on rows for two groups
+#'
+#' @description The function returns a table with max, mean, median, min, sd and n
+#'  values arranged on rows while groups are on columns. Numbers are formatted as
+#'  text in order to provide the desired significant figures.
+#'
+#' @param data the \code{data.frame} or \code{data.table} to be summarised.
+#' @param response a string with the name of the variable to summarise.
+#' @param group a string with the name of the grouping variable.
+#' @param udm a string with the unit of measurement.
+#' @param signif a integer with the number of desired significant figures.
+#'
+#' @return a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
+#'   levels of the group variable.
+#'
+#' @export
+rowsummary_2samples <- function(data,
+                                response,
+                                group,
+                                udm = "",
+                                signif = 3L) {
+  stopifnot(
+    is.data.frame(data),
+    is.character(response),
+    is.character(group),
+    is.character(udm),
+    all.equal(signif, as.integer(signif)),
+    response %in% colnames(data),
+    group %in% colnames(data)
+  )
+
+  # number to the desired number of significant figures
+  numtosignif <- function(number, mydigits) {
+    # signiftodigits in utils_helper.R
+    sprintf("%.*f", signiftodigits(number, mydigits), number)
+  }
+
+  mydata <- data.table(data)
+  lvl <- levels(as.factor(mydata[[group]]))
+  roworder <- c("n", "massimo", "media", "mediana", "minimo", "deviazione standard")
+  fm <- as.formula(paste("statistica", '~', group))
+
+  # calculate the summary
+  mysummary <- mydata[, lapply(.SD, function(x) {
+    c(
+      n = .N,
+      massimo = max(x, na.rm = TRUE) |> numtosignif(signif),
+      media = mean(x, na.rm = TRUE) |> numtosignif(signif),
+      mediana = median(x, na.rm = TRUE) |> numtosignif(signif),
+      minimo = min(x, na.rm = TRUE) |> numtosignif(signif),
+      `deviazione standard` = sd(x, na.rm = TRUE) |> numtosignif(signif)
+    )
+  }),
+  by = group,
+  .SDcols = response][,
+    # table with three columns
+    "statistica" := rep(roworder, length(lvl))] |>
+    dcast(eval(fm), value.var = response) |>
+    # reordering rows
+    (\(x) x[roworder])()
+
+  # adding unit of measurement
+    mysummary[, "statistica" := lapply(statistica, (\(x) {
+      ifelse(x != "n" & udm != "", paste0(x, " (", udm, ")"), x)
+      }))]
 }
 

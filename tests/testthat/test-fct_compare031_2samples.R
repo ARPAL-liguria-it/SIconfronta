@@ -225,3 +225,22 @@ test_that("Calculations are correct for GESD outlier test", {
     "12.6, 5.8 sono possibili valori anomali"
   )
 })
+
+test_that("rowsummary_2samples works well", {
+  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer", "kg")$statistica |>
+                 unlist(),
+               c("n", "massimo (kg)", "media (kg)", "mediana (kg)", "minimo (kg)",
+                 "deviazione standard (kg)"))
+  expect_equal(colnames(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")),
+               c("statistica", "a", "b"))
+  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "media", a],
+               sprintf("%.3g", tomato_yields[fertilizer == "a", mean(pounds)]))
+  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "massimo", b],
+               sprintf("%.3g", tomato_yields[fertilizer == "b", max(pounds)]))
+  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "mediana", b],
+               "24.0")
+  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "n", a],
+               tomato_yields[fertilizer == "a", .N] %>% as.character)
+  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "deviazione standard", b],
+               "5.43")
+})

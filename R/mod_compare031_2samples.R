@@ -79,18 +79,26 @@ mod_compare031_2samples_inputs_ui <- function(id) {
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom plotly plotlyOutput
+#' @importFrom DT DTOutput
 mod_compare031_2samples_output_ui <- function(id) {
   ns <- NS(id)
   tagList(fluidRow(
-    column(4,
-           ""),
+    column(5,
+           plotly::plotlyOutput(ns("boxplot"), width = "100%"),
+           DT::DTOutput(ns("summarytable"))
+           ),
 
-    column(10,
+    column(7,
            tabsetPanel(
              id = ns("tabresults"),
              type = "tabs",
 
-             tabPanel("Normalit\u00E0"),
+             tabPanel("Normalit\u00E0",
+                      htmlOutput(ns("shapirotest")),
+                      htmlOutput(ns("outliers"))
+
+                      ),
              tabPanel("Medie"),
              tabPanel("Varianze")
              )
@@ -122,7 +130,8 @@ mod_compare031_2samples_output_ui <- function(id) {
 #'
 #' @import shiny
 #' @import data.table
-#' @importFrom plotly renderPlotly plot_ly add_boxplot add_markers layout config
+#' @importFrom plotly renderPlotly
+#' @importFrom DT renderDT
 mod_compare031_2samples_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -158,6 +167,149 @@ mod_compare031_2samples_server <- function(id, r) {
 
       r$compare03x$significance <- input$significance
     })
+
+
+    # preparing the reactive dataset for outputs ----
+    rownumber <- reactive({
+      req(r$compare03x$data)
+
+      nrow(r$compare03x$data)
+      })
+
+    key <- reactive(seq(from = 1, to = rownumber()))
+
+    # using the row index to identify outliers
+    keys <- reactiveVal()
+
+    suppressWarnings(
+      observeEvent(plotly::event_data("plotly_click", source = "boxplot"), {
+
+        key_new <- plotly::event_data("plotly_click", source = "boxplot")$key
+        key_old <- keys()
+
+        if (key_new %in% key_old) {
+          keys(setdiff(key_old, key_new))
+        } else {
+          keys(c(key_new, key_old))
+        }
+
+      }),
+      classes = "plotly_unregistered_event_warning")
+
+    # flag per i punti selezionati
+    is_outlier <- reactive(key() %in% keys())
+
+    # assembling the dataframe
+    input_data <- reactive({
+      data.frame(
+        key = key(),
+        outlier = is_outlier(),
+        response = r$compare03x$data[[r$loadfile02$responsevar]],
+        group = r$compare03x$data[[r$loadfile02$groupvar]]
+      )
+    })
+
+    # subset of non outliers
+    selected_data <- reactive({
+      req(input_data())
+
+      input_data()[input_data()$outlier == FALSE, ]
+    })
+
+
+    # reactive boxplot ----
+    plotlyboxplot <- reactive({
+      req(input_data())
+
+      boxplot_2samples(
+        data = input_data(),
+        group = r$loadfile02$groupvar,
+        response = r$loadfile02$responsevar,
+        udm = r$compare03x$udm
+      )
+    })
+
+    output$boxplot <- plotly::renderPlotly(plotlyboxplot())
+
+
+    # reactive summary table ----
+    summarytable <- reactive({
+      req(selected_data())
+
+      rowsummary_2samples(
+        data = selected_data(),
+        group = "group",
+        response = "response",
+        udm = r$compare03x$udm
+      )
+
+    })
+
+    output$summarytable <- DT::renderDT(summarytable(),
+                                        options = list(dom = "t"),
+                                        rownames = FALSE)
+
+
+    # results of normality check ----
+    shapiro_text <- "<b>Gruppo %s:</b> %s (W = %.3f, <i>p</i>-value = %.4f)</br>"
+
+    # levels of the grouping factor
+    lvl <- reactive({
+      req(selected_data())
+
+      levels(selected_data()$group)
+    })
+
+    shapirotest_list <- reactive({
+      req(lvl())
+
+      sapply(lvl(), function(x) {
+        shapiro_output <- selected_data()[which(selected_data()$group == x),
+                                          "response"] |>
+          fct_shapiro()
+
+        sprintf(shapiro_text,
+                x,
+                shapiro_output$result,
+                shapiro_output$W,
+                shapiro_output$pvalue)
+      })
+    })
+
+    output$shapirotest <- renderText(
+      paste("<h4> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h4></br>",
+            paste(shapirotest_list(), collapse = ""))
+    )
+
+
+    # results for outliers check ----
+    out_text <- "<b>Gruppo %s:</b></br> %s a un livello di confidenza del 95%% </br> %s a un livello di confidenza del 99%% </br></br>"
+
+    outtest_list <- reactive({
+      req(selected_data())
+
+      sapply(lvl(), function(x) {
+        outtest_output95 <- selected_data()[which(selected_data()$group == x), "response"] |>
+          fct_gesd(significance = 0.95)
+
+        outtest_output99 <- selected_data()[which(selected_data()$group == x), "response"] |>
+          fct_gesd(significance = 0.99)
+
+        sprintf(out_text,
+                x,
+                outtest_output95$text,
+                outtest_output99$text)
+      })
+    })
+
+    output$outliers <- renderText(
+      paste("<h4> Test per identificare possibili outliers (GESD) </h4></br>",
+            paste(outtest_list(), collapse = ""))
+    )
+
+
+
+
 
 
 
