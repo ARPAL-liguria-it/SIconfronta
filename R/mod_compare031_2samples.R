@@ -34,7 +34,16 @@ mod_compare031_2samples_inputs_ui <- function(id) {
                 "Unit\u00E0 di misura",
                 ""),
 
-      # 2. select the test significant level
+      # 2. select the test alternative hypothesis
+      radioButtons(
+        ns("alternative"),
+        "Ipotesi alternativa",
+        choices = c("\u2260" = "different",
+                    ">" = "greater"),
+        selected = "different"
+      ),
+
+      # 3. select the test significant level
       radioButtons(
         ns("significance"),
         "Livello di confidenza",
@@ -44,16 +53,7 @@ mod_compare031_2samples_inputs_ui <- function(id) {
           "99%" = 0.99
         ),
         selected = 0.95
-      ),
-
-      # 3. select the test alternative hypothesis
-      radioButtons(
-        ns("alternative"),
-        "Ipotesi alternativa",
-        choices = c("\u2260" = "different",
-                    ">" = "greater"),
-        selected = "different"
-    )
+      )
 
   )
 }
@@ -83,7 +83,19 @@ mod_compare031_2samples_inputs_ui <- function(id) {
 #' @importFrom DT DTOutput
 mod_compare031_2samples_output_ui <- function(id) {
   ns <- NS(id)
-  tagList(fluidRow(
+  tagList(
+
+
+    tabsetPanel(
+      id = ns("help_results"),
+      type = "hidden",
+
+      tabPanel("help",
+               includeMarkdown(system.file("rmd", "help_compare031_2samples.Rmd", package = "comparat"))),
+
+      tabPanel("results",
+
+    fluidRow(
     column(5,
            plotly::plotlyOutput(ns("boxplot"), width = "100%"),
            DT::DTOutput(ns("summarytable"))
@@ -96,6 +108,7 @@ mod_compare031_2samples_output_ui <- function(id) {
 
              tabPanel("Normalit\u00E0",
                       htmlOutput(ns("shapirotest")),
+                      hr(),
                       htmlOutput(ns("outliers"))
                       ),
              tabPanel("Medie",
@@ -105,7 +118,11 @@ mod_compare031_2samples_output_ui <- function(id) {
                       htmlOutput(ns("ftest")))
              )
            )
-    ))
+    )
+
+    )
+    )
+  )
 }
 
 #' compare Server Function for two groups of values
@@ -113,7 +130,8 @@ mod_compare031_2samples_output_ui <- function(id) {
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #'   The module allows to select the confidence level and the tests alternative
 #'   hypothesis. Data are checked for normality, presence of outliers and, mean
-#'   and variance comparison hypothesis tests are performed.
+#'   and variance comparison hypothesis tests are performed. This module is
+#'   supposed to be used as {mod_compare03} submodule.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @param r a {reactiveValues} storing data produced in the other modules.
@@ -125,8 +143,17 @@ mod_compare031_2samples_output_ui <- function(id) {
 #'    \item{groupvar} is the data.frame column name in which groub labels are stored;
 #'    \item{responsevar} is the data.frame column name in which the response numerical values are stored.
 #'    }
+#'In \code{r$compare03$myparameter} the selected parameter name is stored;
 #' @return A {plotly} interactive boxplot, a {DT} summary table
 #'  and Shapiro-Wilk test, \eqn{t}-test and \eqn{F}-test results formatted in HTML.
+#'  a reactiveValues \code{r$compare03x} with the following items:
+#'\itemize{
+#'  \item{parameter} the selected parameter;
+#'  \item{udm} the unit of measurement;
+#'  \item{data} the input data subsetted by the selected parameter.
+#'  \item{}
+#'
+#'}
 #'
 #' @noRd
 #'
@@ -146,7 +173,13 @@ mod_compare031_2samples_server <- function(id, r) {
     observeEvent(r$compare03$myparameter, {
       r$compare03x$parameter <- r$compare03$myparameter
 
+      # updating the tabset switching from help to results tabs
+      help_results <- ifelse(r$compare03$myparameter == "", "help", "results")
+      updateTabsetPanel(inputId = "help_results", selected = help_results)
+
       r$compare03x$data <- r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03$myparameter]
+
+      print("myparameter")
     })
 
     ## unit of measurement
@@ -193,7 +226,7 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     # reset the keys index when changing the parameter
-    observeEvent(r$compare03x$parameter, {
+    observeEvent(r$compare03$myparameter, {
 
       keys(NULL)
     })
@@ -450,6 +483,14 @@ mod_compare031_2samples_server <- function(id, r) {
 
       ftest_html()
       })
+
+    observeEvent(is_outlier(), {
+      r$compare03x$outlier <- is_outlier()
+      print(r$compare03x$data)
+      print(r$compare03x$outlier)
+      print(r$loadfile02$parvar)
+                 })
+
 
   })
 }
