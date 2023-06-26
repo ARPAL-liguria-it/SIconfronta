@@ -486,7 +486,7 @@ boxplot_2samples <- function(data,
       boxpoints = FALSE,
       color = I("#D55E00"),
       showlegend = FALSE,
-      hoverinfo = "none"
+      key = NULL
     ) |>
     plotly::add_markers(
       data = data,
@@ -506,9 +506,11 @@ boxplot_2samples <- function(data,
       showlegend = FALSE,
       title = NULL,
       xaxis = list(title = group),
-      yaxis = list(title = ylabtitle)
+      yaxis = list(title = ylabtitle,
+                   hoverformat = ".3s")
     ) |>
-    plotly::config(displayModeBar = FALSE)
+    plotly::config(displayModeBar = FALSE,
+                   locale = "it")
 
 }
 
