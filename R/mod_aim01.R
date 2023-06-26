@@ -47,27 +47,27 @@ mod_aim01_ui <- function(id) {
 
         tabPanel("2samples",
                  includeMarkdown(
-                   system.file("rmd", "example_2samples.Rmd", package = "comparat")
+                   system.file("rmd", "help_aim01_2samples.Rmd", package = "comparat")
                  )),
 
         tabPanel("2samples_par",
                  includeMarkdown(
-                   system.file("rmd", "example_2samples_par.Rmd", package = "comparat")
+                   system.file("rmd", "help_aim01_2samples_par.Rmd", package = "comparat")
                  )),
 
         tabPanel("1sample_mu",
                  withMathJax(includeMarkdown(
-                   system.file("rmd", "example_1sample_mu.Rmd", package = "comparat")
+                   system.file("rmd", "help_aim01_1sample_mu.Rmd", package = "comparat")
                  ))),
 
         tabPanel("1sample_sigma",
                  withMathJax(includeMarkdown(
-                   system.file("rmd", "example_1sample_sigma.Rmd", package = "comparat")
+                   system.file("rmd", "help_aim01_1sample_sigma.Rmd", package = "comparat")
                  ))),
 
         tabPanel("2values_unc",
                  withMathJax(includeMarkdown(
-                   system.file("rmd", "example_2values_unc.Rmd", package = "comparat")
+                   system.file("rmd", "help_aim01_2values_unc.Rmd", package = "comparat")
                  )))
       )
 

@@ -188,11 +188,11 @@ mod_loadfile02_server <- function(id, r) {
 
       switch(
         r$aim01$aim,
-        "2samples" = includeMarkdown(system.file("rmd", "msg_2samples.Rmd", package = "comparat")),
-        "2samples_par" = includeMarkdown(system.file("rmd", "msg_2samples_par.Rmd", package = "comparat")),
-        "1sample_mu" = includeMarkdown(system.file("rmd", "msg_1sample_mu.Rmd", package = "comparat")),
-        "1sample_sigma" = includeMarkdown(system.file("rmd", "msg_1sample_sigma.Rmd", package = "comparat")),
-        "2values_unc" = includeMarkdown(system.file("rmd", "msg_2values_unc.Rmd", package = "comparat"))
+        "2samples" = includeMarkdown(system.file("rmd", "help_loadfile02_2samples.Rmd", package = "comparat")),
+        "2samples_par" = includeMarkdown(system.file("rmd", "help_loadfile02_2samples_par.Rmd", package = "comparat")),
+        "1sample_mu" = includeMarkdown(system.file("rmd", "help_loadfile02_1sample_mu.Rmd", package = "comparat")),
+        "1sample_sigma" = includeMarkdown(system.file("rmd", "help_loadfile02_1sample_sigma.Rmd", package = "comparat")),
+        "2values_unc" = includeMarkdown(system.file("rmd", "help_loadfile02_2values_unc.Rmd", package = "comparat"))
       )
     })
 
