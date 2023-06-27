@@ -1,24 +1,28 @@
+set.seed("1234")
+vals <- rnorm(20)
+
 r <- reactiveValues()
-r$aim01 <- reactiveValues(aim = reactiveValues())
 
 testServer(
   mod_compare031_2samples_server,
   # Add here your module params
-  args = list(data = reactive(tomato_yields),
-              response = reactive("pounds"),
-              group = reactive("fertilizer"),
-              analyte = reactive("try"))
-  , {
+  args = list(r), {
+
+    r$loadfile02 <- reactiveValues(parvar = "param",
+                                   responsevar = "measure",
+                                   groupvar = "group",
+                                   data = data.frame(param = c(rep("first", 10), rep("second", 10)),
+                                                     group = rep(c(rep("up", 5), rep("down", 5)), 2),
+                                                     measure = vals))
+
+    r$compare03 <- reactiveValues(myparameter = "first")
+
+
+
     ns <- session$ns
-    expect_true(
-      inherits(ns, "function")
-    )
-    expect_true(
-      grepl(id, ns(""))
-    )
-    expect_true(
-      grepl("test", ns("test"))
-    )
+    expect_true(inherits(ns, "function"))
+    expect_true(grepl(id, ns("")))
+    expect_true(grepl("test", ns("test")))
 
     # testing the inputs
     session$setInputs(alternative = "different",

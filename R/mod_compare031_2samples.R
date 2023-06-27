@@ -174,12 +174,10 @@ mod_compare031_2samples_server <- function(id, r) {
       r$compare03x$parameter <- r$compare03$myparameter
 
       # updating the tabset switching from help to results tabs
-      help_results <- ifelse(r$compare03$myparameter == "", "help", "results")
+      help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
       updateTabsetPanel(inputId = "help_results", selected = help_results)
 
-      r$compare03x$data <- r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03$myparameter]
-
-      print("myparameter")
+      r$compare03x$data <- r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03x$parameter]
     })
 
     ## unit of measurement
@@ -227,7 +225,6 @@ mod_compare031_2samples_server <- function(id, r) {
 
     # reset the keys index when changing the parameter
     observeEvent(r$compare03$myparameter, {
-
       keys(NULL)
     })
 
@@ -236,12 +233,14 @@ mod_compare031_2samples_server <- function(id, r) {
 
     # assembling the dataframe
     input_data <- reactive({
+
       data.frame(
         key = key(),
         outlier = is_outlier(),
         response = r$compare03x$data[[r$loadfile02$responsevar]],
         group = r$compare03x$data[[r$loadfile02$groupvar]]
       )
+
     })
 
     # subset of non outliers
@@ -274,6 +273,7 @@ mod_compare031_2samples_server <- function(id, r) {
         response = r$loadfile02$responsevar,
         udm = r$compare03x$udm
       )
+
     })
 
     output$boxplot <- plotly::renderPlotly({
@@ -363,6 +363,7 @@ mod_compare031_2samples_server <- function(id, r) {
                 outtest_output95$text,
                 outtest_output99$text)
       })
+
     })
 
     output$outliers <- renderText({
@@ -389,6 +390,7 @@ mod_compare031_2samples_server <- function(id, r) {
         significance = as.numeric(input$significance),
         alternative = input$alternative
       )
+
     })
 
     ttest_text <-
@@ -404,6 +406,7 @@ mod_compare031_2samples_server <- function(id, r) {
 \u21e8 %s"
 
     ttest_html <- reactive({
+
       sprintf(
         ttest_text,
         ttest_list()$hypotheses[[1]],
@@ -420,6 +423,7 @@ mod_compare031_2samples_server <- function(id, r) {
         ttest_list()$test[[5]],
         ttest_list()$result
       )
+
     })
 
     output$ttest <- renderText({
@@ -443,6 +447,7 @@ mod_compare031_2samples_server <- function(id, r) {
         significance = as.numeric(input$significance),
         alternative = input$alternative
       )
+
     })
 
     ftest_text <-
@@ -458,6 +463,7 @@ mod_compare031_2samples_server <- function(id, r) {
 \u21e8 %s"
 
     ftest_html <- reactive({
+
       sprintf(
         ftest_text,
         ftest_list()$hypotheses[[1]],
@@ -473,6 +479,7 @@ mod_compare031_2samples_server <- function(id, r) {
         ftest_list()$test$pvalue,
         ftest_list()$result
       )
+
     })
 
     output$ftest <- renderText({
@@ -484,13 +491,16 @@ mod_compare031_2samples_server <- function(id, r) {
       ftest_html()
       })
 
-    observeEvent(is_outlier(), {
-      r$compare03x$outlier <- is_outlier()
-      print(r$compare03x$data)
-      print(r$compare03x$outlier)
-      print(r$loadfile02$parvar)
-                 })
+    observeEvent(input_data(), {
 
+      r$compare03x$dataset <- input_data()
+      print(colnames(r$compare03x$dataset)["response"])
+
+      # change the name of column names to their original values
+      # save test outputs into r
+      # save ggplot boxplot version into r
+
+    })
 
   })
 }

@@ -212,7 +212,6 @@ mod_compare03_server <- function(id, r) {
                            selected = "",
                            choices = parchoices
                            )
-
     })
 
     # storing the selected parameter to the r reactiveValues
@@ -226,16 +225,20 @@ mod_compare03_server <- function(id, r) {
     })
 
     # passing the r reactiveValues to different modules depending on the aim option ----
+    to_mod_compare03x  <- reactive({
+      switch (
+        r$aim01$aim,
+        "2samples" = mod_compare031_2samples_server("2samples", r),
+        "2samples_par" = mod_compare031_2samples_par_server("2samples_par", r),
+        "1sample_mu" = mod_compare031_2samples_par_server("1sample_mu", r),
+        "1sample_sigma" = mod_compare031_2samples_par_server("1sample_sigma", r),
+        "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r)
+      )
+
+    })
+
     observeEvent(r$compare03$myparameter, {
-
-    switch (r$aim01$aim,
-      "2samples" = mod_compare031_2samples_server("2samples", r),
-      "2samples_par" = mod_compare031_2samples_par_server("2samples_par", r),
-      "1sample_mu" = mod_compare031_2samples_par_server("1sample_mu", r),
-      "1sample_sigma" = mod_compare031_2samples_par_server("1sample_sigma", r),
-      "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r)
-    )
-
+      to_mod_compare03x()
     })
 
   })
