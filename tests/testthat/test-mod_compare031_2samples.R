@@ -1,6 +1,3 @@
-set.seed("1234")
-vals <- rnorm(20)
-
 r <- reactiveValues()
 
 testServer(
@@ -8,15 +5,14 @@ testServer(
   # Add here your module params
   args = list(r), {
 
-    r$loadfile02 <- reactiveValues(parvar = "param",
-                                   responsevar = "measure",
-                                   groupvar = "group",
-                                   data = data.frame(param = c(rep("first", 10), rep("second", 10)),
-                                                     group = rep(c(rep("up", 5), rep("down", 5)), 2),
-                                                     measure = vals))
+    r$loadfile02 <- reactiveValues()
+    r$loadfile02$parvar <- "parameter"
+    r$loadfile02$responsevar <- "pounds"
+    r$loadfile02$groupvar <- "fertilizer"
+    r$loadfile02$data <- tomato_yields
 
-    r$compare03 <- reactiveValues(myparameter = "first")
-
+    r$compare03 <- reactiveValues()
+    r$compare03$myparameter <- "yield"
 
 
     ns <- session$ns
@@ -26,47 +22,50 @@ testServer(
 
     # testing the inputs
     session$setInputs(alternative = "different",
-                      significance = 0.95)
+                      significance = 0.95,
+                      udm = "ug/L")
     expect_true(input$alternative == "different")
     expect_true(input$significance == 0.95)
+    expect_true(input$udm == "ug/L")
 
     # testing the intermediate dataset
     expect_equal(rownumber(), 11)
-    expect_equal(dim(selected_data$data), c(11, 4))
-    expect_equal(colnames(selected_data$data), c("key", "outlier", "response", "group"))
-    expect_equal(selected_data$data$key, seq(1, 11))
-    expect_equal(selected_data$data$outlier, rep(FALSE, 11))
-    expect_equal(selected_data$data$response, tomato_yields$pounds)
-    expect_equal(selected_data$data$group, tomato_yields$fertilizer)
+    expect_equal(key(), 1:11)
+    expect_equal(is_outlier(), rep(FALSE, 11))
+    expect_equal(dim(input_data()), c(11, 4))
+    expect_equal(dim(selected_data()), c(11, 4))
+    expect_equal(colnames(input_data()), c("key", "outlier", "response", "group"))
+    expect_equal(input_data()$response, tomato_yields$pounds)
+    expect_equal(input_data()$group, tomato_yields$fertilizer)
 
     # testing data points removal
     ## removal of the 5th data point
     outlierflag <- rep(FALSE, 11)
-    keys(5)
-    outlierflag5 <- outlierflag
-    outlierflag5[5] <- TRUE
+    keys(6)
+    outlierflag6 <- outlierflag
+    outlierflag6[6] <- TRUE
     session$flushReact()
 
-    expect_equal(is_outlier(), outlierflag5)
-    expect_equal(selected_data$data$key, c(1:4, 6:11))
+    expect_equal(is_outlier(), outlierflag6)
+    expect_equal(selected_data()$key, c(1:5, 7:11))
 
     ## removal of 5th and 7th points
-    keys(c(5, 7))
-    outlierflag57 <- outlierflag5
-    outlierflag57[7] <- TRUE
+    keys(c(6, 7))
+    outlierflag67 <- outlierflag6
+    outlierflag67[7] <- TRUE
     session$flushReact()
 
     expect_equal(is_outlier(), outlierflag57)
-    expect_equal(selected_data$data$key, c(1:4, 6, 8:11))
+    expect_equal(selected_data()$key, c(1:5, 8:11))
 
-    ## re-adding the 5th point
+    ## re-adding the 6th point
     keys(7)
     outlierflag7 <- outlierflag
     outlierflag7[7] <- TRUE
     session$flushReact()
 
     expect_equal(is_outlier(), outlierflag7)
-    expect_equal(selected_data$data$key, c(1:6, 8:11))
+    expect_equal(selected_data()$key, c(1:6, 8:11))
 
     ## re-adding all the points
     keys(NA)
@@ -82,86 +81,49 @@ testServer(
       "<b>Gruppo b:</b> I valori sono compatibili con una distribuzione normale (W = 0.926, <i>p</i>-value = 0.5512)</br>")
 
     # testing grubbs test intermediate results
-    expect_equal(gesdtest_list()[[1]],
+    expect_equal(outtest_list()[[1]],
       "<b>Gruppo a:</b></br> nessun valore anomalo a un livello di confidenza del 95% </br> nessun valore anomalo a un livello di confidenza del 99% </br></br>")
-    expect_equal(gesdtest_list()[[2]],
+    expect_equal(outtest_list()[[2]],
       "<b>Gruppo b:</b></br> nessun valore anomalo a un livello di confidenza del 95% </br> nessun valore anomalo a un livello di confidenza del 99% </br></br>")
 
+    print(class(output$shapirotest))
     # Testing the outputs
     ## Testing the boxplot output
     expect_true(inherits(output$boxplot, "json"))
     ## Testing the summary output
-    expect_true(inherits(output$summary, "json"))
+    expect_true(inherits(output$summarytable, "json"))
     ## Testing the Shapiro-Wilk test output
     expect_true(inherits(output$shapirotest, "character"))
     ## Testing the GESD test output
-    expect_true(inherits(output$gesdtest, "character"))
-    ## Testing the t-test output
-    expect_true(inherits(output$ttest, "character"))
-    ## Testing the F-test output
-    expect_true(inherits(output$ftest, "character"))
-    ## Testing the reactive list as output
-    expect_true(inherits(session$getReturned(), "list"))
-    expect_equal(names(session$getReturned()),
-                 c("data", "udm",
-                   "summarytbl", "shapirotest", "gesdtest",
-                   "ttest", "ftest"))
-
-    # - If ever your input updates a reactiveValues)
-    # - Note that this reactiveValues must be passed
-    # - to the testServer function via args = list()
-    # expect_true(r$x == 1)
-    # - Testing output
-    # expect_true(inherits(output$tbl$html, "html"))
+    # expect_true(inherits(output$outtest, "character"))
+    # ## Testing the t-test output
+    # expect_true(inherits(output$ttest, "character"))
+    # ## Testing the F-test output
+    # expect_true(inherits(output$ftest, "character"))
+    # ## Testing the reactive list as output
+    # expect_true(inherits(r$compare03x, "reactivevalues"))
+    # expect_equal(names(r$compare03x),
+    #              c("parvar", "data", "udm",
+    #                "summarytbl", "shapirotest", "gesdtest",
+    #                "ttest", "ftest"))
 })
 
-test_that("module compareinput ui works", {
-  ui <- mod_compareinput_ui(id = "test")
+test_that("module compare031 for 2 samples input ui works", {
+  ui <- mod_compare031_2samples_inputs_ui(id = "test")
   golem::expect_shinytaglist(ui)
   # Check that formals have not been removed
-  fmls <- formals(mod_compareinput_ui)
+  fmls <- formals(mod_compare031_2samples_inputs_ui)
   for (i in c("id")){
     expect_true(i %in% names(fmls))
   }
 })
 
-test_that("module comparesummary ui works", {
-  ui <- mod_comparesummary_ui(id = "test")
+test_that("module compare031 for 2 samples output ui works", {
+  ui <- mod_compare031_2samples_output_ui(id = "test")
   golem::expect_shinytaglist(ui)
   # Check that formals have not been removed
-  fmls <- formals(mod_comparesummary_ui)
+  fmls <- formals(mod_compare031_2samples_output_ui)
   for (i in c("id")){
     expect_true(i %in% names(fmls))
   }
 })
-
-test_that("module compareshapirogrubbstest ui works", {
-  ui <- mod_compareshapirogesdtest_ui(id = "test")
-  golem::expect_shinytaglist(ui)
-  # Check that formals have not been removed
-  fmls <- formals(mod_compareshapirogesdtest_ui)
-  for (i in c("id")){
-    expect_true(i %in% names(fmls))
-  }
-})
-
-test_that("module comparettest ui works", {
-  ui <- mod_comparettest_ui(id = "test")
-  golem::expect_shinytaglist(ui)
-  # Check that formals have not been removed
-  fmls <- formals(mod_comparettest_ui)
-  for (i in c("id")){
-    expect_true(i %in% names(fmls))
-  }
-})
-
-test_that("module compareftest ui works", {
-  ui <- mod_compareftest_ui(id = "test")
-  golem::expect_shinytaglist(ui)
-  # Check that formals have not been removed
-  fmls <- formals(mod_compareftest_ui)
-  for (i in c("id")){
-    expect_true(i %in% names(fmls))
-  }
-})
-

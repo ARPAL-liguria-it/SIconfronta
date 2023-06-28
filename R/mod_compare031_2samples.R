@@ -176,8 +176,6 @@ mod_compare031_2samples_server <- function(id, r) {
       # updating the tabset switching from help to results tabs
       help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
       updateTabsetPanel(inputId = "help_results", selected = help_results)
-
-      r$compare03x$data <- r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03x$parameter]
     })
 
     ## unit of measurement
@@ -198,10 +196,14 @@ mod_compare031_2samples_server <- function(id, r) {
 
 
     # preparing the reactive dataset for outputs ----
-    rownumber <- reactive({
-      req(r$compare03x$data)
+    mydata <- reactive({
+      r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03x$parameter]
+    })
 
-      nrow(r$compare03x$data)
+    rownumber <- reactive({
+      req(mydata())
+
+      nrow(mydata())
     })
 
     key <- reactive(seq(from = 1, to = rownumber()))
@@ -237,8 +239,8 @@ mod_compare031_2samples_server <- function(id, r) {
       data.frame(
         key = key(),
         outlier = is_outlier(),
-        response = r$compare03x$data[[r$loadfile02$responsevar]],
-        group = r$compare03x$data[[r$loadfile02$groupvar]]
+        response = mydata()[[r$loadfile02$responsevar]],
+        group = mydata()[[r$loadfile02$groupvar]]
       )
 
     })
@@ -329,16 +331,21 @@ mod_compare031_2samples_server <- function(id, r) {
       })
     })
 
+    shapiro_html <- reactive({
+      paste(
+        "<h5> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h5></br>",
+        paste(shapirotest_list(), collapse = "")
+      )
+
+    })
+
     output$shapirotest <- renderText({
       validate(
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
 
-      paste(
-        "<h5> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h5></br>",
-        paste(shapirotest_list(), collapse = "")
-      )
+      shapiro_html()
     })
 
 
@@ -366,16 +373,20 @@ mod_compare031_2samples_server <- function(id, r) {
 
     })
 
+    outliers_html <- reactive({
+      paste(
+        "<h5> Test per identificare possibili outliers (GESD) </h5></br>",
+        paste(outtest_list(), collapse = "")
+      )
+    })
+
     output$outliers <- renderText({
       validate(
         need(minval() >= 5,
              message = FALSE)
       )
 
-      paste(
-        "<h5> Test per identificare possibili outliers (GESD) </h5></br>",
-        paste(outtest_list(), collapse = "")
-      )
+      outliers_html()
     })
 
 
@@ -491,15 +502,22 @@ mod_compare031_2samples_server <- function(id, r) {
       ftest_html()
       })
 
+    # saving the outputs ----
     observeEvent(input_data(), {
+      # output dataset
+      r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
+      r$compare03x$data[, "rimosso"] <- ifelse(is_outlier() == TRUE, "sì", "no")
 
-      r$compare03x$dataset <- input_data()
-      print(colnames(r$compare03x$dataset)["response"])
+      # summary table
+      r$compare03x$summary <- summarytable()
 
-      # change the name of column names to their original values
-      # save test outputs into r
-      # save ggplot boxplot version into r
+      # test results
+      r$compare03x$normality <- shapiro_html()
+      r$compare03x$outliers <- outliers_html()
+      r$compare03x$ttest <- ttest_html()
+      r$compare03x$ftest <- ftest_html()
 
+      # the plot is saved only when clicking on the save button
     })
 
   })
