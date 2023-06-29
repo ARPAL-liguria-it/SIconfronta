@@ -514,6 +514,69 @@ boxplot_2samples <- function(data,
 
 }
 
+#' GGplot2 boxplots for comparing two groups of values
+#'
+#' @description The function provides a simple {ggplot2} boxplot for comparing
+#' two groups of values
+#'
+#' @param data input data.frame with a column named *key* with progressive integers,
+#' a column with a two level factor label for the two groups
+#' to be compared, a column with the numeric values for the two groups and a
+#' column named *rimosso* with "sì" or "no" values.
+#' @param group a character string for the label of the grouping variable.
+#' @param response a character string with the label for the response numeric variable.
+#' @param udm a character string with the unit of measurement.
+#'
+#' @return A {plotly} boxplot for comparing two group of values. Raw data values
+#' are overlayed on top of the boxes.
+#'  }
+#'
+#' @export
+#'
+#' @import ggplot2
+ggboxplot_2samples <- function(data,
+                             group,
+                             response,
+                             udm) {
+  stopifnot(
+    is.data.frame(data),
+    is.character(response),
+    is.character(group),
+    is.character(udm)
+  )
+
+  cols <- c("sì" = "#999999", "no" = "black")
+
+  xlabtitle <- group
+  ylabtitle <- paste0(response, ifelse(udm != "", paste0(" (", udm, ")"), ""))
+
+  quo_group <- ggplot2::ensym(group)
+  quo_response <- ggplot2::ensym(response)
+
+
+  ggplot2::ggplot() +
+    ggplot2::geom_boxplot(data = data[which(data$rimosso == "no"),],
+                          ggplot2::aes(x = !!quo_group,
+                                       y = !!quo_response),
+                          fill = "white",
+                          col = "black",
+                          outlier.shape = NA) +
+    ggplot2::geom_jitter(data = data,
+                         ggplot2::aes(x = !!quo_group,
+                                      y = !!quo_response,
+                                      col = rimosso),
+                         width = 0.2) +
+    ggplot2::labs(x = xlabtitle,
+                  y = ylabtitle) +
+    ggplot2::scale_color_manual(values = cols,
+                                breaks = c("sì", "no"),
+                                labels = c("rimosso", "non rimosso"),
+                                name = ggplot2::element_blank()) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "top")
+
+}
+
 #' Summary arranged on rows for two groups
 #'
 #' @description The function returns a table with max, mean, median, min, sd and n

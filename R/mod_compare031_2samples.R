@@ -179,18 +179,18 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     ## unit of measurement
-    observeEvent(input$udm, {
+    observeEvent(input$udm, ignoreNULL = FALSE, {
       udmclean <- gsub("[()\\[\\]]", "", input$udm, perl = TRUE)
       r$compare03x$udm <- udmclean
     })
 
     ## alternative hypothesis
-    observeEvent(input$alternative, {
+    observeEvent(input$alternative, ignoreNULL = FALSE, {
       r$compare03x$alternative <- input$alternative
     })
 
     ## test confidence level
-    observeEvent(input$significance, {
+    observeEvent(input$significance, ignoreNULL = FALSE, {
       r$compare03x$significance <- input$significance
     })
 
@@ -355,6 +355,7 @@ mod_compare031_2samples_server <- function(id, r) {
 
     outtest_list <- reactive({
       req(selected_data())
+      req(minval() >= 5)
 
       sapply(lvl(), function(x) {
         outtest_output95 <-
@@ -393,6 +394,8 @@ mod_compare031_2samples_server <- function(id, r) {
     #### results for the t-test ----
     ttest_list <- reactive({
       req(selected_data())
+      req(input$significance)
+      req(input$alternative)
 
       fct_ttest_2samples(
         selected_data(),
@@ -450,6 +453,8 @@ mod_compare031_2samples_server <- function(id, r) {
     #### results for the F-test ----
     ftest_list <- reactive({
       req(selected_data())
+      req(input$significance)
+      req(input$alternative)
 
       fct_ftest_2samples(
         selected_data(),
