@@ -226,6 +226,15 @@ test_that("Calculations are correct for GESD outlier test", {
   )
 })
 
+test_that("ggboxplot_2samples works well", {
+  testdata <- tomato_yields
+  testdata$rimosso <- c(rep("no", 8), "sì", "no", "no")
+
+  expect_true(ggboxplot_2samples(testdata, "fertilizer", "pounds", "ug/L") |> ggplot2::is.ggplot())
+  expect_equal(ggboxplot_2samples(testdata, "fertilizer", "pounds", "ug/L")$labels$x, "fertilizer")
+  expect_equal(ggboxplot_2samples(testdata, "fertilizer", "pounds", "ug/L")$labels$y, "pounds (ug/L)")
+})
+
 test_that("rowsummary_2samples works well", {
   expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer", "kg")$statistica |>
                  unlist(),

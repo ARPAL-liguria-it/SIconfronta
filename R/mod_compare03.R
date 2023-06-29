@@ -1,35 +1,19 @@
 #' compare UI Function:
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
-#'   The module allows to select the confidence level and the tests alternative
-#'   hypothesis. Data are checked for normality, presence of outliers and, mean
-#'   and variance comparison hypothesis tests are performed.
-#'
-#' @details Tests are performed depending on the data provided and the aim of the
-#'   comparison: normality and outliers are checked both for 2 samples and 1 sample
-#'   (options "2samples", "2samples_par", "1sample_mu" and "1sample_sigma" of
-#'   of the {mod_aim01}); mean and variance comparison is performed for 2 samples
-#'   and 1 sample (options "2samples", "2samples_par" and "1sample_mu" and
-#'   alternatively "1sample_sigma" for mean and variance comparison,
-#'   respectively) whereas for single pair of values, only the comparison is
-#'   performed (option "2values_unc").
-#'
-#'   Normality is checked by using the Shapiro-Wilk test.
-#'   Possible outliers are inspected by generalized extreme studentized deviate test.
-#'   Mean values are compared by the Welch test for two samples and *t*-test for
-#'   one sample option.
-#'   Variances are compared by F-test for two samples and $\chi^2$-test for one sample option.
-#'
-#'   Test results are formatted in HTML.
+#' The module subsets a {data.table}, loaded by the {mod_loadfile02} module of the
+#' {comparat} package, by a single parameter. The resulting dataset is passed
+#' to a {mod_compare03x} submodule for different calculations dependantant on the
+#' option choosen in the {mod_aim01} module.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @return Two UI radiobuttons widget for alternative test hypothesis and
-#' confidence level, respectively.
+#' @param parameter a single character value with the name of the parameter for
+#' subsetting the input dataset.
+#' @return The following {shiny} widgets:
 #' \itemize{
-#'  \item{alternative}{a radiobutton widget with alternative test hypothesis.
-#'    Choices are "different" or "greater", default is "different".}
-#'  \item{significance}{a radiobutton widgted with test confidence levels.
-#'    Choices are "90\%", "95\%", "99\%", default is "95\%".}
+#'  \item{parameter}{a selectize input box with the name of the parameter.}
+#'  \item{save}{an action button for saving the results. When results are saved, it is not shown.}
+#'  \item{delete}{an action button for deleting the results. When results are not saved, it is not shown.}
 #' }
 #'
 #' @noRd
@@ -138,42 +122,30 @@ mod_compare03_ui <- function(id) {
 #' compare Server Function
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
-#'   The module allows to select the confidence level and the tests alternative
-#'   hypothesis. Data are checked for normality by means of Shapiro-Wilk tests,
-#'   outliers are inspected by generalized extreme studentized deviate test
-#'   and by boxplots, and \eqn{t}-test and \eqn{F}-test for the mean and
-#'   variance comparisons, respectively. Test results are formatted in HTML.
+#' The module subsets a {data.table}, loaded by the {mod_loadfile02} module of the
+#' {comparat} package, by a single parameter. The resulting dataset is passed
+#' to a {mod_compare03x} submodule for different calculations dependantant on the
+#' option choosen in the {mod_aim01} module.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
-#' @param data a dataset with at least 2 character columns and a numeric columns.
-#'  The module has been written to be used after the \code{mod_loadfile} and a filter
-#'  on the analyte or parameter factor.
-#' @param response a string from \code{columnames(data)} for the numeric variable to
-#'   be compared by plotted on y-axes and compared by statistical tests.
-#' @param group a string from \code{columnames(data)} for the factor which identifies
-#'   the groups to be compared.
-#' @param analyte a string from unique values of the analyte factor in \code{data}.
-#'   It is used for axes description, only.
-#' @return A {plotly} interactive boxplot, a {DT} summary table
-#'  and Shapiro-Wilk test, \eqn{t}-test and \eqn{F}-test results formatted in HTML.
-#'   \itemize{
-#'      \item{boxplot}{A {plotly} boxplot with the response on the y-axis and groups on the x-axis.}
-#'      \item{summary}{a {DT} table with \code{max}, \code{mean}, \code{median},
-#'        \code{min} and \code{length} values.}
-#'      \item{shapirotest}{HTML text with the results for data normality by Shapiro-Wilk test.}
-#'      \item{gesdtest}{HTML text with the results for outliers detection by generalized extreme studentized deviate test.}
-#'      \item{ttest}{HTML text with the results for mean comparison by \eqn{t}-test.}
-#'      \item{ftest}{HTML text with the results for variance comparison by \eqn{F}-test.}
-#'   }
-#'   In addition, an unnamed list with the following reactive items is returned:
+#' @param parameter a single character value with the name of the parameter for
+#' subsetting the input dataset.
+#' @param r a {reactiveValues} storing the results produced by the {mod_aim01}
+#' and {mod_loadfile02} modules.
+#' In \code{r$aim01$aim} the option chosen in the first module is stored, whereas
+#' in \code{r$loadfile02$parlist} the list of the parameters extracted from the
+#' loaded file is stored.
+#' @return a {reactiveValues} with the following items stored in
+#' \code{r$compare03$'selected parameter'} for each selected parameter:
 #'    \itemize{
-#'      \item{data}{a dataset with a unique identifier (\code{key}),
-#'      an outlier logical flag (\code{is_outlier}), the values of the response numerical
-#'      variable (\code{response}) and the values of the group factor character variable
-#'      (\code{group}) on the columns and the different data values on the rows.}
-#'      \item{summarytbl}{a summary table returned by \code{rowsummary}.}
-#'      \item{shapirotest}{a HTML formatted string with the results for the normality test.}
-#'      \item{gesdtest}{a HTML formatted string with the results for the outliers test.}
+#'      \item{parameter}{the selected parameter;}
+#'      \item{udm}{the unit of measurement;}
+#'      \item{alternative}{the alternative hypothesis for the tests;}
+#'      \item{significance}{the level of significance for the tests;}
+#'      \item{data}{the subsetted dataset with a flag for removed or not removed values;}
+#'      \item{summary}{a summary table;}
+#'      \item{normality}{a HTML formatted string with the results for the normality test.}
+#'      \item{outliers}{a HTML formatted string with the results for the outliers test.}
 #'      \item{ttest}{a HTML formatted string with the results for the t-test.}
 #'      \item{ftest}{a HTML formatted string with the results for the F-test.}
 #'    }
@@ -186,6 +158,8 @@ mod_compare03_ui <- function(id) {
 mod_compare03_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    r$compare03 <- reactiveValues()
 
     # updating the UI ----
 
@@ -221,7 +195,6 @@ mod_compare03_server <- function(id, r) {
       req(input$parameter != "")
 
       r$compare03$myparameter <- input$parameter
-
     })
 
     # passing the r reactiveValues to different modules depending on the aim option ----
@@ -240,6 +213,42 @@ mod_compare03_server <- function(id, r) {
     observeEvent(r$compare03$myparameter, {
       to_mod_compare03x()
     })
+
+    # when save is clicked the results are stored into r ----
+    observeEvent(input$save, {
+
+      ggboxplot <- ggboxplot_2samples(data = r$compare03x$data,
+                                      group = r$loadfile02$groupvar,
+                                      response = r$loadfile02$responsevar,
+                                      udm = r$compare03x$udm)
+
+      r$compare03[[input$parameter]] <- r$compare03x
+      r$compare03[[input$parameter]]$boxplot <- ggboxplot
+      r$compare03[[input$parameter]]$saved <- TRUE
+    })
+
+    # when delete is clicked the results removed from r ----
+    observeEvent(input$delete, {
+
+      r$compare03[[input$parameter]] <- NULL
+    })
+
+    # updating the save and delete paneles ----
+
+    savedel_flag <- reactive({
+      req(input$parameter)
+
+      ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
+    })
+
+
+    observeEvent(c(input$parameter,
+                   input$save,
+                   input$delete), {
+
+      updateTabsetPanel(inputId = "savedel", selected = savedel_flag())
+    })
+
 
   })
 }

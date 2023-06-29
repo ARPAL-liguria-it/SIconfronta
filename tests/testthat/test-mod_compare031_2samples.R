@@ -1,19 +1,18 @@
-r <- reactiveValues()
+r <- reactiveValues(aim01 = reactiveValues(),
+                    loadfile02 = reactiveValues(),
+                    compare03 = reactiveValues())
 
 testServer(
   mod_compare031_2samples_server,
   # Add here your module params
   args = list(r), {
 
-    r$loadfile02 <- reactiveValues()
     r$loadfile02$parvar <- "parameter"
     r$loadfile02$responsevar <- "pounds"
     r$loadfile02$groupvar <- "fertilizer"
     r$loadfile02$data <- tomato_yields
-
-    r$compare03 <- reactiveValues()
     r$compare03$myparameter <- "yield"
-
+    session$flushReact()
 
     ns <- session$ns
     expect_true(inherits(ns, "function"))
@@ -24,6 +23,7 @@ testServer(
     session$setInputs(alternative = "different",
                       significance = 0.95,
                       udm = "ug/L")
+    session$flushReact()
     expect_true(input$alternative == "different")
     expect_true(input$significance == 0.95)
     expect_true(input$udm == "ug/L")
@@ -55,7 +55,7 @@ testServer(
     outlierflag67[7] <- TRUE
     session$flushReact()
 
-    expect_equal(is_outlier(), outlierflag57)
+    expect_equal(is_outlier(), outlierflag67)
     expect_equal(selected_data()$key, c(1:5, 8:11))
 
     ## re-adding the 6th point
@@ -86,7 +86,6 @@ testServer(
     expect_equal(outtest_list()[[2]],
       "<b>Gruppo b:</b></br> nessun valore anomalo a un livello di confidenza del 95% </br> nessun valore anomalo a un livello di confidenza del 99% </br></br>")
 
-    print(class(output$shapirotest))
     # Testing the outputs
     ## Testing the boxplot output
     expect_true(inherits(output$boxplot, "json"))
@@ -95,17 +94,16 @@ testServer(
     ## Testing the Shapiro-Wilk test output
     expect_true(inherits(output$shapirotest, "character"))
     ## Testing the GESD test output
-    # expect_true(inherits(output$outtest, "character"))
+    expect_true(inherits(output$outliers, "character"))
     # ## Testing the t-test output
-    # expect_true(inherits(output$ttest, "character"))
+    expect_true(inherits(output$ttest, "character"))
     # ## Testing the F-test output
-    # expect_true(inherits(output$ftest, "character"))
+    expect_true(inherits(output$ftest, "character"))
     # ## Testing the reactive list as output
-    # expect_true(inherits(r$compare03x, "reactivevalues"))
-    # expect_equal(names(r$compare03x),
-    #              c("parvar", "data", "udm",
-    #                "summarytbl", "shapirotest", "gesdtest",
-    #                "ttest", "ftest"))
+    expect_true(inherits(r$compare03x, "reactivevalues"))
+    expect_equal(names(r$compare03x),
+                c("ftest", "ttest", "outliers", "normality", "summary", "udm",
+                  "significance", "alternative", "data", "parameter"))
 })
 
 test_that("module compare031 for 2 samples input ui works", {

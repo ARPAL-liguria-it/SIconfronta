@@ -179,7 +179,7 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     ## unit of measurement
-    observeEvent(input$udm, {
+    observeEvent(input$udm, ignoreNULL = FALSE, {
       udmclean <- gsub("[()\\[\\]]", "", input$udm, perl = TRUE)
       r$compare03x$udm <- udmclean
     })
@@ -355,6 +355,7 @@ mod_compare031_2samples_server <- function(id, r) {
 
     outtest_list <- reactive({
       req(selected_data())
+      req(minval() >= 5)
 
       sapply(lvl(), function(x) {
         outtest_output95 <-
