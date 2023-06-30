@@ -48,7 +48,7 @@ app_ui <- function(request) {
 
       #### Reporting ----
        tabPanel("Report",
-                fluidPage(mod_makereport_ui("makereport_1"))),
+                fluidPage(mod_report04_ui("report"))),
 
       # #### Readme ----
       tabPanel("Leggimi",
