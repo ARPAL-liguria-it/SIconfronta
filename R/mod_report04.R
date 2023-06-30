@@ -13,16 +13,14 @@
 mod_report04_ui <- function(id){
   ns <- NS(id)
   tagList(
-    tags$h2("Un po' di contesto"),
-    textInput(ns("title"), label = "Titolo del report"),
-    textAreaInput(ns("description"), label = "Descrizione dell'esperimento",
-                  width = "80%"),
-    textAreaInput(ns("discussion"), label = "Interpretazione dei risultati",
-                  width = "80%"),
+    h4("Un po' di contesto"),
+    textInput(ns("title"), label = "Titolo del report", width = "80%"),
+    textAreaInput(ns("description"), label = "Descrizione dell'esperimento", width = "80%"),
+    textAreaInput(ns("discussion"), label = "Interpretazione dei risultati", width = "80%"),
 
-    tags$hr(),
+    hr(),
 
-    tags$h2("Cosa includere nel report"),
+    h4("Cosa includere nel report"),
     checkboxGroupInput(ns("content"), label = "Test",
                        choices = c("Normalit\u00E0 e outliers" = "shapirotest",
                                    "Confronto tra medie" = "ttest",
@@ -89,8 +87,6 @@ mod_report04_server <- function(id, r){
 
         # input parameters for the rmd file
         params <- isolate(lapply(r, reactiveValuesToList))
-        print(params)
-        print(str(params))
 
         id <- showNotification(
         	"Preparazione del report...",

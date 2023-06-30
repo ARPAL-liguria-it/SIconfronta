@@ -107,14 +107,18 @@ mod_compare031_2samples_output_ui <- function(id) {
              type = "tabs",
 
              tabPanel("Normalit\u00E0",
+                      h4("Test per la verifica della normalit\u00E0 (Shapiro-Wilk)"),
                       htmlOutput(ns("shapirotest")),
                       hr(),
+                      h4("Test per identificare possibili outliers (GESD)"),
                       htmlOutput(ns("outliers"))
                       ),
              tabPanel("Medie",
+                      h4("Test per la differenza tra medie (Welch)"),
                       htmlOutput(ns("ttest"))
                       ),
              tabPanel("Varianze",
+                      h4("Test per il rapporto tra varianze (Fisher)"),
                       htmlOutput(ns("ftest")))
              )
            )
@@ -331,13 +335,7 @@ mod_compare031_2samples_server <- function(id, r) {
       })
     })
 
-    shapiro_html <- reactive({
-      paste(
-        "<h5> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h5></br>",
-        paste(shapirotest_list(), collapse = "")
-      )
-
-    })
+    shapiro_html <- reactive(paste(shapirotest_list(), collapse = ""))
 
     output$shapirotest <- renderText({
       validate(
@@ -374,12 +372,7 @@ mod_compare031_2samples_server <- function(id, r) {
 
     })
 
-    outliers_html <- reactive({
-      paste(
-        "<h5> Test per identificare possibili outliers (GESD) </h5></br>",
-        paste(outtest_list(), collapse = "")
-      )
-    })
+    outliers_html <- reactive(paste(outtest_list(), collapse = ""))
 
     output$outliers <- renderText({
       validate(
@@ -408,8 +401,7 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     ttest_text <-
-      "<h5> Test per differenza tra le medie </h5>
-<b>H0:</b> %s </br>
+"<b>H0:</b> %s </br>
 <b>H1:</b> %s
 <ul>
   <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
@@ -467,8 +459,7 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     ftest_text <-
-      "<h5> Test per rapporto tra le varianze </h5>
-<b>H0:</b> %s </br>
+"<b>H0:</b> %s </br>
 <b>H1:</b> %s
 <ul>
   <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>

@@ -54,70 +54,76 @@ data_caption <- "Valori a confronto per l'analita %s."
 summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
 boxplot_caption <- "Boxplot per l'analita %s."
 
-for (i in (names(params$compare03) != "myparameter")) {
+analytes <- names(params$compare03)[names(params$compare03) != "myparameter"]
+myorder <- as.character(params$loadfile02$parlist)
+
+ordered_analytes <- analytes[order(match(analytes, myorder))]
+for (i in ordered_analytes) {
   if (params$compare03[[i]]$saved == TRUE) {
-    
+
   # title with analyte name
   cat(paste("#", i, "\n"))
-    
+
   # table with raw data
   print(knitr::kable(params$compare03[[i]]$data,
                      caption = sprintf(data_caption, i)))
-  
+
   # table with summary statistics
   print(knitr::kable(params$compare03[[i]]$summary,
                      caption = sprintf(summary_caption, i)))
-  
+
   # boxplot
   print(params$compare03[[i]]$boxplot)
-  
+
   if("shapirotest" %in% params$report04$content) {
-    
-  # checking normality and outliers with Shapiro-Wilk and GESD test 
+
+  # checking normality and outliers with Shapiro-Wilk and GESD test
   cat(paste("#", "Test per la verifica della normalità (Shapiro-Wilk)", "\n"))
   cat(params$compare03[[i]]$normality)
   cat('\n\n<!-- -->\n\n')
-  
+
   cat(paste("#", "Test per l'identificazione di possibili outliers (GESD)", "\n"))
   cat(params$compare03[[i]]$outliers)
   cat('\n\n<!-- -->\n\n')
-  
-  } else {
-    
-  cat('\n\n<!-- -->\n\n')
-    
-  }
-  
-  
-  if("ttest" %in% params$report04$content) {
-    
-  # comparing means by t-test
-  cat(params$compare03[[i]]$ttest)
-  cat('\n\n<!-- -->\n\n')
-  
-  } else {
-    
-  cat('\n\n<!-- -->\n\n')  
-    
-  }
-  
-  
-  if("ftest" %in% params$report04$content) {
-    
-  # comparing variances by F-test
-  cat(params$compare03[[i]]$ftest)
-  cat('\n\n<!-- -->\n\n')
-  
+
   } else {
 
   cat('\n\n<!-- -->\n\n')
-    
+
   }
-  
-  } else {
-    
+
+
+  if("ttest" %in% params$report04$content) {
+
+  # comparing means by t-test
+  cat(paste("#", "Test per la differenza tra medie (Welch)", "\n"))
+  cat(params$compare03[[i]]$ttest)
   cat('\n\n<!-- -->\n\n')
-    
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
+  }
+
+
+  if("ftest" %in% params$report04$content) {
+
+  # comparing variances by F-test
+  cat(paste("#", "Test per il rapporto tra varianze (Fisher)", "\n"))
+  cat(params$compare03[[i]]$ftest)
+  cat('\n\n<!-- -->\n\n')
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
+  }
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
   }
   cat("\\newpage")
 }

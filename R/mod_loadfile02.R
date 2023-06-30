@@ -543,7 +543,6 @@ mod_loadfile02_server <- function(id, r) {
       r$loadfile02$groupvar <- input$groupvar
       r$loadfile02$responsevar <- input$responsevar
       r$loadfile02$uncertaintyvar <- input$uncertaintyvar
-
     })
 
   })

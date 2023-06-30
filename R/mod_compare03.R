@@ -67,6 +67,7 @@ mod_compare03_ui <- function(id) {
         id = ns("savedel"),
         type = "hidden",
 
+        tabPanel(""),
         # show the save button when data is not saved
         tabPanel("save",
                  # 5. click on the save button
@@ -247,7 +248,9 @@ mod_compare03_server <- function(id, r) {
     savedel_flag <- reactive({
       req(input$parameter)
 
+      ifelse(input$parameter == "", "",
       ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
+      )
     })
 
 
