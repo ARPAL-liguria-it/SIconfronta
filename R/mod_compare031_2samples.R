@@ -394,15 +394,15 @@ mod_compare031_2samples_server <- function(id, r) {
     #### results for the t-test ----
     ttest_list <- reactive({
       req(selected_data())
-      req(input$significance)
-      req(input$alternative)
+      req(r$compare03x$significance)
+      req(r$compare03x$alternative)
 
       fct_ttest_2samples(
         selected_data(),
         "response",
         "group",
-        significance = as.numeric(input$significance),
-        alternative = input$alternative
+        significance = as.numeric(r$compare03x$significance),
+        alternative = r$compare03x$alternative
       )
 
     })
@@ -453,15 +453,15 @@ mod_compare031_2samples_server <- function(id, r) {
     #### results for the F-test ----
     ftest_list <- reactive({
       req(selected_data())
-      req(input$significance)
-      req(input$alternative)
+      req(r$compare03x$significance)
+      req(r$compare03x$alternative)
 
       fct_ftest_2samples(
         selected_data(),
         "response",
         "group",
-        significance = as.numeric(input$significance),
-        alternative = input$alternative
+        significance = as.numeric(r$compare03x$significance),
+        alternative = r$compare03x$alternative
       )
 
     })
@@ -509,6 +509,7 @@ mod_compare031_2samples_server <- function(id, r) {
 
     # saving the outputs ----
     observeEvent(input_data(), {
+
       # output dataset
       r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
       r$compare03x$data[, "rimosso"] <- ifelse(is_outlier() == TRUE, "sì", "no")

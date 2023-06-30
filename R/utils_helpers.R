@@ -56,8 +56,8 @@ htmltormarkdown <- function(htmlstring){
   htmlstring %>%
     { gsub("<h4>", "\n###", .) } %>%
     { gsub(" </h4>", "  \n" , .) } %>%
-    { gsub("<h5>", "\n", .) } %>%
-    { gsub("</h5>", "", .) } %>%
+    { gsub("<h5>", "\n####", .) } %>%
+    { gsub("</h5>", "  \n", .) } %>%
     { gsub("<ul>", "\n", .) } %>%
     { gsub("</ul>", "  \n", .) } %>%
     { gsub("<li>", "\n  *", .) } %>%

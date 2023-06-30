@@ -144,10 +144,10 @@ mod_compare03_ui <- function(id) {
 #'      \item{significance}{the level of significance for the tests;}
 #'      \item{data}{the subsetted dataset with a flag for removed or not removed values;}
 #'      \item{summary}{a summary table;}
-#'      \item{normality}{a HTML formatted string with the results for the normality test.}
-#'      \item{outliers}{a HTML formatted string with the results for the outliers test.}
-#'      \item{ttest}{a HTML formatted string with the results for the t-test.}
-#'      \item{ftest}{a HTML formatted string with the results for the F-test.}
+#'      \item{normality}{a Markdown formatted string with the results for the normality test.}
+#'      \item{outliers}{a Markdown formatted string with the results for the outliers test.}
+#'      \item{ttest}{a Markdown formatted string with the results for the t-test.}
+#'      \item{ftest}{a Markdown formatted string with the results for the F-test.}
 #'    }
 #'
 #' @noRd
@@ -222,10 +222,18 @@ mod_compare03_server <- function(id, r) {
                                       response = r$loadfile02$responsevar,
                                       udm = r$compare03x$udm)
 
-      r$compare03[[input$parameter]] <- r$compare03x
+      r$compare03[[input$parameter]]$parameter <- r$compare03x$parameter
+      r$compare03[[input$parameter]]$udm <- r$compare03x$udm
+      r$compare03[[input$parameter]]$data <- r$compare03x$data
+      r$compare03[[input$parameter]]$summary <- r$compare03x$summary
+      r$compare03[[input$parameter]]$alternative <- r$compare03x$alternative
+      r$compare03[[input$parameter]]$significance <- r$compare03x$significance
+      r$compare03[[input$parameter]]$normality <- r$compare03x$normality |> htmltormarkdown()
+      r$compare03[[input$parameter]]$outliers <- r$compare03x$outliers |> htmltormarkdown()
+      r$compare03[[input$parameter]]$ttest <- r$compare03x$ttest |> htmltormarkdown()
+      r$compare03[[input$parameter]]$ftest <- r$compare03x$ftest |> htmltormarkdown()
       r$compare03[[input$parameter]]$boxplot <- ggboxplot
       r$compare03[[input$parameter]]$saved <- TRUE
-      print(r$compare03[[input$parameter]])
     })
 
     # when delete is clicked the results removed from r ----
