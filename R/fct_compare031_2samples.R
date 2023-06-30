@@ -236,14 +236,14 @@ fct_ttest_2samples <- function(data,
   # # t-test results
   ttest <- t.test(x = higher_mean, y = lower_mean,
                   alternative = h1, conf.level = significance)
-  difference <- (mean(higher_mean) - mean(lower_mean)) %>% sprintf("%.*f", signiftodigits(., 4L), .)
+  difference <- (mean(higher_mean) - mean(lower_mean)) |> format_sigfig()
   diffconfint <- c(NA, NA)
-  diffconfint[1] <- ttest$conf.int[1] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  diffconfint[2] <- ttest$conf.int[2] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  tvalue <- ttest$statistic %>% round(4)
-  dof <- ttest$parameter %>% round(4)
-  tcritical <- qt(alpha, dof) %>% round(3)
-  pvalue <- ttest$p.value %>% round(4)
+  diffconfint[1] <- ttest$conf.int[1] |> format_sigfig()
+  diffconfint[2] <- ttest$conf.int[2] |> format_sigfig()
+  tvalue <- ttest$statistic |> round(4)
+  dof <- ttest$parameter |> round(4)
+  tcritical <- qt(alpha, dof) |> round(3)
+  pvalue <- ttest$p.value |> round(4)
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -368,15 +368,15 @@ fct_ftest_2samples <- function(data,
   # # F-test results
   ftest <- var.test(x = higher_sd, y = lower_sd,
                   alternative = h1, conf.level = significance)
-  ratio <- (sd(higher_sd)^2 / sd(lower_sd)^2) %>% sprintf("%.*f", signiftodigits(., 4L), .)
+  ratio <- (sd(higher_sd)^2 / sd(lower_sd)^2) |> format_sigfig()
   ratioconfint <- c(NA, NA)
-  ratioconfint[1] <- ftest$conf.int[1] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  ratioconfint[2] <- ftest$conf.int[2] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  fvalue <- ftest$statistic %>% round(4)
-  dof <- ftest$parameter %>% unname # numerator and denominator
+  ratioconfint[1] <- ftest$conf.int[1] |> format_sigfig()
+  ratioconfint[2] <- ftest$conf.int[2] |> format_sigfig()
+  fvalue <- ftest$statistic |> round(4)
+  dof <- ftest$parameter |> unname() # numerator and denominator
   fcritical <- c(qf(1-alpha, dof[[1]], dof[[2]]),
-                 qf(alpha, dof[[1]], dof[[2]])) %>% round(4)
-  pvalue <- ftest$p.value %>% round(4)
+                 qf(alpha, dof[[1]], dof[[2]])) |> round(4)
+  pvalue <- ftest$p.value |> round(4)
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -445,7 +445,6 @@ fct_ftest_2samples <- function(data,
 #'
 #' @return A {plotly} boxplot for comparing two group of values. Raw data values
 #' are overlayed on top of the boxes.
-#'  }
 #'
 #' @export
 #'
@@ -527,13 +526,12 @@ boxplot_2samples <- function(data,
 #' @param response a character string with the label for the response numeric variable.
 #' @param udm a character string with the unit of measurement.
 #'
-#' @return A {plotly} boxplot for comparing two group of values. Raw data values
+#' @return A {ggplot2} boxplot for comparing two group of values. Raw data values
 #' are overlayed on top of the boxes.
-#'  }
 #'
 #' @export
 #'
-#' @import ggplot2
+#' @rawNamespace import(ggplot2, except = last_plot)
 ggboxplot_2samples <- function(data,
                              group,
                              response,
@@ -608,12 +606,6 @@ rowsummary_2samples <- function(data,
     group %in% colnames(data)
   )
 
-  # number to the desired number of significant figures
-  numtosignif <- function(number, mydigits) {
-    # signiftodigits in utils_helper.R
-    sprintf("%.*f", signiftodigits(number, mydigits), number)
-  }
-
   mydata <- data.table(data)
   lvl <- levels(as.factor(mydata[[group]]))
   roworder <- c("n", "massimo", "media", "mediana", "minimo", "deviazione standard")
@@ -623,11 +615,11 @@ rowsummary_2samples <- function(data,
   mysummary <- mydata[, lapply(.SD, function(x) {
     c(
       n = .N,
-      massimo = max(x, na.rm = TRUE) |> numtosignif(signif),
-      media = mean(x, na.rm = TRUE) |> numtosignif(signif),
-      mediana = median(x, na.rm = TRUE) |> numtosignif(signif),
-      minimo = min(x, na.rm = TRUE) |> numtosignif(signif),
-      `deviazione standard` = sd(x, na.rm = TRUE) |> numtosignif(signif)
+      massimo = max(x, na.rm = TRUE) |> format_sigfig(signif),
+      media = mean(x, na.rm = TRUE) |> format_sigfig(signif),
+      mediana = median(x, na.rm = TRUE) |> format_sigfig(signif),
+      minimo = min(x, na.rm = TRUE) |> format_sigfig(signif),
+      `deviazione standard` = sd(x, na.rm = TRUE) |> format_sigfig(signif)
     )
   }),
   by = group,

@@ -40,6 +40,27 @@ signiftodigits <- function(value,
   }
 }
 
+#' Formatting a number with a given number of significant figures
+#'
+#' @description The function returns a character values with a number formatted
+#' with the desired significant figures
+#'
+#' @param number the input number to be formatted
+#' @param sigfig an integer with the number of desired significant figures
+#'
+#' @return a character value with the number formatted with the desired
+#' significant figures
+#'
+#' @noRd
+format_sigfig <- function(number, sigfig = 4L){
+  stopifnot(
+    is.numeric(number),
+    is.integer(sigfig)
+  )
+sprintf("%.*f", signiftodigits(number, sigfig), number)
+
+}
+
 #' Conversion of an HTML formatted string to a RMarkdown string
 #'
 #' @description The function substitutes some common HTML tag to their

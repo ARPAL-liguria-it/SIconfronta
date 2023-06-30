@@ -42,7 +42,7 @@ testServer(
                    "parameter", "ttest", "ftest"), ignore.order = TRUE)
     expect_length(names(r$compare03$yield), 12)
 
-})
+  })
 
 test_that("module compareinput ui works", {
   ui <- mod_compare03_ui(id = "test")

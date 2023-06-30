@@ -28,8 +28,7 @@ testServer(mod_loadfile02_server,
              )
 
              # column names
-             expect_equal(colnames(dataframe()),
-                          c("parameter", "fertilizer", "pounds"))
+             expect_named(dataframe(), c("parameter", "fertilizer", "pounds"))
              # dimensions of the dataset
              expect_equal(dim(dataframe()), c(11, 3))
              # the first column is factor

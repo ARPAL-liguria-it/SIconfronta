@@ -4,6 +4,8 @@
 
 [![R-CMD-check](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml)
 [![test-coverage](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/andreabz/comparat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/andreabz/comparat?branch=master)
 <!-- badges: end -->
 
 Il software CompaRat è stato sviluppato allo scopo di effettuare
@@ -108,7 +110,10 @@ bachi](mailto:andrea.bazzano@arpal.liguria.it).
 
 Con la Affero GPL versione 3.
 
-![gplv3](./inst/extdata/agplv3.png)
+<figure>
+<img src="./inst/extdata/agplv3.png" alt="gplv3" />
+<figcaption aria-hidden="true">gplv3</figcaption>
+</figure>
 
 <details>
 <summary>

@@ -20,7 +20,7 @@ mod_aim01_ui <- function(id) {
       # selecting the aim of the comparison ----
       radioButtons(
         ns("aim"),
-        label = "Cosa vuoi fare",
+        label = h4("Cosa vuoi fare"),
         choices = c(
           "Confrontare due serie di dati complete" = "2samples",
           "Confrontare due serie di dati di cui una completa e l'altra riassunta nei suoi parametri" = "2samples_par",

@@ -18,9 +18,9 @@
 #'    \item{file} a fileInput widget for uploading the file;
 #'    \item{parvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the parameter labels;
 #'    \item{groupvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the grouping labels;
-#'    \item{responsevar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical response values;}
+#'    \item{responsevar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical response values;
 #'    \item{uncertaintyvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical
-#'    extended uncertainty values;}
+#'    extended uncertainty values;
 #'    \item{nextbtn} an actionButton widget for saving the data.
 #'  }
 #'
