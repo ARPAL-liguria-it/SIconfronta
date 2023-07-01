@@ -21,7 +21,7 @@
 #'    \item{responsevar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical response values;
 #'    \item{uncertaintyvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical
 #'    extended uncertainty values;
-#'    \item{nextbtn} an actionButton widget for saving the data.
+#'    \item{nextbtn} an actionButton widget for saving the imported data.
 #'  }
 #'
 #' @noRd
