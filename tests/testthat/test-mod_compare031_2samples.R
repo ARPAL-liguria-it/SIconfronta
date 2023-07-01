@@ -101,17 +101,11 @@ testServer(
     expect_true(inherits(output$ftest, "character"))
     # ## Testing the reactive list as output
     expect_true(inherits(r$compare03x, "reactivevalues"))
-<<<<<<< HEAD
-    expect_equal(names(r$compare03x),
-                c("ftest", "ttest", "outliers", "normality", "summary", "udm",
-                  "significance", "alternative", "data", "parameter"))
-=======
     expect_named(r$compare03x,
                 c("ftest", "ttest", "significance", "alternative", "outliers",
                   "normality", "summary", "data", "udm", "parameter"),
                 ignore.order = TRUE)
     expect_length(names(r$compare03x), 10)
->>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 })
 
 test_that("module compare031 for 2 samples input ui works", {

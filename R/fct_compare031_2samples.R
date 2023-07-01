@@ -534,22 +534,12 @@ boxplot_2samples <- function(data,
 #' @param response a character string with the label for the response numeric variable.
 #' @param udm a character string with the unit of measurement.
 #'
-<<<<<<< HEAD
-#' @return A {plotly} boxplot for comparing two group of values. Raw data values
-#' are overlayed on top of the boxes.
-#'  }
-#'
-#' @export
-#'
-#' @import ggplot2
-=======
 #' @return A {ggplot2} boxplot for comparing two group of values. Raw data values
 #' are overlayed on top of the boxes.
 #'
 #' @export
 #'
 #' @rawNamespace import(ggplot2, except = last_plot)
->>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 ggboxplot_2samples <- function(data,
                              group,
                              response,
@@ -561,12 +551,8 @@ ggboxplot_2samples <- function(data,
     is.character(udm)
   )
 
-<<<<<<< HEAD
-  cols <- c("sì" = "#999999", "no" = "black")
-=======
   rimosso <- NULL
   cols <- c("s\u00EC" = "#999999", "no" = "black")
->>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 
   xlabtitle <- group
   ylabtitle <- paste0(response, ifelse(udm != "", paste0(" (", udm, ")"), ""))
@@ -590,11 +576,7 @@ ggboxplot_2samples <- function(data,
     ggplot2::labs(x = xlabtitle,
                   y = ylabtitle) +
     ggplot2::scale_color_manual(values = cols,
-<<<<<<< HEAD
-                                breaks = c("sì", "no"),
-=======
                                 breaks = c("s\u00EC", "no"),
->>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
                                 labels = c("rimosso", "non rimosso"),
                                 name = ggplot2::element_blank()) +
     ggplot2::theme_bw() +
