@@ -9,7 +9,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList includeMarkdown
+#' @import shiny
 mod_aim01_ui <- function(id) {
   ns <- NS(id)
   tagList(fluidRow(
@@ -90,9 +90,7 @@ mod_aim01_ui <- function(id) {
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
-#'
-#' @noRd
+#' @import shiny
 mod_aim01_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns

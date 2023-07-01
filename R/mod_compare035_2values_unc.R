@@ -82,7 +82,7 @@ mod_compare035_2values_unc_output_ui <- function(id) {
 #' @import shiny
 #' @import data.table
 #' @importFrom plotly renderPlotly plot_ly add_boxplot add_markers layout config
-mod_compare035_2values_unc_server <- function(id, data, response, group, analyte) {
+mod_compare035_2values_unc_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 

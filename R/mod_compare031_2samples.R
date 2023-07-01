@@ -101,7 +101,7 @@ mod_compare031_2samples_output_ui <- function(id) {
            DT::DTOutput(ns("summarytable"))
            ),
 
-    column(7,
+    column(6,
            tabsetPanel(
              id = ns("tabresults"),
              type = "tabs",
@@ -503,7 +503,7 @@ mod_compare031_2samples_server <- function(id, r) {
 
       # output dataset
       r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
-      r$compare03x$data[, "rimosso"] <- ifelse(is_outlier() == TRUE, "sì", "no")
+      r$compare03x$data[, "rimosso"] <- ifelse(is_outlier() == TRUE, "s\u00EC", "no")
 
       # summary table
       r$compare03x$summary <- summarytable()

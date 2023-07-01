@@ -29,7 +29,7 @@ mod_report04_ui <- function(id){
                                     "ttest",
                                     "ftest")),
 
-    tags$hr(),
+    hr(),
 
     downloadButton(ns("makereport"), label = "Crea il report",
       icon = icon("wand-magic-sparkles"),

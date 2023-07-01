@@ -33,7 +33,6 @@ title: "`r params$report04$title`"
 ---
 ```{r libraries, include=FALSE}
 library(data.table)
-library(magrittr)
 ```
 
 ```{r description, echo=FALSE, results = "asis"}
@@ -144,9 +143,9 @@ questo report.
 \renewcommand{\arraystretch}{0.8} <!-- decrease line spacing for the table -->
 ```{r session_platform, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
 
-df_session_platform <- params$report04$info$platform %>% 
-  unlist(.) %>%
-  data.frame(.) %>%
+df_session_platform <- params$report04$info$platform |> 
+  unlist() |>
+  data.frame() |>
   data.table::data.table(keep.rownames = TRUE)
 
 colnames(df_session_platform) <- c("Impostazione", "Valore")
@@ -161,9 +160,9 @@ knitr::kable(
 
 \renewcommand{\arraystretch}{0.6} <!-- decrease line spacing for the table -->
 ```{r session_packages, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
-df_session_packages <- params$report04$info$packages %>% 
-  data.table::data.table(keep.rownames = TRUE) %>%
-  .[attached == TRUE, .(package, loadedversion, date)]
+df_session_packages <- params$report04$info$packages |> 
+  data.table::data.table(keep.rownames = TRUE) |>
+  (\(x) x[attached == TRUE, .(package, loadedversion, date)])()
 
 colnames(df_session_packages) <- c("Pacchetto", "Versione caricata", "Data")
 

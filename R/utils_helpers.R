@@ -74,28 +74,28 @@ sprintf("%.*f", signiftodigits(number, sigfig), number)
 #'
 #' @noRd
 htmltormarkdown <- function(htmlstring){
-  htmlstring %>%
-    { gsub("<h4>", "\n###", .) } %>%
-    { gsub(" </h4>", "  \n" , .) } %>%
-    { gsub("<h5>", "\n####", .) } %>%
-    { gsub("</h5>", "  \n", .) } %>%
-    { gsub("<ul>", "\n", .) } %>%
-    { gsub("</ul>", "  \n", .) } %>%
-    { gsub("<li>", "\n  *", .) } %>%
-    { gsub("</li>", "", .) } %>%
-    { gsub("\u03b1", "$\\\\alpha$", .) } %>%
-    { gsub("\u03bd", "$\\\\nu$", .) } %>%
-    { gsub("\u2013", "\\\\textendash\\\\", .) } %>%
-    { gsub("\u21e8", "\n $\\\\Rightarrow$", .) } %>%
-    { gsub("\u00b1", "$\\\\pm$", .) } %>%
-    { gsub("R\u00B2", "$\\\\mathrm{R}^2$", .) } %>%
-    { gsub("\u2264", "$\\\\leq$", .) } %>%
-    { gsub("\u2260", "$\\\\neq$", .) } %>%
-    { gsub("<b>", "**", .) } %>%
-    { gsub("</b>", "**", .) } %>%
-    { gsub("<i>", "_", .) } %>%
-    { gsub("</i>", "_", .) } %>%
-    { gsub("</br>", "  \n ", .) }
+  htmlstring |>
+    (\(x) gsub("<h4>", "\n###", x) )() |>
+    (\(x) gsub(" </h4>", "  \n" , x) )() |>
+    (\(x) gsub("<h5>", "\n####", x) )() |>
+    (\(x) gsub("</h5>", "  \n", x) )() |>
+    (\(x) gsub("<ul>", "\n", x) )() |>
+    (\(x) gsub("</ul>", "  \n", x) )() |>
+    (\(x) gsub("<li>", "\n  *", x) )() |>
+    (\(x) gsub("</li>", "", x) )() |>
+    (\(x) gsub("\u03b1", "$\\\\alpha$", x) )() |>
+    (\(x) gsub("\u03bd", "$\\\\nu$", x) )() |>
+    (\(x) gsub("\u2013", "\\\\textendash\\\\", x) )() |>
+    (\(x) gsub("\u21e8", "\n $\\\\Rightarrow$", x) )() |>
+    (\(x) gsub("\u00b1", "$\\\\pm$", x) )() |>
+    (\(x) gsub("R\u00B2", "$\\\\mathrm{R}^2$", x) )() |>
+    (\(x) gsub("\u2264", "$\\\\leq$", x) )() |>
+    (\(x) gsub("\u2260", "$\\\\neq$", x) )() |>
+    (\(x) gsub("<b>", "**", x) )() |>
+    (\(x) gsub("</b>", "**", x) )() |>
+    (\(x) gsub("<i>", "_", x) )() |>
+    (\(x) gsub("</i>", "_", x) )() |>
+    (\(x) gsub("</br>", "  \n ", x) )()
 }
 
 #' Rendering of an RMarkdown report as future promise

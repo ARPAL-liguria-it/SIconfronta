@@ -202,10 +202,10 @@ mod_compare03_server <- function(id, r) {
       switch (
         r$aim01$aim,
         "2samples" = mod_compare031_2samples_server("2samples", r),
-        "2samples_par" = mod_compare031_2samples_par_server("2samples_par", r),
-        "1sample_mu" = mod_compare031_2samples_par_server("1sample_mu", r),
-        "1sample_sigma" = mod_compare031_2samples_par_server("1sample_sigma", r),
-        "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r)
+        "2samples_par" = mod_compare032_2samples_par_server("2samples_par", r),
+        "1sample_mu" = mod_compare033_1sample_mu_server("1sample_mu", r),
+        "1sample_sigma" = mod_compare034_1sample_sigma_server("1sample_sigma", r),
+        "2values_unc" = mod_compare035_2values_unc_server("2values_unc", r)
       )
 
     })
