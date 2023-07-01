@@ -142,7 +142,7 @@ mod_compare034_1sample_sigma_output_ui <- function(id) {
 #' @import shiny
 #' @import data.table
 #' @importFrom plotly renderPlotly plot_ly add_boxplot add_markers layout config
-mod_compare034_1sample_sigma_server <- function(id, data, response, group, analyte) {
+mod_compare034_1sample_sigma_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 

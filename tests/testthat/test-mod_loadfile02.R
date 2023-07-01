@@ -1,5 +1,4 @@
-r <- reactiveValues()
-r$aim01 <- reactiveValues(aim = reactiveValues())
+r <- reactiveValues(aim01 = reactiveValues())
 
 # testing for 2 samples
 testServer(mod_loadfile02_server,
@@ -28,18 +27,17 @@ testServer(mod_loadfile02_server,
              )
 
              # column names
-             expect_equal(colnames(dataframe()),
-                          c("parameter", "fertilizer", "pounds"))
+             expect_named(datafile(), c("parameter", "fertilizer", "pounds"))
              # dimensions of the dataset
-             expect_equal(dim(dataframe()), c(11, 3))
+             expect_equal(dim(datafile()), c(11, 3))
              # the first column is factor
-             expect_equal(class(dataframe()[["parameter"]]), "factor")
+             expect_equal(class(datafile()[["parameter"]]), "factor")
              # the second column is numeric
-             expect_equal(class(dataframe()[["fertilizer"]]), "factor")
+             expect_equal(class(datafile()[["fertilizer"]]), "factor")
              # the third column is numeric
-             expect_equal(class(dataframe()[["pounds"]]), "numeric")
+             expect_equal(class(datafile()[["pounds"]]), "numeric")
              # number of values for the two groups
-             expect_equal(dataframe()[, .N, by = "fertilizer"][, N], c(5, 6))
+             expect_equal(datafile()[, .N, by = "fertilizer"][, N], c(5, 6))
 
 
              # required number of numeric columns
@@ -96,7 +94,7 @@ testServer(mod_loadfile02_server,
 
              # saved output
              expect_equal(class(r$loadfile02), "reactivevalues")
-             expect_equal(r$loadfile02$data, dataframe())
+             expect_equal(r$loadfile02$data, datafile())
              expect_equal(r$loadfile02$parvar, "parameter")
              expect_equal(r$loadfile02$parlist, factor("yield"))
              expect_equal(r$loadfile02$groupvar, "fertilizer")
@@ -132,18 +130,18 @@ testServer(mod_loadfile02_server,
              )
 
              # column names
-             expect_equal(colnames(dataframe()),
+             expect_equal(colnames(datafile()),
                           c("analita", "gruppo", "valore"))
              # dimensions of the dataset
-             expect_equal(dim(dataframe()), c(19, 3))
+             expect_equal(dim(datafile()), c(19, 3))
              # the first column is factor
-             expect_equal(class(dataframe()[["analita"]]), "factor")
+             expect_equal(class(datafile()[["analita"]]), "factor")
              # the second column is numeric
-             expect_equal(class(dataframe()[["gruppo"]]), "factor")
+             expect_equal(class(datafile()[["gruppo"]]), "factor")
              # the third column is numeric
-             expect_equal(class(dataframe()[["valore"]]), "numeric")
+             expect_equal(class(datafile()[["valore"]]), "numeric")
              # number of values for the two groups
-             expect_equal(dataframe()[, .N, by = "gruppo"][, N], 19)
+             expect_equal(datafile()[, .N, by = "gruppo"][, N], 19)
 
 
              # required number of numeric columns
@@ -196,7 +194,7 @@ testServer(mod_loadfile02_server,
 
              # saved output
              expect_equal(class(r$loadfile02), "reactivevalues")
-             expect_equal(r$loadfile02$data, dataframe())
+             expect_equal(r$loadfile02$data, datafile())
              expect_equal(r$loadfile02$parvar, "analita")
              expect_equal(r$loadfile02$parlist, factor(c("primo", "secondo")))
              expect_equal(r$loadfile02$groupvar, "gruppo")
@@ -232,18 +230,18 @@ testServer(mod_loadfile02_server,
              )
 
              # column names
-             expect_equal(colnames(dataframe()),
+             expect_equal(colnames(datafile()),
                           c("analita", "gruppo", "valore", "unc"))
              # dimensions of the dataset
-             expect_equal(dim(dataframe()), c(4, 4))
+             expect_equal(dim(datafile()), c(4, 4))
              # the first column is factor
-             expect_equal(class(dataframe()[["analita"]]), "factor")
+             expect_equal(class(datafile()[["analita"]]), "factor")
              # the second column is numeric
-             expect_equal(class(dataframe()[["gruppo"]]), "factor")
+             expect_equal(class(datafile()[["gruppo"]]), "factor")
              # the third column is numeric
-             expect_equal(class(dataframe()[["valore"]]), "numeric")
+             expect_equal(class(datafile()[["valore"]]), "numeric")
              # number of values for the two groups
-             expect_equal(dataframe()[, .N, by = "gruppo"][, N], c(2, 2))
+             expect_equal(datafile()[, .N, by = "gruppo"][, N], c(2, 2))
 
 
              # required number of numeric columns
@@ -301,7 +299,7 @@ testServer(mod_loadfile02_server,
 
              # saved output
              expect_equal(class(r$loadfile02), "reactivevalues")
-             expect_equal(r$loadfile02$data, dataframe())
+             expect_equal(r$loadfile02$data, datafile())
              expect_equal(r$loadfile02$parvar, "analita")
              expect_equal(r$loadfile02$parlist, factor(c("primo", "secondo")))
              expect_equal(r$loadfile02$groupvar, "gruppo")

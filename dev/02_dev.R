@@ -45,7 +45,11 @@ usethis::use_data_raw(name = "tomato_yields", open = FALSE)
 ## Tests ----
 ## Add one line by test you want to create
 usethis::use_test("app")
-usethis::use_test("mod_loadfile")
+usethis::use_test("mod_aim01")
+usethis::use_test("mod_loadfile02")
+usethis::use_test("mod_compare03")
+usethis::use_test("mod_compare031_2samples")
+usethis::use_test("mod_report04")
 usethis::use_test("app_server")
 usethis::use_test("app_ui")
 

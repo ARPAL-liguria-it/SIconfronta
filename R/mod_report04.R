@@ -1,4 +1,4 @@
-#' makereport UI Function
+#' Report04 UI Function
 #'
 #' @description A shiny module for simple reporting by {pdf} Rmarkdown.
 #'
@@ -10,16 +10,17 @@
 #' @noRd
 #'
 #' @import shiny
-mod_makereport_ui <- function(id){
+mod_report04_ui <- function(id){
   ns <- NS(id)
   tagList(
-    tags$h2("Un po' di contesto"),
-    textInput(ns("title"), label = "Titolo del report"),
-    textAreaInput(ns("description"), label = "Descrizione dell'esperimento"),
+    h4("Un po' di contesto"),
+    textInput(ns("title"), label = "Titolo del report", width = "80%"),
+    textAreaInput(ns("description"), label = "Descrizione dell'esperimento", width = "80%"),
+    textAreaInput(ns("discussion"), label = "Interpretazione dei risultati", width = "80%"),
 
-    tags$hr(),
+    hr(),
 
-    tags$h2("Cosa includere nel report"),
+    h4("Cosa includere nel report"),
     checkboxGroupInput(ns("content"), label = "Test",
                        choices = c("Normalit\u00E0 e outliers" = "shapirotest",
                                    "Confronto tra medie" = "ttest",
@@ -28,7 +29,7 @@ mod_makereport_ui <- function(id){
                                     "ttest",
                                     "ftest")),
 
-    tags$hr(),
+    hr(),
 
     downloadButton(ns("makereport"), label = "Crea il report",
       icon = icon("wand-magic-sparkles"),
@@ -54,9 +55,11 @@ mod_makereport_ui <- function(id){
 #'
 #' @import data.table
 #' @importFrom devtools session_info
-mod_makereport_server <- function(id, inputreport){
+mod_report04_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    r$report04 <- reactiveValues()
 
     output$makereport <- downloadHandler(
       filename = function() {
@@ -75,15 +78,15 @@ mod_makereport_server <- function(id, inputreport){
         file.copy(reportpath, tempReport, overwrite = TRUE)
         file.copy(logopath, tempLogo, overwrite = TRUE)
 
+        r$report04$logo <- logopath
+        r$report04$info <- devtools::session_info()
+        r$report04$title <- input$title
+        r$report04$description <- input$description
+        r$report04$discussion <- input$discussion
+        r$report04$content <- input$content
+
         # input parameters for the rmd file
-        params <- list(
-          logo = logopath,
-          title = input$title,
-          description = input$description,
-          content = input$content,
-          data = inputreport(),
-          info = devtools::session_info()
-        )
+        params <- isolate(lapply(r, reactiveValuesToList))
 
         id <- showNotification(
         	"Preparazione del report...",

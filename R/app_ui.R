@@ -6,10 +6,9 @@
 #' @noRd
 #'
 #' @import shiny
-#' @import plotly
 #' @importFrom future plan multisession
 #' @importFrom shinyjs hidden
-#' @importFrom bslib bs_theme
+#' @importFrom bslib bs_theme page_navbar nav_panel
 future::plan(future::multisession)
 
 app_ui <- function(request) {
@@ -25,38 +24,20 @@ app_ui <- function(request) {
                                 alt = "Comparat",
                                 height = 50)),
       window_title = "Comparat",
+      padding = 50,
       inverse = FALSE,
       position = "static-top",
-      fluid = TRUE,
+      fluid = FALSE,
       collapsible = TRUE,
+      fillable = FALSE,
       lang = "it",
 
-      #### Switch for input selection ----
-      tabPanel("Scopo",
-               mod_aim01_ui("scopo")
-               ),
-
-      #### Tab for data loading ----
-      tabPanel("Dati",
-                mod_loadfile02_ui("dati")
-               ),
-
-      #### Results ----
-      tabPanel("Confronti",
-               mod_compare03_ui("confronto")
-               ),
-
-      #### Reporting ----
-       tabPanel("Report",
-                fluidPage(mod_makereport_ui("makereport_1"))),
-
-      # #### Readme ----
-      tabPanel("Leggimi",
-               fluidPage(includeMarkdown(
-                 system.file("rmd",
-                             "readme.Rmd",
-                             package = "comparat")
-               )))
+      # Navbar items ----
+      bslib::nav_panel("Scopo", mod_aim01_ui("scopo")),
+      bslib::nav_panel("Dati", mod_loadfile02_ui("dati")),
+      bslib::nav_panel("Confronti", mod_compare03_ui("confronto")),
+      bslib::nav_panel("Report", mod_report04_ui("report")),
+      bslib::nav_panel("Leggimi", includeMarkdown(system.file("rmd", "readme.Rmd",package = "comparat")))
 
     )
   )
@@ -67,10 +48,11 @@ app_ui <- function(request) {
 #' This function is internally used to add external
 #' resources inside the Shiny application.
 #'
+#' @noRd
+#'
 #' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @importFrom shinyjs useShinyjs
-#' @noRd
 golem_add_external_resources <- function() {
   add_resource_path(
     "www",

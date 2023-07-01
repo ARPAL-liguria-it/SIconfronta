@@ -67,6 +67,7 @@ mod_compare03_ui <- function(id) {
         id = ns("savedel"),
         type = "hidden",
 
+        tabPanel(""),
         # show the save button when data is not saved
         tabPanel("save",
                  # 5. click on the save button
@@ -144,17 +145,23 @@ mod_compare03_ui <- function(id) {
 #'      \item{significance}{the level of significance for the tests;}
 #'      \item{data}{the subsetted dataset with a flag for removed or not removed values;}
 #'      \item{summary}{a summary table;}
+<<<<<<< HEAD
 #'      \item{normality}{a HTML formatted string with the results for the normality test.}
 #'      \item{outliers}{a HTML formatted string with the results for the outliers test.}
 #'      \item{ttest}{a HTML formatted string with the results for the t-test.}
 #'      \item{ftest}{a HTML formatted string with the results for the F-test.}
+=======
+#'      \item{normality}{a Markdown formatted string with the results for the normality test.}
+#'      \item{outliers}{a Markdown formatted string with the results for the outliers test.}
+#'      \item{ttest}{a Markdown formatted string with the results for the t-test.}
+#'      \item{ftest}{a Markdown formatted string with the results for the F-test.}
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 #'    }
 #'
 #' @noRd
 #'
 #' @import shiny
 #' @import data.table
-#' @importFrom plotly renderPlotly plot_ly add_boxplot add_markers layout config
 mod_compare03_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -202,10 +209,10 @@ mod_compare03_server <- function(id, r) {
       switch (
         r$aim01$aim,
         "2samples" = mod_compare031_2samples_server("2samples", r),
-        "2samples_par" = mod_compare031_2samples_par_server("2samples_par", r),
-        "1sample_mu" = mod_compare031_2samples_par_server("1sample_mu", r),
-        "1sample_sigma" = mod_compare031_2samples_par_server("1sample_sigma", r),
-        "2values_unc" = mod_compare031_2samples_par_server("2values_unc", r)
+        "2samples_par" = mod_compare032_2samples_par_server("2samples_par", r),
+        "1sample_mu" = mod_compare033_1sample_mu_server("1sample_mu", r),
+        "1sample_sigma" = mod_compare034_1sample_sigma_server("1sample_sigma", r),
+        "2values_unc" = mod_compare035_2values_unc_server("2values_unc", r)
       )
 
     })
@@ -222,7 +229,20 @@ mod_compare03_server <- function(id, r) {
                                       response = r$loadfile02$responsevar,
                                       udm = r$compare03x$udm)
 
+<<<<<<< HEAD
       r$compare03[[input$parameter]] <- r$compare03x
+=======
+      r$compare03[[input$parameter]]$parameter <- r$compare03x$parameter
+      r$compare03[[input$parameter]]$udm <- r$compare03x$udm
+      r$compare03[[input$parameter]]$data <- r$compare03x$data
+      r$compare03[[input$parameter]]$summary <- r$compare03x$summary
+      r$compare03[[input$parameter]]$alternative <- r$compare03x$alternative
+      r$compare03[[input$parameter]]$significance <- r$compare03x$significance
+      r$compare03[[input$parameter]]$normality <- r$compare03x$normality |> htmltormarkdown()
+      r$compare03[[input$parameter]]$outliers <- r$compare03x$outliers |> htmltormarkdown()
+      r$compare03[[input$parameter]]$ttest <- r$compare03x$ttest |> htmltormarkdown()
+      r$compare03[[input$parameter]]$ftest <- r$compare03x$ftest |> htmltormarkdown()
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
       r$compare03[[input$parameter]]$boxplot <- ggboxplot
       r$compare03[[input$parameter]]$saved <- TRUE
     })
@@ -233,12 +253,22 @@ mod_compare03_server <- function(id, r) {
       r$compare03[[input$parameter]] <- NULL
     })
 
+<<<<<<< HEAD
     # updating the save and delete paneles ----
+=======
+    # updating the save and delete panels ----
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 
     savedel_flag <- reactive({
       req(input$parameter)
 
+<<<<<<< HEAD
       ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
+=======
+      ifelse(input$parameter == "", "",
+      ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
+      )
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
     })
 
 

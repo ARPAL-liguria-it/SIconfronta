@@ -101,20 +101,24 @@ mod_compare031_2samples_output_ui <- function(id) {
            DT::DTOutput(ns("summarytable"))
            ),
 
-    column(7,
+    column(6,
            tabsetPanel(
              id = ns("tabresults"),
              type = "tabs",
 
              tabPanel("Normalit\u00E0",
+                      h4("Test per la verifica della normalit\u00E0 (Shapiro-Wilk)"),
                       htmlOutput(ns("shapirotest")),
                       hr(),
+                      h4("Test per identificare possibili outliers (GESD)"),
                       htmlOutput(ns("outliers"))
                       ),
              tabPanel("Medie",
+                      h4("Test per la differenza tra medie (Welch)"),
                       htmlOutput(ns("ttest"))
                       ),
              tabPanel("Varianze",
+                      h4("Test per il rapporto tra varianze (Fisher)"),
                       htmlOutput(ns("ftest")))
              )
            )
@@ -185,12 +189,12 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     ## alternative hypothesis
-    observeEvent(input$alternative, {
+    observeEvent(input$alternative, ignoreNULL = FALSE, {
       r$compare03x$alternative <- input$alternative
     })
 
     ## test confidence level
-    observeEvent(input$significance, {
+    observeEvent(input$significance, ignoreNULL = FALSE, {
       r$compare03x$significance <- input$significance
     })
 
@@ -331,13 +335,7 @@ mod_compare031_2samples_server <- function(id, r) {
       })
     })
 
-    shapiro_html <- reactive({
-      paste(
-        "<h5> Test per la verifica della normalit\u00E0 (Shapiro-Wilk) </h5></br>",
-        paste(shapirotest_list(), collapse = "")
-      )
-
-    })
+    shapiro_html <- reactive(paste(shapirotest_list(), collapse = ""))
 
     output$shapirotest <- renderText({
       validate(
@@ -374,12 +372,7 @@ mod_compare031_2samples_server <- function(id, r) {
 
     })
 
-    outliers_html <- reactive({
-      paste(
-        "<h5> Test per identificare possibili outliers (GESD) </h5></br>",
-        paste(outtest_list(), collapse = "")
-      )
-    })
+    outliers_html <- reactive(paste(outtest_list(), collapse = ""))
 
     output$outliers <- renderText({
       validate(
@@ -394,20 +387,21 @@ mod_compare031_2samples_server <- function(id, r) {
     #### results for the t-test ----
     ttest_list <- reactive({
       req(selected_data())
+      req(r$compare03x$significance)
+      req(r$compare03x$alternative)
 
       fct_ttest_2samples(
         selected_data(),
         "response",
         "group",
-        significance = as.numeric(input$significance),
-        alternative = input$alternative
+        significance = as.numeric(r$compare03x$significance),
+        alternative = r$compare03x$alternative
       )
 
     })
 
     ttest_text <-
-      "<h5> Test per differenza tra le medie </h5>
-<b>H0:</b> %s </br>
+"<b>H0:</b> %s </br>
 <b>H1:</b> %s
 <ul>
   <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
@@ -451,20 +445,21 @@ mod_compare031_2samples_server <- function(id, r) {
     #### results for the F-test ----
     ftest_list <- reactive({
       req(selected_data())
+      req(r$compare03x$significance)
+      req(r$compare03x$alternative)
 
       fct_ftest_2samples(
         selected_data(),
         "response",
         "group",
-        significance = as.numeric(input$significance),
-        alternative = input$alternative
+        significance = as.numeric(r$compare03x$significance),
+        alternative = r$compare03x$alternative
       )
 
     })
 
     ftest_text <-
-      "<h5> Test per rapporto tra le varianze </h5>
-<b>H0:</b> %s </br>
+"<b>H0:</b> %s </br>
 <b>H1:</b> %s
 <ul>
   <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>
@@ -505,9 +500,10 @@ mod_compare031_2samples_server <- function(id, r) {
 
     # saving the outputs ----
     observeEvent(input_data(), {
+
       # output dataset
       r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
-      r$compare03x$data[, "rimosso"] <- ifelse(is_outlier() == TRUE, "sì", "no")
+      r$compare03x$data[, "rimosso"] <- ifelse(is_outlier() == TRUE, "s\u00EC", "no")
 
       # summary table
       r$compare03x$summary <- summarytable()

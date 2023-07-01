@@ -18,9 +18,9 @@
 #'    \item{file} a fileInput widget for uploading the file;
 #'    \item{parvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the parameter labels;
 #'    \item{groupvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the grouping labels;
-#'    \item{responsevar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical response values;}
+#'    \item{responsevar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical response values;
 #'    \item{uncertaintyvar} a selectizeInput widget for selecting the column name of the imported dataset hosting the numerical
-#'    extended uncertainty values;}
+#'    extended uncertainty values;
 #'    \item{nextbtn} an actionButton widget for saving the data.
 #'  }
 #'
@@ -170,13 +170,15 @@ mod_loadfile02_ui <- function(id) {
 #'    \item{parlist} is the list of parameters provided by the data.frame;
 #'    \item{groupvar} is the data.frame column name in which groub labels are stored;
 #'    \item{responsevar} is the data.frame column name in which the response numerical values are stored;
-#'    \item{uncertaintyvar} is the data.frame column name in which the extended uncertainty numerical values are stored;
+#'    \item{uncertaintyvar} is the data.frame column name in which the extended uncertainty numerical values are stored.
 #'  }
 #'
 #' @noRd
 #'
 #' @import shiny
 #' @import data.table
+#' @importFrom DT datatable renderDT
+#' @importFrom stats aggregate
 mod_loadfile02_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -203,7 +205,7 @@ mod_loadfile02_server <- function(id, r) {
 
     # loading the data ----
     userFile <- reactive({
-      # nel caso non venga caricato un file, non viene eseguito nulla
+      # waiting for the file
       req(input$file$name)
       req(input$file$datapath)
 
@@ -217,7 +219,7 @@ mod_loadfile02_server <- function(id, r) {
     })
 
     # data are imported as a data.table with fread
-    dataframe <- reactive({
+    datafile <- reactive({
       data.table::fread(userFile()$datapath,
                         header = "auto",
                         stringsAsFactors = TRUE)
@@ -276,7 +278,7 @@ mod_loadfile02_server <- function(id, r) {
 
     ## numeric variables
     numcol <- reactive({
-      colnames(dataframe())[sapply(dataframe(), is.numeric)]
+      colnames(datafile())[sapply(datafile(), is.numeric)]
     })
 
     ## number of numeric variables
@@ -284,8 +286,8 @@ mod_loadfile02_server <- function(id, r) {
 
     ## checking how many numerical columns are in the dataset
     numok <- reactive({
-      validate(
-        need(sumnum() == reqsumnum(),
+      shiny::validate(
+        shiny::need(sumnum() == reqsumnum(),
              message = sprintf(
                "Hai fornito un dataset con %s colonn%s di numeri ma ne %s.",
                sumnum(),
@@ -299,7 +301,7 @@ mod_loadfile02_server <- function(id, r) {
 
     ## character variables
     charcol <- reactive({
-      colnames(dataframe())[sapply(dataframe(), is.factor)]
+      colnames(datafile())[sapply(datafile(), is.factor)]
     })
 
     ## number of character variables
@@ -307,8 +309,8 @@ mod_loadfile02_server <- function(id, r) {
 
     ### checking how many character columns are in the dataset
     charok <- reactive({
-      validate(
-        need(sumchar() == 2,
+      shiny::validate(
+        shiny::need(sumchar() == 2,
              message = sprintf(
                "Hai fornito un dataset con %s colonn%s di testo ma ne servono 2.",
                sumchar(),
@@ -323,31 +325,31 @@ mod_loadfile02_server <- function(id, r) {
     maxgroup <- reactive({
       req(input$groupvar)
 
-      aggregate(x = dataframe()[[input$groupvar]] ,
-                by = list(dataframe()[[input$parvar]]),
-                FUN = \(x) unique(x) |> length())$x |> max()
+      stats::aggregate(x = datafile()[[input$groupvar]] ,
+                       by = list(datafile()[[input$parvar]]),
+                       FUN = \(x) unique(x) |> length())$x |> max()
     })
 
     ## min number of grouping levels
     mingroup <- reactive({
       req(input$groupvar)
 
-      aggregate(x = dataframe()[[input$groupvar]] ,
-                by = list(dataframe()[[input$parvar]]),
-                FUN = \(x) unique(x) |> length())$x |> min()
+      stats::aggregate(x = datafile()[[input$groupvar]] ,
+                       by = list(datafile()[[input$parvar]]),
+                       FUN = \(x) unique(x) |> length())$x |> min()
     })
 
     ### checking how many grouping levels are in the dataset
     groupok <- reactive({
-      validate(
-        need(maxgroup() == reqsumgroup(),
+      shiny::validate(
+        shiny::need(maxgroup() == reqsumgroup(),
              message = sprintf(
                "Hai fornito un dataset con un massimo di %s grupp%s ma ne %s.",
                maxgroup(),
                ifelse(maxgroup() == 1, "o", "i"),
                ifelse(reqsumgroup() == 1, "serve 1", "servono 2")
              )),
-        need(mingroup() == reqsumgroup(),
+        shiny::need(mingroup() == reqsumgroup(),
              message = sprintf(
                "Hai fornito un dataset con un minimo di %s grupp%s ma ne %s.",
                mingroup(),
@@ -366,9 +368,9 @@ mod_loadfile02_server <- function(id, r) {
       req(input$parvar)
       req(input$responsevar)
 
-      aggregate(x = dataframe()[[input$responsevar]] ,
-                by = list(dataframe()[[input$parvar]], dataframe()[[input$groupvar]]),
-                FUN = length)$x |> max()
+      stats::aggregate(x = datafile()[[input$responsevar]] ,
+                       by = list(datafile()[[input$parvar]], datafile()[[input$groupvar]]),
+                       FUN = length)$x |> max()
     })
 
     ## min number of values for each group and parameter pair
@@ -377,22 +379,22 @@ mod_loadfile02_server <- function(id, r) {
       req(input$parvar)
       req(input$responsevar)
 
-      aggregate(x = dataframe()[[input$responsevar]] ,
-                by = list(dataframe()[[input$parvar]], dataframe()[[input$groupvar]]),
-                FUN = length)$x |> min()
+      stats::aggregate(x = datafile()[[input$responsevar]] ,
+                       by = list(datafile()[[input$parvar]], datafile()[[input$groupvar]]),
+                       FUN = length)$x |> min()
     })
 
     ### checking how many values for the group and parameters pair are in the dataset
     valuesok <- reactive({
-      validate(
-        need(maxvalues() <= reqmaxvalues(),
+      shiny::validate(
+        shiny::need(maxvalues() <= reqmaxvalues(),
              message = sprintf(
                "Hai fornito un dataset con un massimo di %s valor%s per coppia di analita e gruppo ma posso gestirne al massimo fino a %s.",
                maxvalues(),
                ifelse(maxvalues() == 1, "e", "i"),
                reqmaxvalues()
              )),
-        need(minvalues() >= reqminvalues(),
+        shiny::need(minvalues() >= reqminvalues(),
              message = sprintf(
                "Hai fornito un dataset con un minimo di %s valor%s per coppia di analita e gruppo ma non posso gestirne meno di %s.",
                minvalues(),
@@ -451,7 +453,7 @@ mod_loadfile02_server <- function(id, r) {
     ## trigger for the data tabsetPanel
     dataloaded <- reactive({
 
-      ifelse(is.null(dataframe()), "", "dataloaded")
+      ifelse(is.null(datafile()), "", "dataloaded")
     })
 
     ## updating data tabsetPanel depending if data has been loaded or not
@@ -504,7 +506,7 @@ mod_loadfile02_server <- function(id, r) {
     parlist <- reactive({
       req(input$parvar)
 
-      dataframe()[[input$parvar]] |> unique()
+      datafile()[[input$parvar]] |> unique()
     })
 
 
@@ -513,7 +515,7 @@ mod_loadfile02_server <- function(id, r) {
       req(isTRUE(dataok()))
 
       DT::datatable(
-      dataframe(),
+      datafile(),
       rownames = FALSE,
       style = "bootstrap5",
       options = list(
@@ -532,18 +534,17 @@ mod_loadfile02_server <- function(id, r) {
       )
     })
 
-    r$loadfile02 <- reactiveValues()
+    r$loadfile02 <- shiny::reactiveValues()
 
-    observeEvent(input$nextbtn, {
+    shiny::observeEvent(input$nextbtn, {
       req(isTRUE(dataok()))
 
-      r$loadfile02$data <- dataframe()
+      r$loadfile02$data <- datafile()
       r$loadfile02$parvar <- input$parvar
       r$loadfile02$parlist <- parlist()
       r$loadfile02$groupvar <- input$groupvar
       r$loadfile02$responsevar <- input$responsevar
       r$loadfile02$uncertaintyvar <- input$uncertaintyvar
-
     })
 
   })

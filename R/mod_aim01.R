@@ -9,7 +9,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList includeMarkdown
+#' @import shiny
 mod_aim01_ui <- function(id) {
   ns <- NS(id)
   tagList(fluidRow(
@@ -20,7 +20,7 @@ mod_aim01_ui <- function(id) {
       # selecting the aim of the comparison ----
       radioButtons(
         ns("aim"),
-        label = "Cosa vuoi fare",
+        label = h4("Cosa vuoi fare"),
         choices = c(
           "Confrontare due serie di dati complete" = "2samples",
           "Confrontare due serie di dati di cui una completa e l'altra riassunta nei suoi parametri" = "2samples_par",
@@ -90,9 +90,7 @@ mod_aim01_ui <- function(id) {
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
-#'
-#' @noRd
+#' @import shiny
 mod_aim01_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns

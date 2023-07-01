@@ -40,6 +40,27 @@ signiftodigits <- function(value,
   }
 }
 
+#' Formatting a number with a given number of significant figures
+#'
+#' @description The function returns a character values with a number formatted
+#' with the desired significant figures
+#'
+#' @param number the input number to be formatted
+#' @param sigfig an integer with the number of desired significant figures
+#'
+#' @return a character value with the number formatted with the desired
+#' significant figures
+#'
+#' @noRd
+format_sigfig <- function(number, sigfig = 4L){
+  stopifnot(
+    is.numeric(number),
+    is.integer(sigfig)
+  )
+sprintf("%.*f", signiftodigits(number, sigfig), number)
+
+}
+
 #' Conversion of an HTML formatted string to a RMarkdown string
 #'
 #' @description The function substitutes some common HTML tag to their
@@ -53,28 +74,28 @@ signiftodigits <- function(value,
 #'
 #' @noRd
 htmltormarkdown <- function(htmlstring){
-  htmlstring %>%
-    { gsub("<h4>", "\n###", .) } %>%
-    { gsub(" </h4>", "  \n" , .) } %>%
-    { gsub("<h5>", "\n", .) } %>%
-    { gsub("</h5>", "", .) } %>%
-    { gsub("<ul>", "\n", .) } %>%
-    { gsub("</ul>", "  \n", .) } %>%
-    { gsub("<li>", "\n  *", .) } %>%
-    { gsub("</li>", "", .) } %>%
-    { gsub("\u03b1", "$\\\\alpha$", .) } %>%
-    { gsub("\u03bd", "$\\\\nu$", .) } %>%
-    { gsub("\u2013", "\\\\textendash\\\\", .) } %>%
-    { gsub("\u21e8", "\n $\\\\Rightarrow$", .) } %>%
-    { gsub("\u00b1", "$\\\\pm$", .) } %>%
-    { gsub("R\u00B2", "$\\\\mathrm{R}^2$", .) } %>%
-    { gsub("\u2264", "$\\\\leq$", .) } %>%
-    { gsub("\u2260", "$\\\\neq$", .) } %>%
-    { gsub("<b>", "**", .) } %>%
-    { gsub("</b>", "**", .) } %>%
-    { gsub("<i>", "_", .) } %>%
-    { gsub("</i>", "_", .) } %>%
-    { gsub("</br>", "  \n ", .) }
+  htmlstring |>
+    (\(x) gsub("<h4>", "\n###", x) )() |>
+    (\(x) gsub(" </h4>", "  \n" , x) )() |>
+    (\(x) gsub("<h5>", "\n####", x) )() |>
+    (\(x) gsub("</h5>", "  \n", x) )() |>
+    (\(x) gsub("<ul>", "\n", x) )() |>
+    (\(x) gsub("</ul>", "  \n", x) )() |>
+    (\(x) gsub("<li>", "\n  *", x) )() |>
+    (\(x) gsub("</li>", "", x) )() |>
+    (\(x) gsub("\u03b1", "$\\\\alpha$", x) )() |>
+    (\(x) gsub("\u03bd", "$\\\\nu$", x) )() |>
+    (\(x) gsub("\u2013", "\\\\textendash\\\\", x) )() |>
+    (\(x) gsub("\u21e8", "\n $\\\\Rightarrow$", x) )() |>
+    (\(x) gsub("\u00b1", "$\\\\pm$", x) )() |>
+    (\(x) gsub("R\u00B2", "$\\\\mathrm{R}^2$", x) )() |>
+    (\(x) gsub("\u2264", "$\\\\leq$", x) )() |>
+    (\(x) gsub("\u2260", "$\\\\neq$", x) )() |>
+    (\(x) gsub("<b>", "**", x) )() |>
+    (\(x) gsub("</b>", "**", x) )() |>
+    (\(x) gsub("<i>", "_", x) )() |>
+    (\(x) gsub("</i>", "_", x) )() |>
+    (\(x) gsub("</br>", "  \n ", x) )()
 }
 
 #' Rendering of an RMarkdown report as future promise

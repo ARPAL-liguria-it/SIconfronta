@@ -16,6 +16,8 @@
 #'  }
 #'
 #' @export
+#'
+#' @importFrom stats shapiro.test
 fct_shapiro <- function(values) {
 
   stopifnot(
@@ -23,7 +25,7 @@ fct_shapiro <- function(values) {
     is.numeric(values)
   )
 
-  shapiro_output <- shapiro.test(values)
+  shapiro_output <- stats::shapiro.test(values)
   result <- ifelse(shapiro_output$p.value <= 0.05,
                    "I valori non sono compatibili con una distribuzione normale",
                    "I valori sono compatibili con una distribuzione normale")
@@ -69,6 +71,8 @@ fct_shapiro <- function(values) {
 #'  Part 4: Detection and treatment of outliers. Section 4.3.2 and Annex A.
 #'  \url{https://store.uni.com/uni-iso-16269-4-2019}
 #' @export
+#'
+#' @importFrom stats sd qt
 fct_gesd <- function(values,
                      significance = 0.95,
                      m = round(length(values)/3, 0)) {
@@ -90,7 +94,7 @@ fct_gesd <- function(values,
     alfa <- 1 - signif
     n_l <- n_values - l_removed
     p <- (1 - alfa/2)^(1/(n_l))
-    tp <- qt(p, n_l - 2)
+    tp <- stats::qt(p, n_l - 2)
 
     ((n_l - 1) * tp) / sqrt((n_l - 2 + tp^2) * (n_l))
 
@@ -120,7 +124,7 @@ fct_gesd <- function(values,
   while (l <= m) {
     # mean and std.deviation
     x_mean <- mean(df$I)
-    x_sd <- sd(df$I)
+    x_sd <- stats::sd(df$I)
 
     # deviates from the mean
     df$deviate <- abs(df$I - x_mean)
@@ -193,6 +197,8 @@ fct_gesd <- function(values,
 #'  }
 #'
 #' @export
+#'
+#' @importFrom stats sd qt t.test
 fct_ttest_2samples <- function(data,
                       response,
                       group,
@@ -224,7 +230,7 @@ fct_ttest_2samples <- function(data,
   # defining a function for a short summary
   summary_function <- function(x) c(n = length(x),
                                     mean = mean(x, na.rm = TRUE),
-                                    sd = sd(x, na.rm = TRUE))
+                                    sd = stats::sd(x, na.rm = TRUE))
   # get the summary
   mysummary <- do.call(data.frame, aggregate(myformula, data, summary_function))
   colnames(mysummary) <- c(group, "n", "mean", "sd")
@@ -234,16 +240,16 @@ fct_ttest_2samples <- function(data,
   higher_mean <- data[which(data[[group]] == max_mean),][[response]]
   lower_mean <- data[which(data[[group]] == min_mean),][[response]]
   # # t-test results
-  ttest <- t.test(x = higher_mean, y = lower_mean,
-                  alternative = h1, conf.level = significance)
-  difference <- (mean(higher_mean) - mean(lower_mean)) %>% sprintf("%.*f", signiftodigits(., 4L), .)
+  ttest <- stats::t.test(x = higher_mean, y = lower_mean,
+                         alternative = h1, conf.level = significance)
+  difference <- (mean(higher_mean) - mean(lower_mean)) |> format_sigfig()
   diffconfint <- c(NA, NA)
-  diffconfint[1] <- ttest$conf.int[1] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  diffconfint[2] <- ttest$conf.int[2] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  tvalue <- ttest$statistic %>% round(4)
-  dof <- ttest$parameter %>% round(4)
-  tcritical <- qt(alpha, dof) %>% round(3)
-  pvalue <- ttest$p.value %>% round(4)
+  diffconfint[1] <- ttest$conf.int[1] |> format_sigfig()
+  diffconfint[2] <- ttest$conf.int[2] |> format_sigfig()
+  tvalue <- ttest$statistic |> round(4)
+  dof <- ttest$parameter |> round(4)
+  tcritical <- stats::qt(alpha, dof) |> round(3)
+  pvalue <- ttest$p.value |> round(4)
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -325,6 +331,8 @@ fct_ttest_2samples <- function(data,
 #'  }
 #'
 #' @export
+#'
+#' @importFrom stats aggregate var.test sd qf
 fct_ftest_2samples <- function(data,
                       response,
                       group,
@@ -356,9 +364,9 @@ fct_ftest_2samples <- function(data,
   # defining a function for a short summary
   summary_function <- function(x) c(n = length(x),
                                     mean = mean(x, na.rm = TRUE),
-                                    sd = sd(x, na.rm = TRUE))
+                                    sd = stats::sd(x, na.rm = TRUE))
   # get the summary
-  mysummary <- do.call(data.frame, aggregate(myformula, data, summary_function))
+  mysummary <- do.call(data.frame, stats::aggregate(myformula, data, summary_function))
   colnames(mysummary) <- c(group, "n", "mean", "sd")
   # get the group with higher sd
   max_sd <- mysummary[[group]][which.max(mysummary$sd)]
@@ -366,17 +374,17 @@ fct_ftest_2samples <- function(data,
   higher_sd <- data[which(data[[group]] == max_sd),][[response]]
   lower_sd <- data[which(data[[group]] == min_sd),][[response]]
   # # F-test results
-  ftest <- var.test(x = higher_sd, y = lower_sd,
+  ftest <- stats::var.test(x = higher_sd, y = lower_sd,
                   alternative = h1, conf.level = significance)
-  ratio <- (sd(higher_sd)^2 / sd(lower_sd)^2) %>% sprintf("%.*f", signiftodigits(., 4L), .)
+  ratio <- (stats::sd(higher_sd)^2 / stats::sd(lower_sd)^2) |> format_sigfig()
   ratioconfint <- c(NA, NA)
-  ratioconfint[1] <- ftest$conf.int[1] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  ratioconfint[2] <- ftest$conf.int[2] %>% sprintf("%.*f", signiftodigits(., 4L), .)
-  fvalue <- ftest$statistic %>% round(4)
-  dof <- ftest$parameter %>% unname # numerator and denominator
-  fcritical <- c(qf(1-alpha, dof[[1]], dof[[2]]),
-                 qf(alpha, dof[[1]], dof[[2]])) %>% round(4)
-  pvalue <- ftest$p.value %>% round(4)
+  ratioconfint[1] <- ftest$conf.int[1] |> format_sigfig()
+  ratioconfint[2] <- ftest$conf.int[2] |> format_sigfig()
+  fvalue <- ftest$statistic |> round(4)
+  dof <- ftest$parameter |> unname() # numerator and denominator
+  fcritical <- c(stats::qf(1-alpha, dof[[1]], dof[[2]]),
+                 stats::qf(alpha, dof[[1]], dof[[2]])) |> round(4)
+  pvalue <- ftest$p.value |> round(4)
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -445,7 +453,6 @@ fct_ftest_2samples <- function(data,
 #'
 #' @return A {plotly} boxplot for comparing two group of values. Raw data values
 #' are overlayed on top of the boxes.
-#'  }
 #'
 #' @export
 #'
@@ -527,6 +534,7 @@ boxplot_2samples <- function(data,
 #' @param response a character string with the label for the response numeric variable.
 #' @param udm a character string with the unit of measurement.
 #'
+<<<<<<< HEAD
 #' @return A {plotly} boxplot for comparing two group of values. Raw data values
 #' are overlayed on top of the boxes.
 #'  }
@@ -534,6 +542,14 @@ boxplot_2samples <- function(data,
 #' @export
 #'
 #' @import ggplot2
+=======
+#' @return A {ggplot2} boxplot for comparing two group of values. Raw data values
+#' are overlayed on top of the boxes.
+#'
+#' @export
+#'
+#' @rawNamespace import(ggplot2, except = last_plot)
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 ggboxplot_2samples <- function(data,
                              group,
                              response,
@@ -545,7 +561,12 @@ ggboxplot_2samples <- function(data,
     is.character(udm)
   )
 
+<<<<<<< HEAD
   cols <- c("sì" = "#999999", "no" = "black")
+=======
+  rimosso <- NULL
+  cols <- c("s\u00EC" = "#999999", "no" = "black")
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
 
   xlabtitle <- group
   ylabtitle <- paste0(response, ifelse(udm != "", paste0(" (", udm, ")"), ""))
@@ -569,7 +590,11 @@ ggboxplot_2samples <- function(data,
     ggplot2::labs(x = xlabtitle,
                   y = ylabtitle) +
     ggplot2::scale_color_manual(values = cols,
+<<<<<<< HEAD
                                 breaks = c("sì", "no"),
+=======
+                                breaks = c("s\u00EC", "no"),
+>>>>>>> b494620ec7298a3c9a9eb1ed7eb0945593ed5e97
                                 labels = c("rimosso", "non rimosso"),
                                 name = ggplot2::element_blank()) +
     ggplot2::theme_bw() +
@@ -593,6 +618,9 @@ ggboxplot_2samples <- function(data,
 #'   levels of the group variable.
 #'
 #' @export
+#'
+#' @import data.table
+#' @importFrom stats sd median
 rowsummary_2samples <- function(data,
                                 response,
                                 group,
@@ -608,12 +636,7 @@ rowsummary_2samples <- function(data,
     group %in% colnames(data)
   )
 
-  # number to the desired number of significant figures
-  numtosignif <- function(number, mydigits) {
-    # signiftodigits in utils_helper.R
-    sprintf("%.*f", signiftodigits(number, mydigits), number)
-  }
-
+  statistica <- NULL
   mydata <- data.table(data)
   lvl <- levels(as.factor(mydata[[group]]))
   roworder <- c("n", "massimo", "media", "mediana", "minimo", "deviazione standard")
@@ -623,18 +646,18 @@ rowsummary_2samples <- function(data,
   mysummary <- mydata[, lapply(.SD, function(x) {
     c(
       n = .N,
-      massimo = max(x, na.rm = TRUE) |> numtosignif(signif),
-      media = mean(x, na.rm = TRUE) |> numtosignif(signif),
-      mediana = median(x, na.rm = TRUE) |> numtosignif(signif),
-      minimo = min(x, na.rm = TRUE) |> numtosignif(signif),
-      `deviazione standard` = sd(x, na.rm = TRUE) |> numtosignif(signif)
+      massimo = max(x, na.rm = TRUE) |> format_sigfig(signif),
+      media = mean(x, na.rm = TRUE) |> format_sigfig(signif),
+      mediana = stats::median(x, na.rm = TRUE) |> format_sigfig(signif),
+      minimo = min(x, na.rm = TRUE) |> format_sigfig(signif),
+      `deviazione standard` = stats::sd(x, na.rm = TRUE) |> format_sigfig(signif)
     )
   }),
   by = group,
   .SDcols = response][,
     # table with three columns
     "statistica" := rep(roworder, length(lvl))] |>
-    dcast(eval(fm), value.var = response) |>
+    data.table::dcast(eval(fm), value.var = response) |>
     # reordering rows
     (\(x) x[roworder])()
 
