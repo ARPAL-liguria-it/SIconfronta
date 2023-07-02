@@ -5,7 +5,8 @@
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @param r a {reactiveValues} list.
-#' @return a list of radio buttons with the elaborations and an action button.
+#' @return a list of radio buttons with the elaborations and an action button
+#' and an action button for saving the results.
 #'
 #' @noRd
 #'
@@ -33,7 +34,7 @@ mod_aim01_ui <- function(id) {
       ),
 
       actionButton(
-        ns("aimbtn"),
+        ns("nextbtn"),
         label = "Avanti",
         icon = icon("circle-right")
       ),
@@ -106,7 +107,7 @@ mod_aim01_server <- function(id, r) {
     # adding the selected option to the r list ----
     r$aim01 <- reactiveValues()
 
-    observeEvent(input$aimbtn, {
+    observeEvent(input$nextbtn, {
       r$aim01$aim <- input$aim
     })
 

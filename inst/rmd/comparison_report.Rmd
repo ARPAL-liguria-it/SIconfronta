@@ -131,7 +131,16 @@ for (i in ordered_analytes) {
 
 # Validazione dei calcoli
 
-In questa sezione vengono mostrati gli esiti dei calcoli effettuati su una serie di dati di riferimento, al fine di dimostrare la loro correttezza e consistenza nel tempo.
+A ogni rilascio il codice viene sottoposto a 285 test per la verifica
+della correttezza dei risultati forniti. I test coprono circa il 94% del codice 
+di cui è composta l'applicazione.
+
+L'applicazione è distribuita in un ambiente protetto da aggiornamenti o modifiche
+accidentali.
+
+Maggiori dettagli sono consultabili all'indirizzo (https://github.com/andreabz/comparat/actions)
+o, eseguendo `devtools::check()` sulla macchina su cui è distribuita l'applicazione,
+all'interno della cartella `/srv/shiny-server/comparat`.
 
 ## Informazioni sulla sessione
 

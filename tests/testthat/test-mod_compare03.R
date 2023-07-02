@@ -31,6 +31,10 @@ testServer(
     r$compare03x$udm <- "ug/L"
     session$flushReact()
 
+    ## testing the flags
+    expect_equal(savedel_flag(), "save")
+    expect_equal(somethingsaved(), "not_saved")
+
     session$setInputs(save = 1)
 
     expect_true(input$save == 1)
@@ -41,6 +45,11 @@ testServer(
                    "outliers", "normality", "summary", "data", "udm",
                    "parameter", "ttest", "ftest"), ignore.order = TRUE)
     expect_length(names(r$compare03$yield), 12)
+
+    ## testing the flags
+    expect_equal(savedel_flag(), "delete")
+    expect_equal(somethingsaved(), "saved")
+
 
   })
 

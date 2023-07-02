@@ -11,19 +11,19 @@ testServer(
 
     # checking the output
     session$setInputs(aim = "2samples",
-                      aimbtn = TRUE)
+                      nextbtn = TRUE)
     expect_true(r$aim01$aim == "2samples")
     session$setInputs(aim = "2samples_par",
-                      aimbtn = TRUE)
+                      nextbtn = TRUE)
     expect_true(r$aim01$aim == "2samples_par")
     session$setInputs(aim = "1sample_mu",
-                      aimbtn = TRUE)
+                      nextbtn = TRUE)
     expect_true(r$aim01$aim == "1sample_mu")
     session$setInputs(aim = "1sample_sigma",
-                      aimbtn = TRUE)
+                      nextbtn = TRUE)
     expect_true(r$aim01$aim == "1sample_sigma")
     session$setInputs(aim = "2values_unc",
-                      aimbtn = TRUE)
+                      nextbtn = TRUE)
     expect_true(r$aim01$aim == "2values_unc")
 })
 

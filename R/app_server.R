@@ -6,13 +6,37 @@
 #' @noRd
 #'
 #' @import shiny
-#' @importFrom shinyjs show hide
+#' @importFrom shinyjs enable disable
 app_server <- function(input, output, session) {
+  # disabling all tabs except aim and readme when the app starts ----
+  shinyjs::disable(selector = "#navbar li a[data-value=data]")
+  shinyjs::disable(selector = "#navbar li a[data-value=compare]")
+  shinyjs::disable(selector = "#navbar li a[data-value=report]")
 
   r <- reactiveValues()
   mod_aim01_server("scopo", r)
   mod_loadfile02_server("dati", r)
   mod_compare03_server("confronto", r)
   mod_report04_server("report", r)
+
+
+  # enable and disable tabs when clicking on the next buttons ----
+  observeEvent(input$`scopo-nextbtn`, {
+    shinyjs::enable(selector = "#navbar li a[data-value=data]")
+    shinyjs::disable(selector = "#navbar li a[data-value=aim]")
+    updateNavbarPage(session, "navbar", "data")
+  })
+
+  observeEvent(input$`dati-nextbtn`, {
+    shinyjs::enable(selector = "#navbar li a[data-value=compare]")
+    shinyjs::disable(selector = "#navbar li a[data-value=data]")
+    updateNavbarPage(session, "navbar", "compare")
+  })
+
+  observeEvent(input$`confronto-nextbtn`, {
+    shinyjs::enable(selector = "#navbar li a[data-value=report]")
+    shinyjs::disable(selector = "#navbar li a[data-value=compare]")
+    updateNavbarPage(session, "navbar", "report")
+  })
 
 }

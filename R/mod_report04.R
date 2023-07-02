@@ -20,8 +20,7 @@ mod_report04_ui <- function(id){
 
     hr(),
 
-    h4("Cosa includere nel report"),
-    checkboxGroupInput(ns("content"), label = "Test",
+    checkboxGroupInput(ns("content"), label = h4("Quali test includere nel report"),
                        choices = c("Normalit\u00E0 e outliers" = "shapirotest",
                                    "Confronto tra medie" = "ttest",
                                    "Confronto tra varianze" = "ftest"),
