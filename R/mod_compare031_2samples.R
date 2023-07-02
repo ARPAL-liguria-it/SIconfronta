@@ -79,6 +79,7 @@ mod_compare031_2samples_inputs_ui <- function(id) {
 #' @noRd
 #'
 #' @import shiny
+#' @import markdown
 #' @importFrom plotly plotlyOutput
 #' @importFrom DT DTOutput
 mod_compare031_2samples_output_ui <- function(id) {

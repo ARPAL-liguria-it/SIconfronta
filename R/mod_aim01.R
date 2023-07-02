@@ -10,6 +10,7 @@
 #' @noRd
 #'
 #' @import shiny
+#' @import markdown
 mod_aim01_ui <- function(id) {
   ns <- NS(id)
   tagList(fluidRow(

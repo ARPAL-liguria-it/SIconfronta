@@ -177,6 +177,7 @@ mod_loadfile02_ui <- function(id) {
 #'
 #' @import shiny
 #' @import data.table
+#' @import markdown
 #' @importFrom DT datatable renderDT
 #' @importFrom stats aggregate
 mod_loadfile02_server <- function(id, r) {
@@ -309,12 +310,12 @@ mod_loadfile02_server <- function(id, r) {
 
     ### checking how many character columns are in the dataset
     charok <- reactive({
-      shiny::validate(
-        shiny::need(sumchar() == 2,
+      validate(
+        need(sumchar() == 2,
              message = sprintf(
-               "Hai fornito un dataset con %s colonn%s di testo ma ne servono 2.",
-               sumchar(),
-               ifelse(sumchar() == 1, "a", "e")
+             "Hai fornito un dataset con %s colonn%s di testo ma ne servono 2.",
+             sumchar(),
+             ifelse(sumchar() == 1, "a", "e")
              ))
       )
 
@@ -341,15 +342,15 @@ mod_loadfile02_server <- function(id, r) {
 
     ### checking how many grouping levels are in the dataset
     groupok <- reactive({
-      shiny::validate(
-        shiny::need(maxgroup() == reqsumgroup(),
+      validate(
+        need(maxgroup() == reqsumgroup(),
              message = sprintf(
                "Hai fornito un dataset con un massimo di %s grupp%s ma ne %s.",
                maxgroup(),
                ifelse(maxgroup() == 1, "o", "i"),
                ifelse(reqsumgroup() == 1, "serve 1", "servono 2")
              )),
-        shiny::need(mingroup() == reqsumgroup(),
+        need(mingroup() == reqsumgroup(),
              message = sprintf(
                "Hai fornito un dataset con un minimo di %s grupp%s ma ne %s.",
                mingroup(),
@@ -386,15 +387,15 @@ mod_loadfile02_server <- function(id, r) {
 
     ### checking how many values for the group and parameters pair are in the dataset
     valuesok <- reactive({
-      shiny::validate(
-        shiny::need(maxvalues() <= reqmaxvalues(),
+      validate(
+        need(maxvalues() <= reqmaxvalues(),
              message = sprintf(
                "Hai fornito un dataset con un massimo di %s valor%s per coppia di analita e gruppo ma posso gestirne al massimo fino a %s.",
                maxvalues(),
                ifelse(maxvalues() == 1, "e", "i"),
                reqmaxvalues()
              )),
-        shiny::need(minvalues() >= reqminvalues(),
+        need(minvalues() >= reqminvalues(),
              message = sprintf(
                "Hai fornito un dataset con un minimo di %s valor%s per coppia di analita e gruppo ma non posso gestirne meno di %s.",
                minvalues(),
@@ -406,7 +407,6 @@ mod_loadfile02_server <- function(id, r) {
       maxvalues() <= reqmaxvalues() & minvalues() >= reqminvalues()
 
     })
-
 
 
     ## checking that is all fine

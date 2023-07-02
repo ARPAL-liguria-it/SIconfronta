@@ -1,3 +1,14 @@
+values2unc <- data.table::fread(
+  system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+  header = "auto",
+  stringsAsFactors = TRUE)
+
+sample1 <- data.table::fread(
+  system.file("extdata", "raw_1sample.csv", package = "comparat"),
+  header = "auto",
+  stringsAsFactors = TRUE)
+
+
 r <- reactiveValues(aim01 = reactiveValues())
 
 # testing for 2 samples
@@ -14,16 +25,16 @@ testServer(mod_loadfile02_server,
 
              # checking the upload process
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "tomato_yields.csv", package = "comparat"),
-               name = "tomato_yields.csv"
+               datapath = system.file("extdata", "raw_tomato_yields.csv", package = "comparat"),
+               name = "raw_tomato_yields.csv"
              ))
 
              # filename
-             expect_equal(input$file$name, "tomato_yields.csv")
+             expect_equal(input$file$name, "raw_tomato_yields.csv")
              # datapath
              expect_equal(
                input$file$datapath,
-               system.file("data-raw", "tomato_yields.csv", package = "comparat")
+               system.file("extdata", "raw_tomato_yields.csv", package = "comparat")
              )
 
              # column names
@@ -117,16 +128,16 @@ testServer(mod_loadfile02_server,
 
              # checking the upload process
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_1sample.csv", package = "comparat"),
-               name = "test_1sample.csv"
+               datapath = system.file("extdata", "raw_1sample.csv", package = "comparat"),
+               name = "raw_1sample.csv"
              ))
 
              # filename
-             expect_equal(input$file$name, "test_1sample.csv")
+             expect_equal(input$file$name, "raw_1sample.csv")
              # datapath
              expect_equal(
                input$file$datapath,
-               system.file("data-raw", "test_1sample.csv", package = "comparat")
+               system.file("extdata", "raw_1sample.csv", package = "comparat")
              )
 
              # column names
@@ -217,16 +228,16 @@ testServer(mod_loadfile02_server,
 
              # checking the upload process
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2values_unc.csv", package = "comparat"),
-               name = "test_2values_unc.csv"
+               datapath = system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+               name = "raw_2values_unc.csv"
              ))
 
              # filename
-             expect_equal(input$file$name, "test_2values_unc.csv")
+             expect_equal(input$file$name, "raw_2values_unc.csv")
              # datapath
              expect_equal(
                input$file$datapath,
-               system.file("data-raw", "test_2values_unc.csv", package = "comparat")
+               system.file("extdata", "raw_2values_unc.csv", package = "comparat")
              )
 
              # column names
@@ -319,24 +330,24 @@ testServer(mod_loadfile02_server,
 
              # 1 group instead of 2
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_1sample.csv", package = "comparat"),
-               name = "test_1sample.csv"
+               datapath = system.file("extdata", "raw_1sample.csv", package = "comparat"),
+               name = "raw_1sample.csv"
              ))
 
              expect_error(groupok())
 
              # 3 groups on some parameters instead of 2 on all parameters
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2samples_wronggroups.csv", package = "comparat"),
-               name = "test_2samples_wronggroups.csv"
+               datapath = system.file("extdata", "raw_2samples_wronggroups.csv", package = "comparat"),
+               name = "raw_2samples_wronggroups.csv"
              ))
 
              expect_error(groupok())
 
              # no grouping variable
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_nogroups.csv", package = "comparat"),
-               name = "test_nogroups.csv"
+               datapath = system.file("extdata", "raw_nogroups.csv", package = "comparat"),
+               name = "raw_nogroups.csv"
              ))
 
              expect_error(charok())
@@ -344,16 +355,16 @@ testServer(mod_loadfile02_server,
 
              # 2 numerical variable instead of 1
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2values_unc.csv", package = "comparat"),
-               name = "test_2values_unc.csv"
+               datapath = system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+               name = "raw_2values_unc.csv"
              ))
 
              expect_error(numok())
 
              # 5 values for a parameter and group pair insted of a minimum of 6 values
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "data-raw/test_2samples_4rows.csv", package = "comparat"),
-               name = "test_2samples_4rows.csv"
+               datapath = system.file("extdata", "raw_2samples_4rows.csv", package = "comparat"),
+               name = "raw_2samples_4rows.csv"
              ))
 
              expect_error(valuesok())
@@ -371,24 +382,24 @@ testServer(mod_loadfile02_server,
 
              # 2 groups instead of 1
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2samples.csv", package = "comparat"),
-               name = "test_2samples.csv"
+               datapath = system.file("extdata", "raw_2samples.csv", package = "comparat"),
+               name = "raw_2samples.csv"
              ))
 
              expect_error(groupok())
 
              # 3 groups on some parameters instead of 1 on all parameters
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_1sample_wronggroups.csv", package = "comparat"),
-               name = "test_1sample_wronggroups.csv"
+               datapath = system.file("extdata", "raw_1sample_wronggroups.csv", package = "comparat"),
+               name = "raw_1sample_wronggroups.csv"
              ))
 
              expect_error(groupok())
 
              # no grouping variable
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_nogroups.csv", package = "comparat"),
-               name = "test_nogroups.csv"
+               datapath = system.file("extdata", "raw_nogroups.csv", package = "comparat"),
+               name = "raw_nogroups.csv"
              ))
 
              expect_error(charok())
@@ -396,8 +407,8 @@ testServer(mod_loadfile02_server,
 
              # 2 numerical variable instead of 1
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2values_unc.csv", package = "comparat"),
-               name = "test_2values_unc.csv"
+               datapath = system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+               name = "raw_2values_unc.csv"
              ))
 
              expect_error(numok())
@@ -405,8 +416,8 @@ testServer(mod_loadfile02_server,
 
              # 5 values for a parameter and group pair insted of a minimum of 6 values
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "data-raw/test_1sample_4rows.csv", package = "comparat"),
-               name = "test_1sample_4rows.csv"
+               datapath = system.file("extdata", "raw_1sample_4rows.csv", package = "comparat"),
+               name = "raw_1sample_4rows.csv"
              ))
 
              expect_error(valuesok())
@@ -424,24 +435,24 @@ testServer(mod_loadfile02_server,
 
              # 1 numerical variable instead of 2
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2samples.csv", package = "comparat"),
-               name = "test_2samples.csv"
+               datapath = system.file("extdata", "raw_2samples.csv", package = "comparat"),
+               name = "raw_2samples.csv"
              ))
 
              expect_error(numok())
 
              # 3 groups on some parameters instead of 1 on all parameters
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_2values_unc_wronggroups.csv", package = "comparat"),
-               name = "test_2values_unc_wronggroups.csv"
+               datapath = system.file("extdata", "raw_2values_unc_wronggroups.csv", package = "comparat"),
+               name = "raw_2values_unc_wronggroups.csv"
              ))
 
              expect_error(groupok())
 
              # no grouping variable
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "test_nogroups.csv", package = "comparat"),
-               name = "test_nogroups.csv"
+               datapath = system.file("extdata", "raw_nogroups.csv", package = "comparat"),
+               name = "raw_nogroups.csv"
              ))
 
              expect_error(numok())
@@ -450,8 +461,8 @@ testServer(mod_loadfile02_server,
 
              # 2 values for a parameter and group pair insted of a minimum of 1 value
              session$setInputs(file = list(
-               datapath = system.file("data-raw", "data-raw/test_1sample_4rows.csv", package = "comparat"),
-               name = "test_1sample_4rows.csv"
+               datapath = system.file("extdata", "raw_1sample_4rows.csv", package = "comparat"),
+               name = "raw_1sample_4rows.csv"
              ))
 
              expect_error(valuesok())
