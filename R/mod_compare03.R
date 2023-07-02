@@ -169,6 +169,8 @@ mod_compare03_ui <- function(id) {
 #'      \item{ttest}{a Markdown formatted string with the results for the t-test.}
 #'      \item{ftest}{a Markdown formatted string with the results for the F-test.}
 #'    }
+#'  Additionally the selected parameter is stored in \code{r$compare03$myparameter}
+#'  and a flag for saved data is stored in \code{r$compare03$saved_flag}.
 #'
 #' @noRd
 #'
@@ -295,6 +297,10 @@ mod_compare03_server <- function(id, r) {
 
     observeEvent(somethingsaved(), {
       updateTabsetPanel(inputId = "nextpanel", selected = somethingsaved())
+    })
+
+    observeEvent(input$nextbtn, {
+      r$compare03$saved_flag <- input$nextbtn
     })
 
 

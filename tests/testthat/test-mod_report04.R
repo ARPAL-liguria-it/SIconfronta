@@ -12,6 +12,10 @@ testServer(
     r$loadfile02$groupvar <- "fertilizer"
     r$loadfile02$data <- tomato_yields
     r$compare03$myparameter <- "yield"
+    r$compare03$yield$normality <- "myresult"
+    r$compare03$yield$ttest <- NA
+    r$compare03$yield$ftest <- "ftestresult"
+    r$compare03$saved_flag <- 1
     session$flushReact()
 
     ns <- session$ns
