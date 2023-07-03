@@ -114,14 +114,17 @@ fct_ttest_2samples_par <- function(group1,
 
   # degree of freedom
   dof <- (max_mean_sd^2/max_mean_n + min_mean_sd^2/min_mean_n)^2/
-    ( (max_mean_sd^4/(max_mean_n^2 * (max_mean_n - 1) )) + (min_mean_sd^4/(min_mean_n^2 * (min_mean_n - 1))) )
+    ( (max_mean_sd^4/(max_mean_n^2 * (max_mean_n - 1) )) +
+        (min_mean_sd^4/(min_mean_n^2 * (min_mean_n - 1))) )
 
   # t critical and p-value
   tcritical <- stats::qt(alpha, dof)
-  pvalue <- ifelse(h1 == "two.sided", 2 * stats::pt(tvalue, dof, lower.tail = FALSE), stats::pt(tvalue, dof, lower.tail = FALSE))
+  pvalue <- ifelse(h1 == "two.sided",
+                   2 * stats::pt(tvalue, dof, lower.tail = FALSE),
+                   stats::pt(tvalue, dof, lower.tail = FALSE))
 
   # difference confidence interval
-  ci <- diff_mean * c(-1, 1) * tcritical * diff_stderr
+  ci <- diff_mean + c(-1, 1) * tcritical * diff_stderr
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -135,13 +138,17 @@ fct_ttest_2samples_par <- function(group1,
   )
 
   positive <- switch (alternative,
-                      "different" = sprintf("la media di %s e la media di %s sono statisticamente differenti", max_mean_gr, min_mean_gr),
-                      "greater" = sprintf("la media di %s \u00E8 statisticamente maggiore della media di %s", max_mean_gr, min_mean_gr)
+                      "different" = sprintf("la media di %s e la media di %s sono statisticamente differenti",
+                                            max_mean_gr, min_mean_gr),
+                      "greater" = sprintf("la media di %s \u00E8 statisticamente maggiore della media di %s",
+                                          max_mean_gr, min_mean_gr)
   )
 
   negative <- switch (alternative,
-                      "different" = sprintf("la media di %s e la media di %s non sono statisticamente differenti", max_mean_gr, min_mean_gr),
-                      "greater" = sprintf("la media di %s non \u00E8 statisticamente maggiore della media di %s", max_mean_gr, min_mean_gr)
+                      "different" = sprintf("la media di %s e la media di %s non sono statisticamente differenti",
+                                            max_mean_gr, min_mean_gr),
+                      "greater" = sprintf("la media di %s non \u00E8 statisticamente maggiore della media di %s",
+                                          max_mean_gr, min_mean_gr)
   )
 
   result <- ifelse(tvalue < tcritical, negative, positive)
@@ -160,19 +167,19 @@ fct_ttest_2samples_par <- function(group1,
 
 }
 
-#' Displays the results of a \eqn{F}-test for two groups of values
+#' Displays the results of a \eqn{F}-test for two groups of values summarised by
+#' standard deviations and number of values.
 #'
 #' @description The function displays the results of a \eqn{F}-test performed
-#'  on two groups of values.
+#'  on two groups of values summarised by standard deviations and number of values.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
-#' @param data a \code{data.frame} or \code{data.table} with the results
-#'   relevant for testing. At least a two-levels grouping \code{factor} variable
-#'   and a \code{numeric} vector with the measurements should be included.
-#' @param response the name of a numeric vector in \code{data}.
-#'   Quotation (" ") is not required.
-#' @param group the name of a two-level factor variable that identifies the groups
-#'   in \code{data}. Quotation (" ") is not required.
+#' @param group1 a character value with the name of the first group.
+#' @param sd1 a numeric value with the standard deviation for the first group.
+#' @param n1 a numeric value with the number of values for the first group.
+#' @param group2 a character value with the name of the second group.
+#' @param sd2 a numeric value with the standard deviation for the second group.
+#' @param n2 a numeric value with the number of values for the second group.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
 #' @param alternative a character string specifying the alternative hypotesis,
@@ -205,17 +212,21 @@ fct_ttest_2samples_par <- function(group1,
 #' @export
 #'
 #' @importFrom stats aggregate var.test sd qf
-fct_ftest_2samples <- function(data,
-                      response,
-                      group,
-                      significance = 0.95,
-                      alternative = "different") {
+fct_ftest_2samples_par <- function(group1,
+                                   sd1,
+                                   n1,
+                                   group2,
+                                   sd2,
+                                   n2,
+                                   significance = 0.95,
+                                   alternative = "different") {
   stopifnot(
-    is.data.frame(data),
-    is.character(response),
-    is.character(group),
-    response %in% colnames(data),
-    group %in% colnames(data),
+    is.character(group1),
+    is.character(group2),
+    is.numeric(sd1),
+    is.numeric(sd2),
+    is.numeric(n1),
+    is.numeric(n2),
     alternative %in% c("different", "greater")
   )
 
