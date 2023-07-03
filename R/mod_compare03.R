@@ -14,6 +14,7 @@
 #'  \item{parameter}{a selectize input box with the name of the parameter.}
 #'  \item{save}{an action button for saving the results. When results are saved, it is not shown.}
 #'  \item{delete}{an action button for deleting the results. When results are not saved, it is not shown.}
+#'  \item{nextbtn}{an action button visible when some results have been saved.}
 #' }
 #'
 #' @noRd
@@ -62,7 +63,7 @@ mod_compare03_ui <- function(id) {
       ),
 
 
-      # save and delete buttons
+      # save and delete buttons ----
       tabsetPanel(
         id = ns("savedel"),
         type = "hidden",
@@ -86,7 +87,25 @@ mod_compare03_ui <- function(id) {
                    icon = icon("eraser")
                  ))
 
+      ),
+
+
+      # showing a next button when something has been saved ----
+      tabsetPanel(
+        id = ns("nextpanel"),
+        type = "hidden",
+
+        tabPanel("not_saved"),
+
+        tabPanel("saved",
+                 hr(),
+                 actionButton(
+                   ns("nextbtn"),
+                   label = "Avanti",
+                   icon = icon("circle-right")
+                   ))
       )
+
     ),
 
 
@@ -150,6 +169,8 @@ mod_compare03_ui <- function(id) {
 #'      \item{ttest}{a Markdown formatted string with the results for the t-test.}
 #'      \item{ftest}{a Markdown formatted string with the results for the F-test.}
 #'    }
+#'  Additionally the selected parameter is stored in \code{r$compare03$myparameter}
+#'  and a flag for saved data is stored in \code{r$compare03$saved_flag}.
 #'
 #' @noRd
 #'
@@ -258,6 +279,28 @@ mod_compare03_server <- function(id, r) {
                    input$delete), {
 
       updateTabsetPanel(inputId = "savedel", selected = savedel_flag())
+    })
+
+
+    # updating the next panel ----
+
+    somethingsaved <- reactive({
+      req(input$parameter)
+
+      mylist <- reactiveValuesToList(r$compare03)
+
+      lapply(mylist, function(x) x["saved"] == "TRUE") |>
+         unlist() |>
+         sum(na.rm = TRUE) |>
+         (\(x) ifelse(x >= 1, "saved", "not_saved"))()
+    })
+
+    observeEvent(somethingsaved(), {
+      updateTabsetPanel(inputId = "nextpanel", selected = somethingsaved())
+    })
+
+    observeEvent(input$nextbtn, {
+      r$compare03$saved_flag <- input$nextbtn
     })
 
 

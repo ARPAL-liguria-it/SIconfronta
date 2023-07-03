@@ -5,7 +5,7 @@
 [![R-CMD-check](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml)
 [![test-coverage](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/andreabz/comparat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/andreabz/comparat?branch=master)
+coverage](https://codecov.io/gh/andreabz/comparat/branch/master/graph/badge.svg)](https://app.codecov.io/gh/andreabz/comparat?branch=experimental)
 <!-- badges: end -->
 
 Il software CompaRat è stato sviluppato allo scopo di effettuare

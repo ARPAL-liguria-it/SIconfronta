@@ -7,7 +7,6 @@
 #'
 #' @import shiny
 #' @importFrom future plan multisession
-#' @importFrom shinyjs hidden
 #' @importFrom bslib bs_theme page_navbar nav_panel
 future::plan(future::multisession)
 
@@ -18,6 +17,7 @@ app_ui <- function(request) {
     # Your application UI logic
 
     bslib::page_navbar(
+      id = "navbar",
       theme = bslib::bs_theme(version = 5, bootswatch = "sandstone"),
       title = tags$div(class = "navbar-brand", href = "#",
                        tags$img(src = "www/comparatlogo.png",
@@ -33,11 +33,12 @@ app_ui <- function(request) {
       lang = "it",
 
       # Navbar items ----
-      bslib::nav_panel("Scopo", mod_aim01_ui("scopo")),
-      bslib::nav_panel("Dati", mod_loadfile02_ui("dati")),
-      bslib::nav_panel("Confronti", mod_compare03_ui("confronto")),
-      bslib::nav_panel("Report", mod_report04_ui("report")),
-      bslib::nav_panel("Leggimi", includeMarkdown(system.file("rmd", "readme.Rmd",package = "comparat")))
+      bslib::nav_panel("Scopo", value = "aim", mod_aim01_ui("scopo")),
+      bslib::nav_panel("Dati", value = "data", mod_loadfile02_ui("dati")),
+      bslib::nav_panel("Confronti", value = "compare", mod_compare03_ui("confronto")),
+      bslib::nav_panel("Report", value = "report", mod_report04_ui("report")),
+      bslib::nav_panel("Leggimi", value = "readme",
+                       includeMarkdown(system.file("rmd", "readme.Rmd",package = "comparat")))
 
     )
   )

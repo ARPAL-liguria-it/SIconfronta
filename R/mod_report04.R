@@ -13,21 +13,18 @@
 mod_report04_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h4("Un po' di contesto"),
+    h4("Informazioni aggiuntive"),
     textInput(ns("title"), label = "Titolo del report", width = "80%"),
     textAreaInput(ns("description"), label = "Descrizione dell'esperimento", width = "80%"),
     textAreaInput(ns("discussion"), label = "Interpretazione dei risultati", width = "80%"),
 
     hr(),
 
-    h4("Cosa includere nel report"),
-    checkboxGroupInput(ns("content"), label = "Test",
-                       choices = c("Normalit\u00E0 e outliers" = "shapirotest",
-                                   "Confronto tra medie" = "ttest",
-                                   "Confronto tra varianze" = "ftest"),
-                       selected = c("shapirotest",
-                                    "ttest",
-                                    "ftest")),
+    checkboxGroupInput(ns("content"),
+                       label = h4("Test da includere nel report"),
+                       width = "80%",
+                       choices = "",
+                       selected = ""),
 
     hr(),
 
@@ -59,6 +56,35 @@ mod_report04_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    # dinamically update the checkboxgroupinput ----
+    observeEvent(r$compare03$saved_flag, {
+      mylist <- reactiveValuesToList(r$compare03)
+      mylist <- mylist[names(mylist) %notin% c("myparameter", "saved_flag")]
+
+      normality <- sapply(mylist, function(x) !is.null(x$normality)) |>
+        sum() |>
+        (\(x) ifelse(x >= 1, c(normality = "Normalit\u00E0 e outliers"), NULL))()
+
+      ttest <- sapply(mylist, function(x) !is.null(x$ttest)) |>
+        sum() |>
+        (\(x) ifelse(x >= 1, c(ttest = "Confronto tra medie"), NULL))()
+
+      ftest <- sapply(mylist, function(x) !is.null(x$ftest)) |>
+        sum() |>
+        (\(x) ifelse(x >= 1, c(ftest = "Confronto tra varianze"), NULL))()
+
+      mychoices_df <- rbind(normality, ttest, ftest)
+      mychoices_names <- mychoices_df[,1]
+      mychoices <- rownames(mychoices_df)
+      names(mychoices) <- mychoices_names
+
+      updateCheckboxGroupInput(session,
+                              "content",
+                               choices = mychoices,
+                               selected = mychoices)
+    })
+
+
     r$report04 <- reactiveValues()
 
     output$makereport <- downloadHandler(
@@ -85,7 +111,7 @@ mod_report04_server <- function(id, r){
         r$report04$discussion <- input$discussion
         r$report04$content <- input$content
 
-        # input parameters for the rmd file
+        # input parameters for the rmd file ----
         params <- isolate(lapply(r, reactiveValuesToList))
 
         id <- showNotification(

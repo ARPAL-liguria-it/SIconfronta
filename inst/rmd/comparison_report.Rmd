@@ -33,6 +33,7 @@ title: "`r params$report04$title`"
 ---
 ```{r libraries, include=FALSE}
 library(data.table)
+`%notin%` = Negate(`%in%`)
 ```
 
 ```{r description, echo=FALSE, results = "asis"}
@@ -48,12 +49,13 @@ cat('\n\n<!-- -->\n\n')
 ---
 \newpage
 
-```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", names(params$compare03$myparameter)), "Boxplot per l'analita ", names(params$compare03$myparameter), ".")}
+```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), "Boxplot per l'analita ", ordered_analytes, ".")}
+
 data_caption <- "Valori a confronto per l'analita %s."
 summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
 boxplot_caption <- "Boxplot per l'analita %s."
 
-analytes <- names(params$compare03)[names(params$compare03) != "myparameter"]
+analytes <- names(params$compare03)[names(params$compare03) %notin% c("myparameter", "saved_flag")]
 myorder <- as.character(params$loadfile02$parlist)
 
 ordered_analytes <- analytes[order(match(analytes, myorder))]
@@ -74,7 +76,7 @@ for (i in ordered_analytes) {
   # boxplot
   print(params$compare03[[i]]$boxplot)
 
-  if("shapirotest" %in% params$report04$content) {
+  if("normality" %in% params$report04$content) {
 
   # checking normality and outliers with Shapiro-Wilk and GESD test
   cat(paste("#", "Test per la verifica della normalità (Shapiro-Wilk)", "\n"))
@@ -131,7 +133,17 @@ for (i in ordered_analytes) {
 
 # Validazione dei calcoli
 
-In questa sezione vengono mostrati gli esiti dei calcoli effettuati su una serie di dati di riferimento, al fine di dimostrare la loro correttezza e consistenza nel tempo.
+A ogni rilascio il codice viene sottoposto a una serie di test per la verifica
+della correttezza dei risultati forniti. I test coprono oltre il 90% del codice 
+di cui è composta l'applicazione.
+Il rilascio avviene solo nel caso in cui tutti i test risultino superati.
+
+L'applicazione è distribuita in un ambiente protetto da aggiornamenti o modifiche
+accidentali.
+
+Maggiori dettagli sono consultabili all'indirizzo (https://github.com/andreabz/comparat/actions)
+o eseguendo `devtools::check()` e `covr::report()` sulla macchina su cui risiede l'applicazione,
+all'interno della cartella `/srv/shiny-server/comparat`.
 
 ## Informazioni sulla sessione
 
