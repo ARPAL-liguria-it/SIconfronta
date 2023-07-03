@@ -299,7 +299,24 @@ mod_compare03_server <- function(id, r) {
       updateTabsetPanel(inputId = "nextpanel", selected = somethingsaved())
     })
 
+
     observeEvent(input$nextbtn, {
+      showModal(
+        modalDialog(
+          title = "Non potrai tornare indietro",
+          "Hai salvato i risultati per tutti i parametri di interesse?",
+          easyClose = TRUE,
+          footer = tagList(
+            actionButton(ns("yesbtn"), "S\u00EC"),
+            modalButton("No")
+          )
+        )
+      )
+    })
+
+    observeEvent(input$yesbtn, {
+      removeModal()
+
       r$compare03$saved_flag <- input$nextbtn
     })
 

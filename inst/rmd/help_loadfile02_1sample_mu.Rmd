@@ -9,7 +9,12 @@ In attesa di un file .csv con tre colonne:
   
 Non sono ammessi né meno di 5 valori, né più di 30 valori per ogni coppia di parametro e gruppo.
   
-Ad esempio:
+
+
+
+<details>
+<summary> Clicca per un esempio </summary>
+
 <style>
 
     .basic-styling table,
@@ -42,3 +47,6 @@ Ad esempio:
 | Zn            | , | strumento 1   | , | 215.9           |
 
 </div>
+</details>
+
+

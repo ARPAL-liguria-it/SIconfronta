@@ -108,6 +108,22 @@ mod_aim01_server <- function(id, r) {
     r$aim01 <- reactiveValues()
 
     observeEvent(input$nextbtn, {
+      showModal(
+        modalDialog(
+          title = "Non potrai tornare indietro",
+          "Confermi la tua scelta?",
+          easyClose = TRUE,
+          footer = tagList(
+            actionButton(ns("yesbtn"), "S\u00EC"),
+            modalButton("No")
+          )
+        )
+      )
+    })
+
+    observeEvent(input$yesbtn, {
+      removeModal()
+
       r$aim01$aim <- input$aim
     })
 

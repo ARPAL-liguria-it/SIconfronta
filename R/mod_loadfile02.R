@@ -536,8 +536,25 @@ mod_loadfile02_server <- function(id, r) {
 
     r$loadfile02 <- shiny::reactiveValues()
 
-    shiny::observeEvent(input$nextbtn, {
+    observeEvent(input$nextbtn, {
+      showModal(
+        modalDialog(
+          title = "Non potrai tornare indietro",
+          "Hai assegnato correttamente tutte le variabili?",
+          easyClose = TRUE,
+          footer = tagList(
+            actionButton(ns("yesbtn"), "S\u00EC"),
+            modalButton("No")
+          )
+        )
+      )
+    })
+
+
+    observeEvent(input$yesbtn, {
       req(isTRUE(dataok()))
+
+      removeModal()
 
       r$loadfile02$data <- datafile()
       r$loadfile02$parvar <- input$parvar

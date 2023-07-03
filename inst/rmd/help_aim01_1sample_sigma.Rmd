@@ -13,7 +13,10 @@ Non sono ammessi né meno di 5 valori, né più di 30 valori per ogni coppia di 
 
 Puoi creare i file .csv sia a mano in un editor di testo, come il Blocco note, sia esportarlo da programmi quali LibreOffice Calc o Office Excel, o ancora meglio. Tieni presente che molti strumenti analitici permettono già di esportare i dati in questo formato.
 
-In ogni caso, dovrai ottenere un file con un contenuto simile a questo:
+
+
+<details>
+<summary> Clicca per un esempio </summary>
 
 <style>
 
@@ -47,6 +50,8 @@ In ogni caso, dovrai ottenere un file con un contenuto simile a questo:
 | Zn            | , | strumento 1   | , | 215.9           |
 
 </div>
+</details>
+
 
 
 Una volta caricato il file, nella scheda **Confronti** dovrai fornire le indicazioni circa il valore di deviazione standard nota ($\sigma$). Inoltre, dovrai selezionare l'ipotesi alternativa e il livello di significatività a cui desideri effettuare i test statistici, potrai inserire le unità di misura e quindi salvare i risultati, parametro per parametro.

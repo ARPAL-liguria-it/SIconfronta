@@ -21,19 +21,19 @@ app_server <- function(input, output, session) {
 
 
   # enable and disable tabs when clicking on the next buttons ----
-  observeEvent(input$`scopo-nextbtn`, {
+  observeEvent(input$`scopo-yesbtn`, {
     shinyjs::enable(selector = "#navbar li a[data-value=data]")
     shinyjs::disable(selector = "#navbar li a[data-value=aim]")
     updateNavbarPage(session, "navbar", "data")
   })
 
-  observeEvent(input$`dati-nextbtn`, {
+  observeEvent(input$`dati-yesbtn`, {
     shinyjs::enable(selector = "#navbar li a[data-value=compare]")
     shinyjs::disable(selector = "#navbar li a[data-value=data]")
     updateNavbarPage(session, "navbar", "compare")
   })
 
-  observeEvent(input$`confronto-nextbtn`, {
+  observeEvent(input$`confronto-yesbtn`, {
     shinyjs::enable(selector = "#navbar li a[data-value=report]")
     shinyjs::disable(selector = "#navbar li a[data-value=compare]")
     updateNavbarPage(session, "navbar", "report")

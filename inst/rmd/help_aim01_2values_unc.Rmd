@@ -14,7 +14,10 @@ Portati avanti e prepara un file .csv organizzato su 4 colonne con separatore vi
 
 Puoi creare i file .csv sia a mano in un editor di testo, come il Blocco note, sia esportarlo da programmi quali LibreOffice Calc o Office Excel, o ancora meglio. Tieni presente che molti strumenti analitici permettono già di esportare i dati in questo formato.
 
-In ogni caso, dovrai ottenere un file con un contenuto simile a questo:
+
+
+<details>
+<summary> Clicca per un esempio </summary>
 
 <style>
 
@@ -40,6 +43,8 @@ In ogni caso, dovrai ottenere un file con un contenuto simile a questo:
 | Zn            | , | strumento 2   | , | 185.9           | , | 8.4  |
 
 </div>
+</details>
+
 
 
 Una volta caricato il file, nella scheda **Confronti** dovrai elezionare l'ipotesi alternativa associata al test statistico per il confronto tra valori, inoltre potrai inserire le unità di misura e quindi salvare i risultati, parametro per parametro.
