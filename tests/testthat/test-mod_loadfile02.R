@@ -101,7 +101,8 @@ testServer(mod_loadfile02_server,
              # parlist is yields
              expect_equal(parlist(), factor("yield"))
 
-             session$setInputs(nextbtn = 1)
+             session$setInputs(nextbtn = 1,
+                               yesbtn = 1)
 
              # saved output
              expect_equal(class(r$loadfile02), "reactivevalues")
@@ -201,7 +202,8 @@ testServer(mod_loadfile02_server,
              # parlist is yields
              expect_equal(parlist(), factor(c("primo", "secondo")))
 
-             session$setInputs(nextbtn = 1)
+             session$setInputs(nextbtn = 1,
+                               yesbtn = 1)
 
              # saved output
              expect_equal(class(r$loadfile02), "reactivevalues")
@@ -306,7 +308,8 @@ testServer(mod_loadfile02_server,
              # parlist is yields
              expect_equal(parlist(), factor(c("primo", "secondo")))
 
-             session$setInputs(nextbtn = 1)
+             session$setInputs(nextbtn = 1,
+                               yesbtn = 1)
 
              # saved output
              expect_equal(class(r$loadfile02), "reactivevalues")
