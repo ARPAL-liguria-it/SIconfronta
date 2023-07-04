@@ -160,8 +160,8 @@ fct_ttest_2samples_par <- function(group1,
                       "uprci" = ifelse(h1 == "two.sided", ci[2] |> format_sigfig(), Inf)),
        test = c("dof" = dof |> round(4),
                 "alpha" = alpha,
-                "tsper" = tvalue |> round(4),
-                "ttheo" = tcritical |> round(3),
+                "tsper" = tvalue |> format_sigfig(),
+                "ttheo" = tcritical |> round(4),
                 "pvalue" = pvalue |> round(4)),
        result = result)
 
@@ -242,97 +242,112 @@ fct_ftest_2samples_par <- function(group1,
                    "greater" = significance
   )
 
-  # defining the formula for groups
-  myformula <- as.formula(paste(response, "~", group, sep = " "))
-  # defining a function for a short summary
-  summary_function <- function(x) c(n = length(x),
-                                    mean = mean(x, na.rm = TRUE),
-                                    sd = stats::sd(x, na.rm = TRUE))
-  # get the summary
-  mysummary <- do.call(data.frame, stats::aggregate(myformula, data, summary_function))
-  colnames(mysummary) <- c(group, "n", "mean", "sd")
+  mysummary <- data.frame(group = c(group1, group2),
+                          n = c(n1, n2),
+                          sd = c(sd1, sd2))
+  colnames(mysummary) <- c("group", "n", "sd")
+
   # get the group with higher sd
-  max_sd <- mysummary[[group]][which.max(mysummary$sd)]
-  min_sd <- mysummary[[group]][which.min(mysummary$sd)]
-  higher_sd <- data[which(data[[group]] == max_sd),][[response]]
-  lower_sd <- data[which(data[[group]] == min_sd),][[response]]
-  # # F-test results
-  ftest <- stats::var.test(x = higher_sd, y = lower_sd,
-                  alternative = h1, conf.level = significance)
-  ratio <- (stats::sd(higher_sd)^2 / stats::sd(lower_sd)^2) |> format_sigfig()
-  ratioconfint <- c(NA, NA)
-  ratioconfint[1] <- ftest$conf.int[1] |> format_sigfig()
-  ratioconfint[2] <- ftest$conf.int[2] |> format_sigfig()
-  fvalue <- ftest$statistic |> round(4)
-  dof <- ftest$parameter |> unname() # numerator and denominator
-  fcritical <- c(stats::qf(1-alpha, dof[[1]], dof[[2]]),
-                 stats::qf(alpha, dof[[1]], dof[[2]])) |> round(4)
-  pvalue <- ftest$p.value |> round(4)
+  max_sd_gr <- mysummary$group[which.max(mysummary$sd)]
+  min_sd_gr <- mysummary$group[which.min(mysummary$sd)]
+
+  # get sd and n associated with the max and min sd values
+  max_sd_val <- mysummary$sd[which.max(mysummary$sd)]
+  min_sd_val <- mysummary$sd[which.min(mysummary$sd)]
+  max_sd_n <- mysummary$n[which.max(mysummary$sd)]
+  min_sd_n <- mysummary$n[which.min(mysummary$sd)]
+
+  # get F statitistics
+  fvalue <- max_sd_val^2 / min_sd_val^2
+
+  # get degree of freedoms
+  dof <- c(max_sd_n - 1, min_sd_n - 1)
+
+  # get the critical F value
+  fcritical <- if(h1 == "two.sided")
+    c(stats::qf(1-alpha, dof[2], dof[1]), 1/stats::qf(1-alpha, dof[1], dof[2]))
+  else
+    stats::qf(1-alpha, dof[2], dof[1])
+
+  # get the confidence interval
+  ci <- fcritical  * fvalue
+  ci[2] <- ifelse(h1 == "two.sided",
+                  ci[2],
+                  Inf)
+  # p value
+  pvalue <- ifelse(h1 == "two.sided",
+                   stats::pf(fvalue, dof[1], dof[2], lower.tail = FALSE) + stats::pf(1/fvalue, dof[2], dof[1], lower.tail = TRUE),
+                   stats::pf(fvalue, dof[1], dof[2], lower.tail = FALSE))
 
   # Being clear with some text
   h0_text <- switch (alternative,
-                     "different" = sprintf("varianza di %s = varianza di %s", max_sd, min_sd),
-                     "greater" = sprintf("varianza di %s \u2264 varianza di %s", max_sd, min_sd),
+                     "different" = sprintf("varianza di %s = varianza di %s", max_sd_gr, min_sd_gr),
+                     "greater" = sprintf("varianza di %s \u2264 varianza di %s", max_sd_gr, min_sd_gr),
   )
 
   h1_text <- switch (alternative,
-                     "different" = sprintf("varianza di %s \u2260 varianza di %s", max_sd, min_sd),
-                     "greater" = sprintf("varianza di %s > varianza di %s", max_sd, min_sd)
+                     "different" = sprintf("varianza di %s \u2260 varianza di %s", max_sd_gr, min_sd_gr),
+                     "greater" = sprintf("varianza di %s > varianza di %s", max_sd_gr, min_sd_gr)
   )
 
   positive <- switch (alternative,
-                      "different" = sprintf("la varianza di %s e la varianza di %s sono statisticamente differenti", max_sd, min_sd),
-                      "greater" = sprintf("la varianza di %s \u00E8 statisticamente maggiore della varianza di %s", max_sd, min_sd)
+                      "different" = sprintf("la varianza di %s e la varianza di %s sono statisticamente differenti", max_sd_gr, min_sd_gr),
+                      "greater" = sprintf("la varianza di %s \u00E8 statisticamente maggiore della varianza di %s", max_sd_gr, min_sd_gr)
   )
 
   negative <- switch (alternative,
-                      "different" = sprintf("la varianza di %s e la varianza di %s non sono statisticamente differenti", max_sd, min_sd),
-                      "greater" = sprintf("la varianza di %s non \u00E8 statisticamente maggiore della varianza di %s", max_sd, min_sd)
+                      "different" = sprintf("la varianza di %s e la varianza di %s non sono statisticamente differenti", max_sd_gr, min_sd_gr),
+                      "greater" = sprintf("la varianza di %s non \u00E8 statisticamente maggiore della varianza di %s", max_sd_gr, min_sd_gr)
   )
 
   result <- switch (alternative,
                     "different" = ifelse(fvalue > fcritical[1] & fvalue < fcritical[2],
                                          negative,
                                          positive),
-                    "greater" = ifelse(fvalue < fcritical[2],
+                    "greater" = ifelse(fvalue < fcritical,
                                        negative,
                                        positive)
   )
 
   ftheo <- switch (alternative,
                     "different" = paste0(fcritical[1], ", ", fcritical[2]),
-                    "greater" = paste0(fcritical[2])
+                    "greater" = paste0(fcritical)
   )
 
 
 
   list(hypotheses = c("h0" = h0_text,
                       "h1" = h1_text),
-       ratio = c("mean" = ratio,
-                      "lwrci" = ratioconfint[1],
-                      "uprci" = ratioconfint[2]),
-       test = list("dof" = c("numeratore" = dof[[1]],
-                             "denominatore" = dof[[2]]),
+       ratio = c("mean" = fvalue,
+                      "lwrci" = ci[1] |> format_sigfig(),
+                      "uprci" = ci[2] |> format_sigfig()),
+       test = list("dof" = c("numeratore" = dof[1],
+                             "denominatore" = dof[2]),
                 "alpha" = alpha,
-                "fsper" = unname(fvalue),
-                "ftheo" = ftheo,
-                "pvalue" = pvalue),
-       result = unname(result))
+                "fsper" = fvalue |> format_sigfig(),
+                "ftheo" = ftheo |> round(4),
+                "pvalue" = pvalue |> round(4)),
+       result = result)
 
 }
 
-#' Plotly boxplots for comparing two groups of values
+#' Plotly boxplots for comparing two groups of values summarised by mean,
+#' standard deviation and number of values
 #'
 #' @description The function provides a simple {plotly} boxplot for comparing
-#' two groups of values
+#' two groups of values summarised by mean, standard deviation and number of values.
 #'
 #' @param data input data.frame with a column named *key* with progressive integers,
-#' a column named *group* with a two level factor label for the two groups
-#' to be compared, a column named *response* with the numeric values for
-#' the two groups and a column named *outlier* with a logical vector.
+#' a column named *group* with a one level factor label, a column named *response*
+#' with the numeric values and a column named *outlier* with a logical vector.
 #' @param group a character string for the label of the grouping variable.
 #' @param response a character string with the label for the response numeric variable.
 #' @param udm a character string with the unit of measurement.
+#' @param group2 a character string for the name of the group for which only the
+#' summary has been provided.
+#' @param dfsummary a data.frame with mean, sd and number of values for the two
+#' groups: it has three rows and three columns. Column names are "index",
+#' name of the group1 and name of the group2.
 #'
 #' @return A {plotly} boxplot for comparing two group of values. Raw data values
 #' are overlayed on top of the boxes.
@@ -340,18 +355,45 @@ fct_ftest_2samples_par <- function(group1,
 #' @export
 #'
 #' @importFrom plotly plot_ly add_boxplot add_markers layout config
-boxplot_2samples <- function(data,
-                             group,
-                             response,
-                             udm) {
+boxplot_2samples_par <- function(data,
+                                 group,
+                                 response,
+                                 udm,
+                                 group2,
+                                 dfsummary) {
   stopifnot(
     is.data.frame(data),
+    is.data.frame(dfsummary),
     is.character(response),
     is.character(group),
+    is.character(group2),
     is.character(udm),
     colnames(data) %in% c("key", "outlier", "response", "group"),
-    dim(data)[2] == 4
+    colnames(dfsummary) %in% c("index", group, group2),
+    dfsummary$index %in% c("mean", "sd", "n"),
+    dim(data)[2] == 4,
+    dim(dfsummary) == c(3, 3)
   )
+
+  # quantiles and fence limits for group 1 (it is the group with all the values)
+  quant_gr1 <- quantile(data[data$outlier == FALSE, "response"], probs = c(0.25, 0.50, 0.75))
+  fence_gr1 <- c(quant_gr1[1] - (quant_gr1[3] - quant_gr1[1])*1.5, quant_gr1[3] + (quant_gr1[3] - quant_gr1[1])*1.5)
+
+  # quantiles and fence limits for group 2 (it is the group with summarised values)
+  mean_gr2 <- dfsummary[[group2]][which(dfsummary$index == "mean")]
+  sd_gr2 <- dfsummary[[group2]][which(dfsummary$index == "sd")]
+  quant_gr2 <- mean_gr2 + c(-1, 0, 1) * sd_gr2
+  fence_gr2 <- c(quant_gr2[1] - (quant_gr2[3] - quant_gr2[1])*1.5, quant_gr2[3] + (quant_gr2[3] - quant_gr2[1])*1.5)
+
+  # gathering all the box limits into a data.frame
+  mybox <- data.frame(group_fct = factor(c(group, group2)),
+                      lowerfence = c(fence_gr1[1], fence_gr2[1]),
+                      q1 = c(quant_gr1[1], quant_gr2[1]),
+                      mean = c(mean(data[data$outlier == FALSE, "response"]), mean_gr2),
+                      median = c(quant_gr1[2], quant_gr2[2]),
+                      q3 = c(quant_gr1[3], quant_gr2[3]),
+                      upperfence = c(fence_gr1[2], fence_gr2[2]))
+
 
   quo_group <- enquote(group)
   quo_response <- enquote(response)
@@ -367,9 +409,14 @@ boxplot_2samples <- function(data,
 
   plotly::plot_ly(source = "boxplot") |>
     plotly::add_boxplot(
-      data = data[data$outlier == FALSE, ],
-      y = ~ response,
-      x = ~ group,
+      data = mybox,
+      x = ~ group_fct,
+      lowerfence = ~ lowerfence,
+      q1 = ~ q1,
+      median = ~ median,
+      mean = ~ mean,
+      q3 = ~ q3,
+      upperfence = ~ upperfence,
       name = "boxplot",
       type = "box",
       boxmean = TRUE,
@@ -423,16 +470,39 @@ boxplot_2samples <- function(data,
 #' @export
 #'
 #' @rawNamespace import(ggplot2, except = last_plot)
-ggboxplot_2samples <- function(data,
-                             group,
-                             response,
-                             udm) {
+ggboxplot_2samples_par <- function(data,
+                                   group,
+                                   response,
+                                   udm,
+                                   group2,
+                                   dfsummary) {
   stopifnot(
     is.data.frame(data),
+    is.data.frame(dfsummary),
     is.character(response),
     is.character(group),
-    is.character(udm)
+    is.character(group2),
+    is.character(udm),
+    c("index", group2) %in% colnames(dfsummary),
+    dfsummary$index %in% c("mean", "sd", "n"),
+    dim(data)[2] == 4,
+    dim(dfsummary) == c(3, 3)
   )
+
+  quant_gr1 <- quantile(data[data$rimosso == "no", response], probs = c(0.25, 0.50, 0.75))
+  fence_gr1 <- c(quant_gr1[1] - (quant_gr1[3] - quant_gr1[1])*1.5, quant_gr1[3] + (quant_gr1[3] - quant_gr1[1])*1.5)
+  mean_gr2 <- dfsummary[[group2]][which(dfsummary$index == "mean")]
+  sd_gr2 <- dfsummary[[group2]][which(dfsummary$index == "sd")]
+  quant_gr2 <- mean_gr2 + c(-1, 0, 1) * sd_gr2
+  fence_gr2 <- c(quant_gr2[1] - (quant_gr2[3] - quant_gr2[1])*1.5, quant_gr2[3] + (quant_gr2[3] - quant_gr2[1])*1.5)
+
+  mybox <- data.frame(group_fct = factor(c(group, group2)),
+                      lowerfence = c(fence_gr1[1], fence_gr2[1]),
+                      q1 = c(quant_gr1[1], quant_gr2[1]),
+                      mean = c(mean(data[data$rimosso == "no", "response"]), mean_gr2),
+                      median = c(quant_gr1[2], quant_gr2[2]),
+                      q3 = c(quant_gr1[3], quant_gr2[3]),
+                      upperfence = c(fence_gr1[2], fence_gr2[2]))
 
   rimosso <- NULL
   cols <- c("s\u00EC" = "#999999", "no" = "black")
@@ -443,19 +513,23 @@ ggboxplot_2samples <- function(data,
   quo_group <- ggplot2::ensym(group)
   quo_response <- ggplot2::ensym(response)
 
-
+browser()
   ggplot2::ggplot() +
-    ggplot2::geom_boxplot(data = data[which(data$rimosso == "no"),],
-                          ggplot2::aes(x = !!quo_group,
-                                       y = !!quo_response),
+    ggplot2::geom_boxplot(data = mybox,
+                          ggplot2::aes(x = group,
+                                       ymin = lowerfence,
+                                       lower = q1,
+                                       middle = median,
+                                       upper = q3,
+                                       ymax = upperfence),
                           fill = "white",
                           col = "black",
                           outlier.shape = NA) +
-    ggplot2::geom_jitter(data = data,
-                         ggplot2::aes(x = !!quo_group,
-                                      y = !!quo_response,
-                                      col = rimosso),
-                         width = 0.2) +
+  #   ggplot2::geom_jitter(data = data,
+  #                        ggplot2::aes(x = !!quo_group,
+  #                                     y = !!quo_response,
+  #                                     col = rimosso),
+  #                        width = 0.2) +
     ggplot2::labs(x = xlabtitle,
                   y = ylabtitle) +
     ggplot2::scale_color_manual(values = cols,
