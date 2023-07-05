@@ -470,10 +470,6 @@ boxplot_2samples <- function(data,
     dim(data)[2] == 4
   )
 
-  quo_group <- enquote(group)
-  quo_response <- enquote(response)
-  quo_udm <- enquote(udm)
-
   cols <- ifelse(data$outlier == TRUE,
                           "#999999",
                           "black")

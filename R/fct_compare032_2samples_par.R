@@ -1,9 +1,9 @@
-#' Displays the results of a \eqn{t}-test for two groups of values summarised
-#' by mean, standard deviation and number of values
+#' Displays the results of a \eqn{t}-test for two groups of values for one of
+#' which only mean, standard deviation and number of samples are reported.
 #'
 #' @description The function displays the results of a \eqn{t}-test performed
-#'  on two groups of values summarised by mean, standard deviation and number
-#'  of values.
+#'  on two groups of values for one of which only mean, standard deviation and
+#'  number of samples are reported.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param group1 a character value with the name of the first group.
@@ -167,11 +167,12 @@ fct_ttest_2samples_par <- function(group1,
 
 }
 
-#' Displays the results of a \eqn{F}-test for two groups of values summarised by
-#' standard deviations and number of values.
+#' Displays the results of a \eqn{F}-test for two groups of values for one of
+#' which only mean, standard deviation and number of samples are reported.
 #'
 #' @description The function displays the results of a \eqn{F}-test performed
-#'  on two groups of values summarised by standard deviations and number of values.
+#'  on two groups of values for one of which only mean, standard deviation and
+#'  number of samples are reported.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param group1 a character value with the name of the first group.
@@ -310,7 +311,8 @@ fct_ftest_2samples_par <- function(group1,
   )
 
   ftheo <- switch (alternative,
-                    "different" = paste0(fcritical[1], ", ", fcritical[2]),
+                    "different" = paste0(fcritical[1] |> round(4), ", ",
+                                         fcritical[2] |> round(4)),
                     "greater" = paste0(fcritical)
   )
 
@@ -318,24 +320,25 @@ fct_ftest_2samples_par <- function(group1,
 
   list(hypotheses = c("h0" = h0_text,
                       "h1" = h1_text),
-       ratio = c("mean" = fvalue,
+       ratio = c("mean" = fvalue |> format_sigfig(),
                       "lwrci" = ci[1] |> format_sigfig(),
                       "uprci" = ci[2] |> format_sigfig()),
        test = list("dof" = c("numeratore" = dof[1],
                              "denominatore" = dof[2]),
                 "alpha" = alpha,
                 "fsper" = fvalue |> format_sigfig(),
-                "ftheo" = ftheo |> round(4),
+                "ftheo" = ftheo,
                 "pvalue" = pvalue |> round(4)),
        result = result)
 
 }
 
-#' Plotly boxplots for comparing two groups of values summarised by mean,
-#' standard deviation and number of values
+#' Plotly boxplots for comparing two groups of values for one of which only mean,
+#' standard deviation and number of samples are reported.
 #'
 #' @description The function provides a simple {plotly} boxplot for comparing
-#' two groups of values summarised by mean, standard deviation and number of values.
+#' two groups of values for one of which only mean, standard deviation and number
+#' of samples are reported.
 #'
 #' @param data input data.frame with a column named *key* with progressive integers,
 #' a column named *group* with a one level factor label, a column named *response*
@@ -451,10 +454,12 @@ boxplot_2samples_par <- function(data,
 
 }
 
-#' GGplot2 boxplots for comparing two groups of values
+#' GGplot2 boxplots for comparing two groups of values for one of which only mean,
+#' standard deviation and number of samples are reported.
 #'
 #' @description The function provides a simple {ggplot2} boxplot for comparing
-#' two groups of values
+#' two groups of values for one of which only mean, standard deviation and number
+#' of samples are reported.
 #'
 #' @param data input data.frame with a column named *key* with progressive integers,
 #' a column with a two level factor label for the two groups
@@ -489,59 +494,86 @@ ggboxplot_2samples_par <- function(data,
     dim(dfsummary) == c(3, 3)
   )
 
-  quant_gr1 <- quantile(data[data$rimosso == "no", response], probs = c(0.25, 0.50, 0.75))
-  fence_gr1 <- c(quant_gr1[1] - (quant_gr1[3] - quant_gr1[1])*1.5, quant_gr1[3] + (quant_gr1[3] - quant_gr1[1])*1.5)
+  # getting the label for the first group
+  group1 <- df[[group]] |> levels()
+  # getting quantiles and fence limits for the first group
+  quant_gr1 <-
+    quantile(data[data$rimosso == "no", response], probs = c(0.25, 0.50, 0.75))
+  fence_gr1 <- c(
+      quant_gr1[1] - (quant_gr1[3] - quant_gr1[1]) * 1.5,
+      quant_gr1[3] + (quant_gr1[3] - quant_gr1[1]) * 1.5
+      )
+  # getting quantiles and fence limits for the first group
   mean_gr2 <- dfsummary[[group2]][which(dfsummary$index == "mean")]
   sd_gr2 <- dfsummary[[group2]][which(dfsummary$index == "sd")]
   quant_gr2 <- mean_gr2 + c(-1, 0, 1) * sd_gr2
-  fence_gr2 <- c(quant_gr2[1] - (quant_gr2[3] - quant_gr2[1])*1.5, quant_gr2[3] + (quant_gr2[3] - quant_gr2[1])*1.5)
+  fence_gr2 <- c(
+      quant_gr2[1] - (quant_gr2[3] - quant_gr2[1]) * 1.5,
+      quant_gr2[3] + (quant_gr2[3] - quant_gr2[1]) * 1.5
+      )
 
-  mybox <- data.frame(group_fct = factor(c(group, group2)),
-                      lowerfence = c(fence_gr1[1], fence_gr2[1]),
-                      q1 = c(quant_gr1[1], quant_gr2[1]),
-                      mean = c(mean(data[data$rimosso == "no", "response"]), mean_gr2),
-                      median = c(quant_gr1[2], quant_gr2[2]),
-                      q3 = c(quant_gr1[3], quant_gr2[3]),
-                      upperfence = c(fence_gr1[2], fence_gr2[2]))
+  # building the summary dataframe
+  mybox <- data.frame(
+    group_fct = factor(c(group1, group2)),
+    lowerfence = c(fence_gr1[1], fence_gr2[1]),
+    q1 = c(quant_gr1[1], quant_gr2[1]),
+    mean = c(mean(data[data$rimosso == "no", "response"]), mean_gr2),
+    median = c(quant_gr1[2], quant_gr2[2]),
+    q3 = c(quant_gr1[3], quant_gr2[3]),
+    upperfence = c(fence_gr1[2], fence_gr2[2])
+  )
+  rownames(mybox) <- NULL
 
+  # colours and axis labels
   rimosso <- NULL
   cols <- c("s\u00EC" = "#999999", "no" = "black")
-
   xlabtitle <- group
   ylabtitle <- paste0(response, ifelse(udm != "", paste0(" (", udm, ")"), ""))
 
   quo_group <- ggplot2::ensym(group)
   quo_response <- ggplot2::ensym(response)
 
-browser()
+
   ggplot2::ggplot() +
-    ggplot2::geom_boxplot(data = mybox,
-                          ggplot2::aes(x = group,
-                                       ymin = lowerfence,
-                                       lower = q1,
-                                       middle = median,
-                                       upper = q3,
-                                       ymax = upperfence),
-                          fill = "white",
-                          col = "black",
-                          outlier.shape = NA) +
-  #   ggplot2::geom_jitter(data = data,
-  #                        ggplot2::aes(x = !!quo_group,
-  #                                     y = !!quo_response,
-  #                                     col = rimosso),
-  #                        width = 0.2) +
+    ggplot2::geom_boxplot(
+      data = mybox,
+      ggplot2::aes(
+        x = group_fct,
+        ymin = lowerfence,
+        lower = q1,
+        middle = median,
+        upper = q3,
+        ymax = upperfence
+      ),
+      fill = "white",
+      col = "black",
+      stat = "identity",
+      outlier.shape = NA
+    ) +
+    ggplot2::geom_jitter(
+      data = data,
+      ggplot2::aes(
+        x = !!quo_group,
+        y = !!quo_response,
+        col = rimosso
+      ),
+      width = 0.2
+    ) +
     ggplot2::labs(x = xlabtitle,
                   y = ylabtitle) +
-    ggplot2::scale_color_manual(values = cols,
-                                breaks = c("s\u00EC", "no"),
-                                labels = c("rimosso", "non rimosso"),
-                                name = ggplot2::element_blank()) +
+    ggplot2::scale_color_manual(
+      values = cols,
+      breaks = c("s\u00EC", "no"),
+      labels = c("rimosso", "non rimosso"),
+      name = ggplot2::element_blank()
+    ) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "top")
 
 }
 
-#' Summary arranged on rows for two groups
+#' Summary arranged on rows for two groups for one of which only mean, standard deviation
+#' and number of samples are reported.
 #'
 #' @description The function returns a table with max, mean, median, min, sd and n
 #'  values arranged on rows while groups are on columns. Numbers are formatted as
@@ -550,6 +582,9 @@ browser()
 #' @param data the \code{data.frame} or \code{data.table} to be summarised.
 #' @param response a string with the name of the variable to summarise.
 #' @param group a string with the name of the grouping variable.
+#' @param group2 a character value with the name of the second group.
+#' @param sd2 a numeric value with the standard deviation for the second group.
+#' @param n2 a numeric value with the number of values for the second group.
 #' @param udm a string with the unit of measurement.
 #' @param signif a integer with the number of desired significant figures.
 #'
@@ -560,15 +595,23 @@ browser()
 #'
 #' @import data.table
 #' @importFrom stats sd median
-rowsummary_2samples <- function(data,
-                                response,
-                                group,
-                                udm = "",
-                                signif = 3L) {
+rowsummary_2samples_par <- function(data,
+                                    response,
+                                    group,
+                                    group2,
+                                    mean2,
+                                    sd2,
+                                    n2,
+                                    udm = "",
+                                    signif = 3L) {
   stopifnot(
     is.data.frame(data),
     is.character(response),
     is.character(group),
+    is.character(group2),
+    is.numeric(mean2),
+    is.numeric(sd2),
+    is.numeric(n2),
     is.character(udm),
     all.equal(signif, as.integer(signif)),
     response %in% colnames(data),
@@ -604,5 +647,9 @@ rowsummary_2samples <- function(data,
     mysummary[, "statistica" := lapply(statistica, (\(x) {
       ifelse(x != "n" & udm != "", paste0(x, " (", udm, ")"), x)
       }))]
+
+    mysummary<- cbind(mysummary, c(n2, "-", mean2, "-", "-", sd2))
+    colnames(mysummary)[3] <- group2
+    mysummary
 }
 
