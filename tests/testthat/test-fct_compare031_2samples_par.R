@@ -73,8 +73,8 @@ test_that("Errors are correctly handled for F-test on two groups of values", {
   faildf <- data.frame(a = "a",
                        b = "b",
                        c = 3)
-  expect_error(fct_ftest_2samples(faildf, "c", "d"), "")
-  expect_error(fct_ftest_2samples(faildf, "c", "b", alternative = "less"), "")
+  expect_error(fct_ftest_2samples_par(faildf, "c", "d"), "")
+  expect_error(fct_ftest_2samples_par(faildf, "c", "b", alternative = "less"), "")
 })
 
 fref_dt <- ftest_reference |> data.table::data.table()
@@ -100,37 +100,58 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(ftest_result1$ratio[[2]], "0.1695")
   expect_equal(ftest_result1$ratio[[3]], "15.64")
   expect_equal(ftest_result1$test$dof, c("numeratore" = 4, "denominatore" = 4))
-  expect_equal(ftest_result1$test$alpha, "0.975")
-  expect_equal(ftest_result1$test$fsper, "1.6281")
+  expect_equal(ftest_result1$test$alpha, 0.975)
+  expect_equal(ftest_result1$test$fsper, "1.628")
   expect_equal(ftest_result1$test$ftheo, "0.1041, 9.6045")
-  expect_equal(ftest_result1$test$pvalue, "0.6483")
+  expect_equal(ftest_result1$test$pvalue, 0.6483)
 })
 
 
 test_that("ggboxplot_2samples_par works well", {
-  testdata <- tomato_yields
-  testdata$rimosso <- c(rep("no", 8), "sì", "no", "no")
+  testdata <- tomato_yields[fertilizer == "a"]
+  testdata$rimosso <- c(rep("no", 3), "sì", "no")
+  test_amean <- testdata[rimosso == "no" & fertilizer == "a", mean(pounds)]
+  test_asd <- testdata[rimosso == "no" & fertilizer == "a", sd(pounds)]
+  test_an <- testdata[rimosso == "no" & fertilizer == "a", .N]
+  test_bmean <- testdata[rimosso == "no" & fertilizer == "b", mean(pounds)]
+  test_bsd <- testdata[rimosso == "no" & fertilizer == "b", sd(pounds)]
+  test_bn <- testdata[rimosso == "no" & fertilizer == "b", .N]
+  testsum <- data.frame(index = c("mean", "sd", "n"),
+                        a = c(test_amean, test_asd, test_an),
+                        b = c(test_amean, test_asd, test_an))
 
-  expect_true(ggboxplot_2samples(testdata, "fertilizer", "pounds", "ug/L") |> ggplot2::is.ggplot())
-  expect_equal(ggboxplot_2samples(testdata, "fertilizer", "pounds", "ug/L")$labels$x, "fertilizer")
-  expect_equal(ggboxplot_2samples(testdata, "fertilizer", "pounds", "ug/L")$labels$y, "pounds (ug/L)")
+  expect_true(ggboxplot_2samples_par(testdata, "fertilizer", "pounds", "ug/L", "b", testsum) |>
+                ggplot2::is.ggplot())
+  expect_equal(ggboxplot_2samples_par(testdata, "fertilizer", "pounds", "ug/L", "b", testsum)$labels$x, "fertilizer")
+  expect_equal(ggboxplot_2samples_par(testdata, "fertilizer", "pounds", "ug/L", "b", testsum)$labels$y, "pounds (ug/L)")
 })
 
-test_that("rowsummary_2samples works well", {
-  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer", "kg")$statistica |>
-                 unlist(),
+test_that("rowsummary_2samples_par works well", {
+  testdata <- tomato_yields[fertilizer == "a"]
+  testdata$rimosso <- c(rep("no", 3), "sì", "no")
+  test_amean <- testdata[rimosso == "no" & fertilizer == "a", mean(pounds)]
+  test_asd <- testdata[rimosso == "no" & fertilizer == "a", sd(pounds)]
+  test_an <- testdata[rimosso == "no" & fertilizer == "a", .N]
+  test_bmean <- tomato_yields[fertilizer == "b", mean(pounds)] |> round(3)
+  test_bsd <- tomato_yields[fertilizer == "b", sd(pounds)] |> round(2)
+  test_bn <- tomato_yields[fertilizer == "b", .N]
+
+  res <- rowsummary_2samples_par(testdata, "pounds", "fertilizer", group2 = "b",
+                                 mean2 = test_bmean, sd2 = test_bsd, n2 = test_bn,
+                                 udm = "kg")
+
+  expect_equal(res$statistica |> unlist(),
                c("n", "massimo (kg)", "media (kg)", "mediana (kg)", "minimo (kg)",
                  "deviazione standard (kg)"))
-  expect_equal(colnames(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")),
-               c("statistica", "a", "b"))
-  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "media", a],
+  expect_equal(colnames(res), c("statistica", "a", "b"))
+  expect_equal(res[statistica == "media (kg)", a],
                sprintf("%.3g", tomato_yields[fertilizer == "a", mean(pounds)]))
-  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "massimo", b],
-               sprintf("%.3g", tomato_yields[fertilizer == "b", max(pounds)]))
-  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "mediana", b],
-               "24.0")
-  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "n", a],
+  expect_equal(res[statistica == "massimo (kg)", b],
+               "-")
+  expect_equal(res[statistica == "mediana (kg)", b],
+               "-")
+  expect_equal(res[statistica == "n", a],
                tomato_yields[fertilizer == "a", .N] %>% as.character)
-  expect_equal(rowsummary_2samples(tomato_yields, "pounds", "fertilizer")[statistica == "deviazione standard", b],
+  expect_equal(res[statistica == "deviazione standard (kg)", b],
                "5.43")
 })

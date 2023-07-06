@@ -41,24 +41,27 @@ mod_compare03_ui <- function(id) {
         id = ns("ctrls"),
         type = "hidden",
 
-        tabPanel("2samples",
-                 mod_compare031_2samples_inputs_ui(ns("2samples"))),
+        tabPanel(
+          "2samples",
+          mod_compare031_2samples_inputs_ui(ns("2samples"))),
 
         tabPanel(
           "2samples_par",
           mod_compare032_2samples_par_inputs_ui(ns("2samples_par"))
         ),
 
-        tabPanel("1sample_mu",
-                 mod_compare033_1sample_mu_inputs_ui(ns("1sample_mu"))),
+        tabPanel(
+          "1sample_mu",
+          mod_compare033_1sample_mu_inputs_ui(ns("1sample_mu"))),
 
         tabPanel(
           "1sample_sigma",
           mod_compare034_1sample_sigma_inputs_ui(ns("1sample_sigma"))
         ),
 
-        tabPanel("2values_unc",
-                 "")
+        tabPanel(
+          "2values_unc",
+          "")
 
       ),
 
@@ -117,22 +120,25 @@ mod_compare03_ui <- function(id) {
         id = ns("outputs"),
         type = "hidden",
 
-        tabPanel("2samples",
-                 mod_compare031_2samples_output_ui(ns("2samples"))),
+        tabPanel(
+          "2samples",
+          mod_compare031_2samples_output_ui(ns("2samples"))),
 
         tabPanel(
           "2samples_par",
           mod_compare032_2samples_par_output_ui(ns("2samples_par"))),
 
-        tabPanel("1sample_mu",
-                 mod_compare033_1sample_mu_output_ui(ns("1sample_mu"))),
+        tabPanel(
+          "1sample_mu",
+          mod_compare033_1sample_mu_output_ui(ns("1sample_mu"))),
 
         tabPanel(
           "1sample_sigma",
           mod_compare034_1sample_sigma_output_ui(ns("1sample_sigma"))),
 
-        tabPanel("2values_unc",
-                 mod_compare035_2values_unc_output_ui(ns("2values_unc")))
+        tabPanel(
+          "2values_unc",
+          mod_compare035_2values_unc_output_ui(ns("2values_unc")))
 
       )
     )
@@ -195,7 +201,7 @@ mod_compare03_server <- function(id, r) {
     observeEvent(r$aim01$aim, {
       req(length(r$aim01$aim) == 1)
 
-     updateTabsetPanel(inputId = "output", selected = r$aim01$aim)
+     updateTabsetPanel(inputId = "outputs", selected = r$aim01$aim)
     })
 
     observeEvent(r$loadfile02$parlist, {
@@ -231,17 +237,28 @@ mod_compare03_server <- function(id, r) {
 
     })
 
+    myggbox <- reactive({
+      switch (r$aim01$aim,
+              "2samples" = ggboxplot_2samples(data = r$compare03x$data,
+                                              group = r$loadfile02$groupvar,
+                                              response = r$loadfile02$responsevar,
+                                              udm = r$compare03x$udm),
+
+              "2samples_par" = ggboxplot_2samples_par(data = r$compare03x$data,
+                                                      group = r$loadfile02$groupvar,
+                                                      response = r$loadfile02$responsevar,
+                                                      udm = r$compare03x$udm,
+                                                      group2 = r$compare03x$label2,
+                                                      dfsummary = r$compare03x$ggsummary)
+      )
+    })
+
     observeEvent(r$compare03$myparameter, {
       to_mod_compare03x()
     })
 
     # when save is clicked the results are stored into r ----
     observeEvent(input$save, {
-
-      ggboxplot <- ggboxplot_2samples(data = r$compare03x$data,
-                                      group = r$loadfile02$groupvar,
-                                      response = r$loadfile02$responsevar,
-                                      udm = r$compare03x$udm)
 
       r$compare03[[input$parameter]]$parameter <- r$compare03x$parameter
       r$compare03[[input$parameter]]$udm <- r$compare03x$udm
@@ -253,8 +270,9 @@ mod_compare03_server <- function(id, r) {
       r$compare03[[input$parameter]]$outliers <- r$compare03x$outliers |> htmltormarkdown()
       r$compare03[[input$parameter]]$ttest <- r$compare03x$ttest |> htmltormarkdown()
       r$compare03[[input$parameter]]$ftest <- r$compare03x$ftest |> htmltormarkdown()
-      r$compare03[[input$parameter]]$boxplot <- ggboxplot
+      r$compare03[[input$parameter]]$boxplot <- myggbox()
       r$compare03[[input$parameter]]$saved <- TRUE
+
     })
 
     # when delete is clicked the results removed from r ----
@@ -268,15 +286,13 @@ mod_compare03_server <- function(id, r) {
     savedel_flag <- reactive({
       req(input$parameter)
 
-      ifelse(input$parameter == "", "",
+      ifelse(r$compare03x$ready != 1, "",
       ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
       )
     })
 
 
-    observeEvent(c(input$parameter,
-                   input$save,
-                   input$delete), {
+    observeEvent(savedel_flag(), {
 
       updateTabsetPanel(inputId = "savedel", selected = savedel_flag())
     })

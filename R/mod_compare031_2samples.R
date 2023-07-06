@@ -378,7 +378,7 @@ mod_compare031_2samples_server <- function(id, r) {
     output$outliers <- renderText({
       validate(
         need(minval() >= 5,
-             message = FALSE)
+             message = "Servono almeno 5 valori per poter eseguire i test")
       )
 
       outliers_html()
@@ -500,7 +500,14 @@ mod_compare031_2samples_server <- function(id, r) {
       })
 
     # saving the outputs ----
-    observeEvent(input_data(), {
+    trigger <- reactive({
+      input_data()
+      r$compare03x$significance
+      r$compare03x$alternative
+      r$compare03x$udm
+    })
+
+    observeEvent(trigger(), {
 
       # output dataset
       r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
@@ -514,8 +521,10 @@ mod_compare031_2samples_server <- function(id, r) {
       r$compare03x$outliers <- outliers_html()
       r$compare03x$ttest <- ttest_html()
       r$compare03x$ftest <- ftest_html()
+      # flag for when ready to be saved
+      r$compare03x$ready <- 1
 
-      # the plot is saved only when clicking on the save button
+      # the plot is saved only when the save button is clicked
     })
 
   })

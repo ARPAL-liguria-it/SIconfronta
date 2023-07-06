@@ -313,7 +313,7 @@ fct_ftest_2samples_par <- function(group1,
   ftheo <- switch (alternative,
                     "different" = paste0(fcritical[1] |> round(4), ", ",
                                          fcritical[2] |> round(4)),
-                    "greater" = paste0(fcritical)
+                    "greater" = paste0(fcritical |> round(4))
   )
 
 
@@ -372,12 +372,15 @@ boxplot_2samples_par <- function(data,
     is.character(group2),
     is.character(udm),
     colnames(data) %in% c("key", "outlier", "response", "group"),
-    colnames(dfsummary) %in% c("index", group, group2),
+    c("index", group2) %in% colnames(dfsummary),
     dfsummary$index %in% c("mean", "sd", "n"),
     dim(data)[2] == 4,
     dim(dfsummary) == c(3, 3)
   )
 
+  quantile <- NULL
+
+  group1 <- data$group |> droplevels() |> levels()
   # quantiles and fence limits for group 1 (it is the group with all the values)
   quant_gr1 <- quantile(data[data$outlier == FALSE, "response"], probs = c(0.25, 0.50, 0.75))
   fence_gr1 <- c(quant_gr1[1] - (quant_gr1[3] - quant_gr1[1])*1.5, quant_gr1[3] + (quant_gr1[3] - quant_gr1[1])*1.5)
@@ -389,7 +392,7 @@ boxplot_2samples_par <- function(data,
   fence_gr2 <- c(quant_gr2[1] - (quant_gr2[3] - quant_gr2[1])*1.5, quant_gr2[3] + (quant_gr2[3] - quant_gr2[1])*1.5)
 
   # gathering all the box limits into a data.frame
-  mybox <- data.frame(group_fct = factor(c(group, group2)),
+  mybox <- data.frame(group_fct = factor(c(group1, group2)),
                       lowerfence = c(fence_gr1[1], fence_gr2[1]),
                       q1 = c(quant_gr1[1], quant_gr2[1]),
                       mean = c(mean(data[data$outlier == FALSE, "response"]), mean_gr2),
@@ -466,6 +469,11 @@ boxplot_2samples_par <- function(data,
 #' to be compared, a column with the numeric values for the two groups and a
 #' column named *rimosso* with "sì" or "no" values.
 #' @param group a character string for the label of the grouping variable.
+#' @param group2 a character string for the name of the group for which only the
+#' summary has been provided.
+#' @param dfsummary a data.frame with mean, sd and number of values for the two
+#' groups: it has three rows and three columns. Column names are "index",
+#' name of the group1 and name of the group2.
 #' @param response a character string with the label for the response numeric variable.
 #' @param udm a character string with the unit of measurement.
 #'
@@ -474,6 +482,7 @@ boxplot_2samples_par <- function(data,
 #'
 #' @export
 #'
+#' @import data.table
 #' @rawNamespace import(ggplot2, except = last_plot)
 ggboxplot_2samples_par <- function(data,
                                    group,
@@ -490,15 +499,23 @@ ggboxplot_2samples_par <- function(data,
     is.character(udm),
     c("index", group2) %in% colnames(dfsummary),
     dfsummary$index %in% c("mean", "sd", "n"),
-    dim(data)[2] == 4,
     dim(dfsummary) == c(3, 3)
   )
 
+  quantile <- NULL
+  group_fct <- NULL
+  lowerfence <- NULL
+  q1 <- NULL
+  q2 <- NULL
+  q3 <- NULL
+  upperfence <- NULL
+  dt <- data.table::data.table(data)
   # getting the label for the first group
-  group1 <- df[[group]] |> levels()
+  group1 <- dt[[group]] |> droplevels() |> levels()
+
   # getting quantiles and fence limits for the first group
-  quant_gr1 <-
-    quantile(data[data$rimosso == "no", response], probs = c(0.25, 0.50, 0.75))
+  quant_gr1 <- dt[which(dt$rimosso == "no")][[response]] |>
+    quantile(probs = c(0.25, 0.50, 0.75))
   fence_gr1 <- c(
       quant_gr1[1] - (quant_gr1[3] - quant_gr1[1]) * 1.5,
       quant_gr1[3] + (quant_gr1[3] - quant_gr1[1]) * 1.5
@@ -517,7 +534,7 @@ ggboxplot_2samples_par <- function(data,
     group_fct = factor(c(group1, group2)),
     lowerfence = c(fence_gr1[1], fence_gr2[1]),
     q1 = c(quant_gr1[1], quant_gr2[1]),
-    mean = c(mean(data[data$rimosso == "no", "response"]), mean_gr2),
+    mean = c(mean(dt[which(dt$rimosso == "no")][[response]]), mean_gr2),
     median = c(quant_gr1[2], quant_gr2[2]),
     q3 = c(quant_gr1[3], quant_gr2[3]),
     upperfence = c(fence_gr1[2], fence_gr2[2])
@@ -551,7 +568,7 @@ ggboxplot_2samples_par <- function(data,
       outlier.shape = NA
     ) +
     ggplot2::geom_jitter(
-      data = data,
+      data = dt,
       ggplot2::aes(
         x = !!quo_group,
         y = !!quo_response,
@@ -583,6 +600,7 @@ ggboxplot_2samples_par <- function(data,
 #' @param response a string with the name of the variable to summarise.
 #' @param group a string with the name of the grouping variable.
 #' @param group2 a character value with the name of the second group.
+#' @param mean2 a numeric value with the mean for the second group.
 #' @param sd2 a numeric value with the standard deviation for the second group.
 #' @param n2 a numeric value with the number of values for the second group.
 #' @param udm a string with the unit of measurement.
@@ -620,7 +638,7 @@ rowsummary_2samples_par <- function(data,
 
   statistica <- NULL
   mydata <- data.table(data)
-  lvl <- levels(as.factor(mydata[[group]]))
+  lvl <- mydata[[group]] |> as.factor() |> droplevels() |> levels()
   roworder <- c("n", "massimo", "media", "mediana", "minimo", "deviazione standard")
   fm <- as.formula(paste("statistica", '~', group))
 

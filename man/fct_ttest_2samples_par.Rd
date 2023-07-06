@@ -2,8 +2,8 @@
 % Please edit documentation in R/fct_compare032_2samples_par.R
 \name{fct_ttest_2samples_par}
 \alias{fct_ttest_2samples_par}
-\title{Displays the results of a \eqn{t}-test for two groups of values summarised
-by mean, standard deviation and number of values}
+\title{Displays the results of a \eqn{t}-test for two groups of values for one of
+which only mean, standard deviation and number of samples are reported.}
 \usage{
 fct_ttest_2samples_par(
   group1,
@@ -63,8 +63,8 @@ A list with the following items:
 }
 \description{
 The function displays the results of a \eqn{t}-test performed
- on two groups of values summarised by mean, standard deviation and number
- of values.
+ on two groups of values for one of which only mean, standard deviation and
+ number of samples are reported.
  The returned text is suitable for the {comparat} {shiny} app.
 }
 \details{
