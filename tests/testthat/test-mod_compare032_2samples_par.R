@@ -101,9 +101,9 @@ testServer(
     expect_named(r$compare03x,
                 c("ftest", "ttest", "significance", "alternative", "outliers",
                   "normality", "summary", "data", "udm", "parameter", "ggsummary",
-                  "label2", "mean2", "sd2", "n2", "ready"),
+                  "label2", "mean2", "sd2", "n2", "ready", "click"),
                 ignore.order = TRUE)
-    expect_length(names(r$compare03x), 16)
+    expect_length(names(r$compare03x), 17)
 })
 
 test_that("module compare031 for 2 samples input ui works", {

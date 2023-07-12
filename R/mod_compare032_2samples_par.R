@@ -217,7 +217,6 @@ mod_compare032_2samples_par_server <- function(id, r) {
       updateTabsetPanel(inputId = "help_results", selected = help_results)
     })
 
-    calc <- reactiveValues(click = 0)
     ## label, mean, sd and n for the second group
     observeEvent(input$submit, ignoreInit = TRUE, {
       r$compare03x$label2 <- input$label
@@ -225,7 +224,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
       r$compare03x$sd2 <- input$sd
       r$compare03x$n2 <- input$n
 
-      calc$click <- 1
+      r$compare03x$click <- 1
     })
 
     ## reset label, mean, sd and n for the second group after changing the parameter
@@ -235,7 +234,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
       updateNumericInput(session, "sd", value = 0)
       updateNumericInput(session, "n", value = 5)
 
-      calc$click <- 0
+      r$compare03x$click <- 0
     })
 
     ## unit of measurement
@@ -379,16 +378,16 @@ mod_compare032_2samples_par_server <- function(id, r) {
 
     output$boxplot <- plotly::renderPlotly({
       validate(
-        need(calc$click == 1,
+        need(r$compare03x$click == 1,
              message =
     "Inserisci il nome, la media, deviazione standard e numero di valori per il secondo gruppo, poi premi 'Calcola'"),
-        need(ifelse(calc$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
+        need(ifelse(r$compare03x$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
              message = "La media deve essere un valore numerico"),
-        need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$sd2 > 0, TRUE, FALSE)),
+        need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$sd2 > 0, TRUE, FALSE)),
              message = "La deviazione standard deve essere un valore numerico maggiore di zero"),
-        need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$n2 >= 5, TRUE, FALSE)),
+        need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$n2 >= 5, TRUE, FALSE)),
              message = "Il numero di misure deve essere un valore numerico maggiore o uguale a 5"),
-        need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
+        need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
              message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
       )
 
@@ -416,7 +415,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
 
     output$summarytable <- DT::renderDT({
       validate(
-        need(calc$click == 1,
+        need(r$compare03x$click == 1,
              message = FALSE)
       )
 
@@ -512,7 +511,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
       req(selected_data())
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
-      req(calc$click == 1)
+      req(r$compare03x$click == 1)
 
       fct_ttest_2samples_par(
         group1 = label_a(),
@@ -565,16 +564,16 @@ mod_compare032_2samples_par_server <- function(id, r) {
       validate(
         need(minval() >= 5 | input$n >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test"),
-          need(calc$click == 1,
+          need(r$compare03x$click == 1,
                message =
                  "Inserisci il nome, la media, deviazione standard e numero di valori per il secondo gruppo, poi premi 'Calcola'"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
                message = "La media deve essere un valore numerico"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$sd2 > 0, TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$sd2 > 0, TRUE, FALSE)),
                message = "La deviazione standard deve essere un valore numerico maggiore di zero"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$n2 >= 5, TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$n2 >= 5, TRUE, FALSE)),
                message = "Il numero di misure deve essere un valore numerico maggiore o uguale a 5"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
                message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
         )
 
@@ -587,7 +586,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
       req(selected_data())
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
-      req(calc$click == 1)
+      req(r$compare03x$click == 1)
 
       fct_ftest_2samples_par(
         group1 = label_a(),
@@ -637,16 +636,16 @@ mod_compare032_2samples_par_server <- function(id, r) {
       validate(
         need(minval() >= 5 | input$n >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test"),
-          need(calc$click == 1,
+          need(r$compare03x$click == 1,
                message =
                  "Inserisci il nome, la media, deviazione standard e numero di valori per il secondo gruppo, poi premi 'Calcola'"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
                message = "La media deve essere un valore numerico"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$sd2 > 0, TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$sd2 > 0, TRUE, FALSE)),
                message = "La deviazione standard deve essere un valore numerico maggiore di zero"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$n2 >= 5, TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$n2 >= 5, TRUE, FALSE)),
                message = "Il numero di misure deve essere un valore numerico maggiore o uguale a 5"),
-          need(ifelse(calc$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
+          need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
                message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
         )
 
@@ -659,7 +658,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
       r$compare03x$significance
       r$compare03x$alternative
       r$compare03x$udm
-      calc$click
+      r$compare03x$click
     })
 
     observeEvent(trigger(), {
