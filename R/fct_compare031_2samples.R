@@ -549,6 +549,7 @@ ggboxplot_2samples <- function(data,
 
   rimosso <- NULL
   cols <- c("s\u00EC" = "#999999", "no" = "black")
+  data$rimosso <- factor(data$rimosso, levels = c("s\u00EC", "no"))
 
   xlabtitle <- group
   ylabtitle <- paste0(response, ifelse(udm != "", paste0(" (", udm, ")"), ""))
@@ -574,7 +575,8 @@ ggboxplot_2samples <- function(data,
     ggplot2::scale_color_manual(values = cols,
                                 breaks = c("s\u00EC", "no"),
                                 labels = c("rimosso", "non rimosso"),
-                                name = ggplot2::element_blank()) +
+                                name = ggplot2::element_blank(),
+                                drop = FALSE) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "top")
 
