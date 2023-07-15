@@ -1,7 +1,8 @@
-#' Displays the results of a \eqn{t}-test for a group of values vs a known value
+#' Displays the results of a \eqn{\chi^2}-test for a group of values vs a
+#' reference standard deviation value.
 #'
-#' @description The function displays the results of a \eqn{t}-test performed
-#'  on a group of values compared with a known value.
+#' @description The function displays the results of a \eqn{\chi^2}-test performed
+#'  on a group of values vs a reference standard deviation value.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
@@ -12,43 +13,43 @@
 #' @param group the name of a single-level factor variable that identifies the
 #'   the group in \code{data}. Quotation (" ") is not required.
 #' @param reflabel a character value with the name of the reference value.
-#' @param reference a numeric value with the reference mean.
+#' @param reference a numeric value with the reference standard deviation.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
 #' @param alternative a character string specifying the alternative hypotesis,
 #'   must be one of \code{"different"} or \code{"greater"}.
 #'
-#' @details \eqn{t}-test is calculated using the base-R function \code{t.test}.
-#'
+#' @details \eqn{\chi^2}-test is with the numerically larger variance as numerator.
+#'  As a consequence, the alternative  hypotheses tested can only be
+#'  \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}  (\code{alternative = "different"})
+#'  or \eqn{\mathrm{Var}(A) > \mathrm{Var}(B)} (\code{alternative = "greater"}).
 #' @return A list with the following items:
 #'  \describe{
 #'    \item{hypotheses}{a named vector of strings, being \code{h0} and \code{h1}
 #'    the null and alternative hypothesis, respectively.}
-#'    \item{mean}{a named vector of numbers, being \code{mean},
-#'    \code{lwrci} and \code{uprci} the mean, lower and upper ends of the
-#'    confidence interval for the provided data, respectively.
+#'    \item{difference}{a named vector of numbers, being \code{ratio},
+#'    \code{lwrci} and \code{uprci} the ratio of the variances of the two groups and
+#'    the lower and upper ends of the confidence interval, respectively.
 #'    The confidence interval is calculated considering both the \code{significance}
 #'    and \code{alternative} arguments. For \code{alternative = "greater"} only the
 #'    lower end of the confidence interval will be calculated.}
-#'    \item{test}{a named vector of numbers, being \code{dof}, \code{tsper},
-#'    \code{ttheo} and \code{pvalue} the degrees of freedom, the calculated value
-#'    of the \eqn{t} statistic, the tabulated value of the \eqn{t} statistic and
-#'    the \eqn{p}-value associated to the test. As in the original \code{t.test}
-#'    function in base R, the statistic is calculated by performing a Welch test
-#'    and approximating the actual number of degrees of freedom.}
+#'    \item{test}{a named vector of numbers, being \code{dof}, \code{fsper},
+#'    \code{ftheo} and \code{pvalue} the degrees of freedom, the calculated value
+#'    of the \eqn{F} statistic, the tabulated value of the \eqn{F} statistic and
+#'    the \eqn{p}-value associated to the test.}
 #'    \item{result}{a string indicating whether H0 should be rejected or not.}
 #'  }
 #'
 #' @export
 #'
-#' @importFrom stats sd qt t.test
-fct_ttest_1sample_mu <- function(data,
-                                 response,
-                                 group,
-                                 reflabel,
-                                 reference,
-                                 significance = 0.95,
-                                 alternative = "different") {
+#' @importFrom stats aggregate sd qchisq
+fct_chitest_1sample_sigma <- function(data,
+                                      response,
+                                      group,
+                                      reflabel,
+                                      reference,
+                                      significance = 0.95,
+                                      alternative = "different") {
   stopifnot(
     is.data.frame(data),
     is.character(response),
@@ -58,6 +59,18 @@ fct_ttest_1sample_mu <- function(data,
     response %in% colnames(data),
     group %in% colnames(data),
     alternative %in% c("different", "greater")
+  )
+
+  # recoding the alternative hypothesis
+  h1 <- switch (alternative,
+                "different" = "two.sided",
+                "greater" = "greater"
+  )
+
+  # recoding the significance level based on alternative hypothesis
+  alpha <- switch (alternative,
+                   "different" = significance + (1 - significance)/2,
+                   "greater" = significance
   )
 
   # defining the formula for groups
@@ -70,82 +83,97 @@ fct_ttest_1sample_mu <- function(data,
   # get the summary
   mysummary <- do.call(data.frame, aggregate(myformula, data, summary_function))
   colnames(mysummary) <- c(group, "n", "mean", "sd")
-  # get the group with higher mean
-  max_mean <- ifelse(mysummary$mean > reference,
-                     paste0("media di ", mysummary[[group]]),
-                     paste0("valore di riferimento ", reflabel))
-  min_mean <- ifelse(mysummary$mean <= reference,
-                     paste0("media di ", mysummary[[group]]),
-                     paste0("valore di riferimento ", reflabel))
-  data_mean <- mysummary$mean
 
-  # recoding the alternative hypothesis
-  h1 <- switch (alternative,
-                "different" = "two.sided",
-                "greater" = ifelse(data_mean >= reference, "greater", "less")
-  )
+  #get the sample label
+  data_lbl <- mysummary[[group]]
+  # get the sample mean
+  data_sd <- mysummary$sd
+  # get degree of freedoms
+  dof <- c(mysummary$n -1)
 
-  # recoding the significance level based on alternative hypothesis
-  alpha <- switch (alternative,
-                   "different" = significance + (1 - significance)/2,
-                   "greater" = significance
-  )
 
-  # # t-test results
-  ttest <- stats::t.test(x = data[[response]], mu = reference,
-                         alternative = h1, conf.level = significance)
+    # get chi-squared statitistics
+  chivalue <- (data_sd^2 * dof) / reference^2
 
-  mymean <- data_mean |> format_sigfig()
-  mymeanconfint <- c(NA, NA)
-  mymeanconfint[1] <- ttest$conf.int[1] |> format_sigfig()
-  mymeanconfint[2] <- ttest$conf.int[2] |> format_sigfig()
-  tvalue <- ttest$statistic |> abs() |> round(4)
-  dof <- ttest$parameter |> round(0)
-  tcritical <- stats::qt(alpha, dof) |> round(3)
-  pvalue <- ttest$p.value |> round(4)
+
+  # get the critical chi-squared value
+  chicritical <- if(h1 == "two.sided")
+    c(stats::qchisq(1-alpha, dof), stats::qchisq(alpha, dof))
+  else
+    stats::qchisq(alpha, dof)
+
+  # get the confidence interval
+  ci <- sqrt( (dof * data_sd^2) / chicritical)
+  ci <- ci[order(ci)]
+  ci <- if (h1 == "two.sided") {
+    ci
+  } else {
+    c(ci, Inf) }
+
+  # p value
+  side <- ifelse(data_sd > reference, FALSE, TRUE)
+  pvalue <- ifelse(h1 == "two.sided",
+                   stats::pchisq(chivalue, dof, lower.tail = side)*2,
+                   stats::pchisq(chivalue, dof, lower.tail = side))
 
   # Being clear with some text
   h0_text <- switch (alternative,
-                     "different" = sprintf("%s = %s", max_mean, min_mean),
-                     "greater" = sprintf("%s \u2264 %s", max_mean, min_mean),
+                     "different" = sprintf("varianza di %s = varianza di riferimento %s", data_lbl, reflabel),
+                     "greater" = sprintf("varianza di %s \u2264 varianza di riferimento %s", data_lbl, reflabel)
   )
 
   h1_text <- switch (alternative,
-                     "different" = sprintf("%s \u2260 %s", max_mean, min_mean),
-                     "greater" = sprintf("%s > %s", max_mean, min_mean)
+                     "different" = sprintf("varianza di %s \u2260 varianza di riferimento %s", data_lbl, reflabel),
+                     "greater" = sprintf("vvarianza di %s > varianza di riferimento %s", data_lbl, reflabel)
   )
 
   positive <- switch (alternative,
-                      "different" = sprintf("%s e %s sono statisticamente differenti", max_mean, min_mean),
-                      "greater" = sprintf("%s \u00E8 statisticamente maggiore di %s", max_mean, min_mean)
+                      "different" = sprintf("la varianza di %s e la varianza di riferimento %s sono statisticamente differenti", data_lbl, reflabel),
+                      "greater" = sprintf("la varianza di %s \u00E8 statisticamente maggiore della varianza di riferimento %s", data_lbl, reflabel)
   )
 
   negative <- switch (alternative,
-                      "different" = sprintf("%s e %s non sono statisticamente differenti", max_mean, min_mean),
-                      "greater" = sprintf("%s non \u00E8 statisticamente maggiore di %s", max_mean, min_mean)
+                      "different" = sprintf("la varianza di %s e la varianza di riferimento %s non sono statisticamente differenti", data_lbl, reflabel),
+                      "greater" = sprintf("la varianza di %s non \u00E8 statisticamente maggiore della varianza di riferimento %s", data_lbl, reflabel)
   )
 
-  result <- ifelse(tvalue < tcritical, negative, positive)
+  result <- switch (alternative,
+                    "different" = ifelse(chivalue > chicritical[1] & chivalue < chicritical[2],
+                                         negative,
+                                         positive),
+                    "greater" = ifelse(chivalue < chicritical,
+                                       negative,
+                                       positive)
+  )
+
+  chitheo <- switch (alternative,
+                     "different" = paste0(chicritical[1] |> round(4), ", ",
+                                        chicritical[2] |> round(4)),
+                     "greater" = paste0(chicritical |> round(4))
+  )
+
+
 
   list(hypotheses = c("h0" = h0_text,
                       "h1" = h1_text),
-       mean = c("mean" = mymean,
-                "lwrci" = mymeanconfint[1],
-                "uprci" = mymeanconfint[2]),
-       test = c("dof" = unname(dof),
-                "alpha" = alpha,
-                "tsper" = unname(tvalue),
-                "ttheo" = tcritical,
-                "pvalue" = pvalue),
-       result = unname(result))
+       ratio = c("sd" = data_sd |> format_sigfig(),
+                 "lwrci" = ci[1] |> format_sigfig(),
+                 "uprci" = ci[2] |> format_sigfig()),
+       test = list("dof" = dof,
+                   "alpha" = alpha,
+                   "chisper" = chivalue |> format_sigfig(),
+                   "chitheo" = chitheo,
+                   "pvalue" = pvalue |> round(4)),
+       result = result)
 
 }
 
 
-#' Plotly boxplots for comparing a group of values with a reference value
+#' Plotly boxplots for comparing a group of values with a reference standard
+#' deviationvalue
 #'
 #' @description The function provides a simple {plotly} boxplot for comparing
-#' a group of values with a reference value.
+#' a group of values with a reference standard deviation value.
 #'
 #' @param data input data.frame with a column named *key* with progressive integers,
 #' a column named *group* with a one-level factor label for the two groups
@@ -157,13 +185,14 @@ fct_ttest_1sample_mu <- function(data,
 #' @param reference a numeric value with the reference mean.
 #' @param udm a character string with the unit of measurement.
 #'
-#' @return A {plotly} boxplot for comparing a group of values with a reference value.
+#' @return A {plotly} boxplot for comparing a group of values with a reference
+#' standard deviation value.
 #' Raw data values are overlayed on top of the box.
 #'
 #' @export
 #'
 #' @importFrom plotly plot_ly add_boxplot add_markers add_lines layout config
-boxplot_1sample_mu <- function(data,
+boxplot_1sample_sigma <- function(data,
                                group,
                                response,
                                reflabel,
@@ -184,6 +213,8 @@ boxplot_1sample_mu <- function(data,
                  "#999999",
                  "black")
 
+  data_mean <- data$response |> mean()
+
   ylabtitle <- paste0(response,
                       ifelse(udm != "", paste0(" (", udm, ")"), ""))
 
@@ -201,19 +232,23 @@ boxplot_1sample_mu <- function(data,
 
   }
 
-    htext <- function(myy = 0, mylabel, myudm) {
+    htext <- function(mean = 0, myy = 0, mylabel, myudm, lbl, myanchor) {
+      stopifnot(myanchor %in% c("top", "bottom"))
+
     list(
       x = 1,
-      y = myy,
+      y = mean,
       xref = "paper",
-      text = paste0(mylabel, " = ", myy, " ", myudm),
+      text = paste0(mylabel, " = ", lbl, myy, " ", myudm),
       showarrow = FALSE,
-      yanchor = "bottom",
+      yanchor = myanchor,
       xanchor = "right"
     )
 
-  }
+    }
 
+    lowlbl <- paste0("media - 2 \u00D7 ")
+    uplbl <- paste0("media + 2 \u00D7 ")
 
   plotly::plot_ly(source = "boxplot") |>
     plotly::add_boxplot(
@@ -248,18 +283,23 @@ boxplot_1sample_mu <- function(data,
       xaxis = list(title = group),
       yaxis = list(title = ylabtitle,
                    hoverformat = ".3s"),
-      shapes = list(hline(reference)),
-      annotations = htext(reference, reflabel, udm)
+      shapes = list(hline(data_mean + 2 * reference),
+                    hline(data_mean - 2 * reference)),
+      annotations = list(htext(data_mean - 2 * reference, reference, reflabel,
+                               udm, lowlbl, "bottom"),
+                         htext(data_mean + 2 * reference, reference, reflabel,
+                               udm, uplbl, "top"))
     ) |>
     plotly::config(displayModeBar = FALSE,
                    locale = "it")
 
 }
 
-#' GGplot2 boxplots for comparing a group of values with a reference value
+#' GGplot2 boxplots for comparing a group of values with a standard deviation
+#' reference value
 #'
 #' @description The function provides a simple {ggplot2} boxplot for comparing
-#' a group of values with a reference value
+#' a group of values with a standard deviation reference value
 #'
 #' @param data input data.frame with a column named *key* with progressive integers,
 #' a column with a two level factor label for the two groups
@@ -277,12 +317,12 @@ boxplot_1sample_mu <- function(data,
 #' @export
 #'
 #' @rawNamespace import(ggplot2, except = last_plot)
-ggboxplot_1sample_mu <- function(data,
-                                 group,
-                                 response,
-                                 reflabel,
-                                 reference,
-                                 udm) {
+ggboxplot_1sample_sigma <- function(data,
+                                    group,
+                                    response,
+                                    reflabel,
+                                    reference,
+                                    udm) {
   stopifnot(
     is.data.frame(data),
     is.character(response),
@@ -303,6 +343,7 @@ ggboxplot_1sample_mu <- function(data,
   quo_group <- ggplot2::ensym(group)
   quo_response <- ggplot2::ensym(response)
 
+  data_mean <- data[which(data$rimosso == "no"),response] |> mean()
 
   ggplot2::ggplot() +
     ggplot2::geom_boxplot(data = data[which(data$rimosso == "no"),],
@@ -316,13 +357,13 @@ ggboxplot_1sample_mu <- function(data,
                                       y = !!quo_response,
                                       col = rimosso),
                          width = 0.2) +
-    ggplot2::geom_hline(ggplot2::aes(yintercept = reference),
-                        linetype='dashed') +
+    ggplot2::geom_hline(ggplot2::aes(yintercept = data_mean + c(-2, 2) *reference),
+                        linetype = 'dashed') +
     ggplot2::annotate("text",
-                      label = paste0(reflabel, " = ", reference, " ", udm),
+                      label = paste0(reflabel, " = ", "media", c(" - 2 \u00D7 ", " + 2 \u00D7 "), reference, " ", udm),
                       x = 1.8,
-                      y = reference,
-                      vjust = -1,
+                      y = data_mean + c(-2, 2) * reference,
+                      vjust = c(-1, +1),
                       hjust = 1) +
     ggplot2::labs(x = xlabtitle,
                   y = ylabtitle) +
@@ -337,7 +378,7 @@ ggboxplot_1sample_mu <- function(data,
 
 }
 
-#' Summary arranged on rows for one group vs a mean reference value
+#' Summary arranged on rows for one group vs a standard deviation reference value
 #'
 #' @description The function returns a table with max, mean, median, min, sd and n
 #'  values arranged on rows while groups are on columns. Numbers are formatted as
@@ -358,12 +399,12 @@ ggboxplot_1sample_mu <- function(data,
 #'
 #' @import data.table
 #' @importFrom stats sd median
-rowsummary_1sample_mu <- function(data,
-                                  response,
-                                  group,
-                                  reflabel,
-                                  reference,
-                                  udm = "",
+rowsummary_1sample_sigma <- function(data,
+                                     response,
+                                     group,
+                                     reflabel,
+                                     reference,
+                                     udm = "",
                                   signif = 3L) {
   stopifnot(
     is.data.frame(data),
@@ -407,7 +448,7 @@ rowsummary_1sample_mu <- function(data,
     ifelse(x != "n" & udm != "", paste0(x, " (", udm, ")"), x)
   }))]
 
-  mysummary<- cbind(mysummary, c("-", "-", reference, "-", "-", "-"))
+  mysummary<- cbind(mysummary, c("-", "-", "-", "-", "-", reference))
   colnames(mysummary)[3] <- reflabel
   mysummary
 }
