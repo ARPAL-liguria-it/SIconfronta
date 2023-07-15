@@ -40,9 +40,9 @@ A list with the following items:
  \describe{
    \item{hypotheses}{a named vector of strings, being \code{h0} and \code{h1}
    the null and alternative hypothesis, respectively.}
-   \item{difference}{a named vector of numbers, being \code{mean},
-   \code{lwrci} and \code{uprci} the difference in means of the two groups and
-   the lower and upper ends of the confidence interval, respectively.
+   \item{mean}{a named vector of numbers, being \code{mean},
+   \code{lwrci} and \code{uprci} the mean, lower and upper ends of the
+   confidence interval for the provided data, respectively.
    The confidence interval is calculated considering both the \code{significance}
    and \code{alternative} arguments. For \code{alternative = "greater"} only the
    lower end of the confidence interval will be calculated.}

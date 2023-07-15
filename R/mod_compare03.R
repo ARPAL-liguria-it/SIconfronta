@@ -249,7 +249,14 @@ mod_compare03_server <- function(id, r) {
                                                       response = r$loadfile02$responsevar,
                                                       udm = r$compare03x$udm,
                                                       group2 = r$compare03x$label2,
-                                                      dfsummary = r$compare03x$ggsummary)
+                                                      dfsummary = r$compare03x$ggsummary),
+
+              "1sample_mu" = ggboxplot_1sample_mu(data = r$compare03x$data,
+                                                  group = r$loadfile02$groupvar,
+                                                  response = r$loadfile02$responsevar,
+                                                  reflabel = r$compare03x$label2,
+                                                  reference = r$compare03x$mean2,
+                                                  udm = r$compare03x$udm)
       )
     })
 

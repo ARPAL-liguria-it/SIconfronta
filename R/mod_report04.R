@@ -61,25 +61,27 @@ mod_report04_server <- function(id, r){
       mylist <- reactiveValuesToList(r$compare03)
       mylist <- mylist[names(mylist) %notin% c("myparameter", "saved_flag")]
 
-      normality <- sapply(mylist, function(x) !is.null(x$normality)) |>
+      normality <-
+        sapply(mylist, function(x) ! is.na(x$normality)) |>
         sum() |>
-        (\(x) ifelse(x >= 1, c(normality = "Normalit\u00E0 e outliers"), NULL))()
+        (\(x) ifelse(x >= 1, "normality", NA))()
+      names(normality) <- "Normalit\u00E0 e outliers"
 
-      ttest <- sapply(mylist, function(x) !is.null(x$ttest)) |>
+      ttest <- sapply(mylist, function(x) ! is.na(x$ttest)) |>
         sum() |>
-        (\(x) ifelse(x >= 1, c(ttest = "Confronto tra medie"), NULL))()
+        (\(x) ifelse(x >= 1, "ttest", NA))()
+      names(ttest) <- "Confronto tra medie"
 
-      ftest <- sapply(mylist, function(x) !is.null(x$ftest)) |>
+      ftest <- sapply(mylist, function(x) ! is.na(x$ftest)) |>
         sum() |>
-        (\(x) ifelse(x >= 1, c(ftest = "Confronto tra varianze"), NULL))()
+        (\(x) ifelse(x >= 1, "ftest", NA))()
+      names(ftest) <- "Confronto tra varianze"
 
-      mychoices_df <- rbind(normality, ttest, ftest)
-      mychoices_names <- mychoices_df[,1]
-      mychoices <- rownames(mychoices_df)
-      names(mychoices) <- mychoices_names
+      mychoices <- c(normality, ttest, ftest)
+      mychoices <- mychoices[!is.na(mychoices)]
 
       updateCheckboxGroupInput(session,
-                              "content",
+                               "content",
                                choices = mychoices,
                                selected = mychoices)
     })

@@ -24,9 +24,9 @@
 #'  \describe{
 #'    \item{hypotheses}{a named vector of strings, being \code{h0} and \code{h1}
 #'    the null and alternative hypothesis, respectively.}
-#'    \item{difference}{a named vector of numbers, being \code{mean},
-#'    \code{lwrci} and \code{uprci} the difference in means of the two groups and
-#'    the lower and upper ends of the confidence interval, respectively.
+#'    \item{mean}{a named vector of numbers, being \code{mean},
+#'    \code{lwrci} and \code{uprci} the mean, lower and upper ends of the
+#'    confidence interval for the provided data, respectively.
 #'    The confidence interval is calculated considering both the \code{significance}
 #'    and \code{alternative} arguments. For \code{alternative = "greater"} only the
 #'    lower end of the confidence interval will be calculated.}
@@ -95,10 +95,10 @@ fct_ttest_1sample_mu <- function(data,
   ttest <- stats::t.test(x = data[[response]], mu = reference,
                          alternative = h1, conf.level = significance)
 
-  difference <- abs(mysummary$mean - reference) |> format_sigfig()
-  diffconfint <- c(NA, NA)
-  diffconfint[1] <- ttest$conf.int[1] |> format_sigfig()
-  diffconfint[2] <- ttest$conf.int[2] |> format_sigfig()
+  mymean <- mysummary$mean |> format_sigfig()
+  mymeanconfint <- c(NA, NA)
+  mymeanconfint[1] <- ttest$conf.int[1] |> format_sigfig()
+  mymeanconfint[2] <- ttest$conf.int[2] |> format_sigfig()
   tvalue <- ttest$statistic |> abs() |> round(4)
   dof <- ttest$parameter |> round(0)
   tcritical <- stats::qt(alpha, dof) |> round(3)
@@ -129,9 +129,9 @@ fct_ttest_1sample_mu <- function(data,
 
   list(hypotheses = c("h0" = h0_text,
                       "h1" = h1_text),
-       difference = c("mean" = difference,
-                      "lwrci" = diffconfint[1],
-                      "uprci" = diffconfint[2]),
+       mean = c("mean" = mymean,
+                "lwrci" = mymeanconfint[1],
+                "uprci" = mymeanconfint[2]),
        test = c("dof" = unname(dof),
                 "alpha" = alpha,
                 "tsper" = unname(tvalue),

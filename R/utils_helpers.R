@@ -74,6 +74,17 @@ sprintf("%.*f", signiftodigits(number, sigfig), number)
 #'
 #' @noRd
 htmltormarkdown <- function(htmlstring){
+
+  stopifnot(
+    !is.null(htmlstring)
+  )
+
+  if (is.na(htmlstring)) {
+
+    NA
+
+  } else {
+
   htmlstring |>
     (\(x) gsub("<h4>", "\n###", x) )() |>
     (\(x) gsub(" </h4>", "  \n" , x) )() |>
@@ -96,6 +107,8 @@ htmltormarkdown <- function(htmlstring){
     (\(x) gsub("<i>", "_", x) )() |>
     (\(x) gsub("</i>", "_", x) )() |>
     (\(x) gsub("</br>", "  \n ", x) )()
+
+  }
 }
 
 #' Rendering of an RMarkdown report as future promise

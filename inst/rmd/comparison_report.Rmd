@@ -51,9 +51,15 @@ cat('\n\n<!-- -->\n\n')
 
 ```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), "Boxplot per l'analita ", ordered_analytes, ".")}
 
-data_caption <- "Valori a confronto per l'analita %s."
+data_caption <- "Valori per l'analita %s."
 summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
 boxplot_caption <- "Boxplot per l'analita %s."
+ttest_title <- ifelse(params$aim01 == "1sample_mu", 
+                      "Test per la differenza tra medie (t-test)",
+                      "Test per la differenza tra medie (Welch)")
+ftest_title <- ifelse(params$aim01 == "1sample_sigma", 
+                      "Test per il rapporto tra varianze ($\\chi^2$)",
+                      "Test per il rapporto tra varianze (Fisher)")
 
 analytes <- names(params$compare03)[names(params$compare03) %notin% c("myparameter", "saved_flag")]
 myorder <- as.character(params$loadfile02$parlist)
@@ -97,7 +103,7 @@ for (i in ordered_analytes) {
   if("ttest" %in% params$report04$content) {
 
   # comparing means by t-test
-  cat(paste("#", "Test per la differenza tra medie (Welch)", "\n"))
+  cat(paste("#", ttest_title, "\n"))
   cat(params$compare03[[i]]$ttest)
   cat('\n\n<!-- -->\n\n')
 
@@ -111,7 +117,7 @@ for (i in ordered_analytes) {
   if("ftest" %in% params$report04$content) {
 
   # comparing variances by F-test
-  cat(paste("#", "Test per il rapporto tra varianze (Fisher)", "\n"))
+  cat(paste("#", ftest_title, "\n"))
   cat(params$compare03[[i]]$ftest)
   cat('\n\n<!-- -->\n\n')
 
