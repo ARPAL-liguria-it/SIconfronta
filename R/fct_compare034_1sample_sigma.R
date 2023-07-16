@@ -114,7 +114,7 @@ fct_chitest_1sample_sigma <- function(data,
   side <- ifelse(data_sd > reference, FALSE, TRUE)
   pvalue <- ifelse(h1 == "two.sided",
                    stats::pchisq(chivalue, dof, lower.tail = side)*2,
-                   stats::pchisq(chivalue, dof, lower.tail = side))
+                   stats::pchisq(chivalue, dof, lower.tail = FALSE))
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -124,7 +124,7 @@ fct_chitest_1sample_sigma <- function(data,
 
   h1_text <- switch (alternative,
                      "different" = sprintf("varianza di %s \u2260 varianza di riferimento %s", data_lbl, reflabel),
-                     "greater" = sprintf("vvarianza di %s > varianza di riferimento %s", data_lbl, reflabel)
+                     "greater" = sprintf("varianza di %s > varianza di riferimento %s", data_lbl, reflabel)
   )
 
   positive <- switch (alternative,
@@ -343,7 +343,7 @@ ggboxplot_1sample_sigma <- function(data,
   quo_group <- ggplot2::ensym(group)
   quo_response <- ggplot2::ensym(response)
 
-  data_mean <- data[which(data$rimosso == "no"),response] |> mean()
+  data_mean <- data[which(data$rimosso == "no")][[response]] |> mean()
 
   ggplot2::ggplot() +
     ggplot2::geom_boxplot(data = data[which(data$rimosso == "no"),],

@@ -106,8 +106,9 @@ htmltormarkdown <- function(htmlstring){
     (\(x) gsub("</b>", "**", x) )() |>
     (\(x) gsub("<i>", "_", x) )() |>
     (\(x) gsub("</i>", "_", x) )() |>
-    (\(x) gsub("</br>", "  \n ", x) )()
-
+    (\(x) gsub("</br>", "  \n ", x) )() |>
+    (\(x) gsub("\u03C7<sup>2</sup>", "$\\\\chi^2$", x) )() |>
+    (\(x) gsub("\u03C7\u00B2", "$\\\\chi^2$", x) )()
   }
 }
 

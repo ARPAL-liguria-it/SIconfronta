@@ -42,7 +42,7 @@ mod_compare033_1sample_mu_inputs_ui <- function(id) {
     # 2. label for the reference value
     textInput(
       ns("label"),
-      "Nome del secondo gruppo",
+      "Nome del valore di riferimento",
       ""
     ),
 
@@ -323,7 +323,7 @@ mod_compare033_1sample_mu_server <- function(id, r) {
         need(ifelse(r$compare03x$click == 0, TRUE, ifelse(is.numeric(r$compare03x$mean2), TRUE, FALSE)),
              message = "Il valore di riferimento deve essere un valore numerico"),
         need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
-             message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
+             message = "Il nome del valore di riferimento deve essere una stringa di caratteri")
       )
 
       plotlyboxplot()

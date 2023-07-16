@@ -74,7 +74,6 @@ test_that("ggboxplot_1sample_mu works well", {
                 ggplot2::is.ggplot())
   expect_equal(ggboxplot_1sample_mu(testdata, "fertilizer", "pounds", "law", 30, "ug/L")$labels$x, "fertilizer")
   expect_equal(ggboxplot_1sample_mu(testdata, "fertilizer", "pounds", "law", 30, "ug/L")$labels$y, "pounds (ug/L)")
-  print(ggboxplot_1sample_mu(testdata, "fertilizer", "pounds", "law", 30, "ug/L"))
 })
 
 test_that("rowsummary_1sample_mu works well", {
