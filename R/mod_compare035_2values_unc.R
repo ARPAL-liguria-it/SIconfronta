@@ -41,19 +41,38 @@ mod_compare035_2values_unc_inputs_ui <- function(id) {
 #' @import shiny
 mod_compare035_2values_unc_output_ui <- function(id) {
   ns <- NS(id)
-  tagList(fluidRow(
-    column(4,
-           ""),
+  tagList(tabsetPanel(
+    id = ns("help_results"),
+    type = "hidden",
 
-    column(10,
-           tabsetPanel(
-             id = ns("tabresults"),
-             type = "tabs",
+    tabPanel("help",
+             includeMarkdown(
+               system.file("rmd", "help_compare035_2values_unc.Rmd", package = "comparat")
+             )),
 
-             tabPanel("Confronto tra valori")
-             )
-           )
-    ))
+    tabPanel("results",
+
+             fluidRow(
+               column(
+                 5,
+                 plotly::plotlyOutput(ns("boxplot"), width = "100%"),
+                 DT::DTOutput(ns("summarytable"))
+               ),
+
+               column(6,
+                      tabsetPanel(
+                        id = ns("tabresults"),
+                        type = "hidden",
+
+                        tabPanel(
+                          h4("Confronto tra valori (E number)"),
+                          htmlOutput(ns("entest"))
+                        )
+                      ))
+
+             ))
+
+  ))
 }
 
 #' compare Server Function: 2 values with given extended uncertainty option
@@ -86,6 +105,131 @@ mod_compare035_2values_unc_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+
+    r$compare03x <- reactiveValues()
+
+    # storing input values into r$compare03x reactiveValues ----
+
+    ## selected parameter
+    observeEvent(r$compare03$myparameter, {
+      r$compare03x$parameter <- r$compare03$myparameter
+
+      # updating the tabset switching from help to results tabs
+      help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
+      updateTabsetPanel(inputId = "help_results", selected = help_results)
+    })
+
+    ## unit of measurement
+    observeEvent(input$udm, ignoreNULL = FALSE, {
+      udmclean <- gsub("[()\\[\\]]", "", input$udm, perl = TRUE)
+      r$compare03x$udm <- udmclean
+    })
+
+    # preparing the reactive dataset for outputs ----
+    mydata <- reactive({
+      r$loadfile02$data[get(r$loadfile02$parvar) == r$compare03x$parameter]
+    })
+
+    # assembling the dataframe
+    input_data <- reactive({
+
+      data.frame(
+        response = mydata()[[r$loadfile02$responsevar]],
+        uncertainty = mydata()[[r$loadfile02$uncertainty]],
+        group = mydata()[[r$loadfile02$groupvar]]
+      )
+
+    })
+
+    # scatter plot with error bars ----
+    plotlyboxplot <- reactive({
+      req(input_data())
+
+      boxplot_2values_unc(
+        data = input_data(),
+        group = r$loadfile02$groupvar,
+        response = r$loadfile02$responsevar,
+        uncertainty = r$loadfile02$uncertainty,
+        udm = r$compare03x$udm
+      )
+
+    })
+
+    output$boxplot <- plotly::renderPlotly({
+      plotlyboxplot()
+    })
+
+
+    # summary table ----
+    summarytable <- reactive({
+      req(input_data())
+
+      rowsummary_1sample_sigma(
+        data = input_data(),
+        group = "group",
+        response = "response",
+        uncertainty = "uncertainty",
+        udm = r$compare03x$udm
+      )
+
+    })
+
+
+    output$summarytable <- DT::renderDT({
+
+      DT::datatable(
+        summarytable(),
+        options = list(dom = "t"),
+        rownames = FALSE
+      )
+
+    })
+
+    #### results for the En-test ----
+    entest_list <- reactive({
+      req(input_data())
+
+      fct_entest_2values_unc(
+        data = input_data(),
+        response = "response",
+        group = "group",
+        uncertainty = "uncertainty"
+      )
+
+    })
+
+    entest_text <-
+      "<b>H0:</b> %s </br>
+<b>H1:</b> %s
+<ul>
+  <li> Differenza tra i due valori (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
+  <li> E<sub>n</sub> sperimentale = %s </li>
+  <li> E<sub>n</sub> critico = %s </li>
+</ul>
+\u21e8 %s"
+
+    entest_html <- reactive({
+
+      sprintf(
+        entest_text,
+        entest_list()$hypotheses[[1]],
+        entest_list()$hypotheses[[2]],
+        entest_list()$difference[[1]],
+        r$compare03x$udm,
+        entest_list()$difference[[2]],
+        entest_list()$difference[[3]],
+        r$compare03x$udm,
+        entest_list()$test[[3]],
+        entest_list()$test[[2]],
+        chitest_list()$result
+      )
+
+    })
+
+    output$entest <- renderText({
+
+      entest_html()
+    })
 
   })
 }

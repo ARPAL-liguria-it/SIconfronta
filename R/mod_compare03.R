@@ -61,7 +61,7 @@ mod_compare03_ui <- function(id) {
 
         tabPanel(
           "2values_unc",
-          "")
+          mod_compare035_2values_unc_inputs_ui(ns("2values_unc")))
 
       ),
 
