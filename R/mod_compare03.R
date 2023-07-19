@@ -263,7 +263,13 @@ mod_compare03_server <- function(id, r) {
                                                         response = r$loadfile02$responsevar,
                                                         reflabel = r$compare03x$label2,
                                                         reference = r$compare03x$sd2,
-                                                        udm = r$compare03x$udm)
+                                                        udm = r$compare03x$udm),
+
+              "2values_unc" =  ggboxplot_2values_unc(data = r$compare03x$data,
+                                                     group = r$loadfile02$groupvar,
+                                                     response = r$loadfile02$responsevar,
+                                                     uncertainty = r$loadfile02$uncertaintyvar,
+                                                     udm = r$compare03x$udm)
       )
     })
 

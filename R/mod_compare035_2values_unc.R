@@ -64,9 +64,9 @@ mod_compare035_2values_unc_output_ui <- function(id) {
                         id = ns("tabresults"),
                         type = "hidden",
 
-                        tabPanel(
+                        tabPanel("",
                           h4("Confronto tra valori (E number)"),
-                          htmlOutput(ns("entest"))
+                          htmlOutput(ns("ttest"))
                         )
                       ))
 
@@ -91,7 +91,10 @@ mod_compare035_2values_unc_output_ui <- function(id) {
 #'    \item{parvar} is the data.frame column name in which parameters are stored;
 #'    \item{parlist} is the list of parameters provided by the data.frame;
 #'    \item{groupvar} is the data.frame column name in which groub labels are stored;
-#'    \item{responsevar} is the data.frame column name in which the response numerical values are stored.
+#'    \item{responsevar} is the data.frame column name in which the response
+#'     numerical values are stored;
+#'    \item{uncertaintyvar} is the data.frame column name in which the extended
+#'     uncertainty numerical values are stored.
 #'    }
 #' @return A {plotly} interactive boxplot, a {DT} summary table
 #'  and \eq{E_n} test in HTML format.
@@ -132,10 +135,11 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
     # assembling the dataframe
     input_data <- reactive({
+      req(mydata())
 
       data.frame(
         response = mydata()[[r$loadfile02$responsevar]],
-        uncertainty = mydata()[[r$loadfile02$uncertainty]],
+        uncertainty = mydata()[[r$loadfile02$uncertaintyvar]],
         group = mydata()[[r$loadfile02$groupvar]]
       )
 
@@ -149,7 +153,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
         data = input_data(),
         group = r$loadfile02$groupvar,
         response = r$loadfile02$responsevar,
-        uncertainty = r$loadfile02$uncertainty,
+        uncertainty = r$loadfile02$uncertaintyvar,
         udm = r$compare03x$udm
       )
 
@@ -164,7 +168,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
     summarytable <- reactive({
       req(input_data())
 
-      rowsummary_1sample_sigma(
+      rowsummary_2values_unc(
         data = input_data(),
         group = "group",
         response = "response",
@@ -187,7 +191,6 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
     #### results for the En-test ----
     entest_list <- reactive({
-      req(input_data())
 
       fct_entest_2values_unc(
         data = input_data(),
@@ -212,23 +215,49 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
       sprintf(
         entest_text,
-        entest_list()$hypotheses[[1]],
-        entest_list()$hypotheses[[2]],
-        entest_list()$difference[[1]],
+        entest_list()$hypotheses[1],
+        entest_list()$hypotheses[2],
+        entest_list()$difference[1],
         r$compare03x$udm,
-        entest_list()$difference[[2]],
-        entest_list()$difference[[3]],
+        entest_list()$difference[2],
+        entest_list()$difference[3],
         r$compare03x$udm,
-        entest_list()$test[[3]],
-        entest_list()$test[[2]],
-        chitest_list()$result
+        entest_list()$test[1],
+        entest_list()$test[2],
+        entest_list()$result
       )
 
     })
 
-    output$entest <- renderText({
+    output$ttest <- renderText({
+      req(input_data())
 
       entest_html()
+    })
+
+    # saving the outputs ----
+    trigger <- reactive({
+      input_data()
+      r$compare03x$udm
+    })
+
+    observeEvent(trigger(), {
+
+      # output dataset
+      r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
+
+      # summary table
+      r$compare03x$summary <- summarytable()
+
+      # test results
+      r$compare03x$normality <- NA
+      r$compare03x$outliers <- NA
+      r$compare03x$ftest <- NA
+      r$compare03x$ttest <- entest_html()
+      # flag for when ready to be saved
+      r$compare03x$ready <- 1
+
+      # the plot is saved only when the save button is clicked
     })
 
   })

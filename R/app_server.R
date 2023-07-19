@@ -8,6 +8,7 @@
 #' @import shiny
 #' @importFrom shinyjs enable disable
 app_server <- function(input, output, session) {
+  options(scipen = 999)
   # disabling all tabs except aim and readme when the app starts ----
   shinyjs::disable(selector = "#navbar li a[data-value=data]")
   shinyjs::disable(selector = "#navbar li a[data-value=compare]")

@@ -70,7 +70,7 @@ mod_report04_server <- function(id, r){
       ttest <- sapply(mylist, function(x) ! is.na(x$ttest)) |>
         sum() |>
         (\(x) ifelse(x >= 1, "ttest", NA))()
-      names(ttest) <- "Confronto tra medie"
+      names(ttest) <- ifelse(r$aim01 == "2values_unc", "Confronto tra valori", "Confronto tra medie")
 
       ftest <- sapply(mylist, function(x) ! is.na(x$ftest)) |>
         sum() |>

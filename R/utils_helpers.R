@@ -23,18 +23,30 @@ signiftodigits <- function(value,
   # the number is converted to text with the desired significant figures
   sprintf_txt <- paste0("%#.", signif, "g")
   value_text <- sprintf(sprintf_txt, value)
+
   # splitting integers from decimals
   value_digits <- strsplit(value_text, "\\.")
+
+
   # counting the integers
-  value_integers <- nchar(value_digits[[1]][[1]])
+  integers <- value_digits[[1]][[1]]
+  value_integers <- nchar(integers)
+
+  # counting the decimals
+  decimals <- ifelse(length(value_digits[[1]]) == 1,
+                     paste0(rep("0", signif - value_integers), collapse = ""),
+                     value_digits[[1]][[2]])
+  value_decimals <- nchar(decimals)
+
   # checking if the number is scientific notation
-  is_scientific <- "e" %in% strsplit(value_digits[[1]][[2]], "")[[1]]
+  is_scientific <- "e" %in% strsplit(decimals, "")[[1]]
+
   # if the integers are not enough for the requested significant figures,
   # or the data has been expressed in scientific notation, the number of decimals
   # is 0, otherwise, the decimals are counted.
   ndigits <- ifelse(value_integers >= signif | is_scientific,
                     0,
-                    nchar(value_digits[[1]][[2]]))
+                    value_decimals)
   ndigits
 
   }
