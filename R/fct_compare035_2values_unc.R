@@ -287,9 +287,10 @@ rowsummary_2values_unc <- function(data,
   values <- data[[response]]
   uncertainties <- data[[uncertainty]]
 
-  df <- data.frame(c("valore", "incertezza estesa"),
-                   c(values[1], uncertainties[1]),
-                   c(values[2], uncertainties[2]))
+  df <- data.frame(c(paste0("valore (", udm, ")"),
+                     paste0("incertezza estesa (", udm, ")")),
+                   c(values[1] |> format_sigfig(), uncertainties[1] |> format_sigfig()),
+                   c(values[2] |> format_sigfig(), uncertainties[2] |> format_sigfig()))
   colnames(df) <- c("statistica", group_level)
   df
 }

@@ -61,8 +61,7 @@ mod_report04_server <- function(id, r){
       mylist <- reactiveValuesToList(r$compare03)
       mylist <- mylist[names(mylist) %notin% c("myparameter", "saved_flag")]
 
-      normality <-
-        sapply(mylist, function(x) ! is.na(x$normality)) |>
+      normality <- sapply(mylist, function(x) ! is.na(x$normality)) |>
         sum() |>
         (\(x) ifelse(x >= 1, "normality", NA))()
       names(normality) <- "Normalit\u00E0 e outliers"
@@ -70,7 +69,7 @@ mod_report04_server <- function(id, r){
       ttest <- sapply(mylist, function(x) ! is.na(x$ttest)) |>
         sum() |>
         (\(x) ifelse(x >= 1, "ttest", NA))()
-      names(ttest) <- ifelse(r$aim01 == "2values_unc", "Confronto tra valori", "Confronto tra medie")
+      names(ttest) <- ifelse(r$aim01$aim == "2values_unc", "Confronto tra valori", "Confronto tra medie")
 
       ftest <- sapply(mylist, function(x) ! is.na(x$ftest)) |>
         sum() |>
@@ -133,9 +132,3 @@ mod_report04_server <- function(id, r){
 
   })
 }
-
-## To be copied in the UI
-# mod_makereport_ui("makereport_1")
-
-## To be copied in the server
-# mod_makereport_server("makereport_1")

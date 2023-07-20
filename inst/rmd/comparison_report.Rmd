@@ -56,7 +56,7 @@ summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
 boxplot_caption <- "Boxplot per l'analita %s."
 ttest_title <- ifelse(params$aim01 == "1sample_mu", 
                       "Test per la differenza tra medie (t-test)",
-                      ifelse(params$aim01 == "2values_unc",
+                      ifelse(params$aim01$aim == "2values_unc",
                              "Test per la differenza tra valori ($\\E_n$)",
                               "Test per la differenza tra medie (Welch)"))
 ftest_title <- ifelse(params$aim01 == "1sample_sigma", 
