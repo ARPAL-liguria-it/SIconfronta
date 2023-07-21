@@ -185,9 +185,11 @@ mod_loadfile02_server <- function(id, r) {
     ns <- session$ns
 
 
+    is_length_aim_one <- reactive(length(r$aim01$aim) == 1)
+
     # instructions for different options ----
     msg_waiting <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       switch(
         r$aim01$aim,
@@ -214,7 +216,7 @@ mod_loadfile02_server <- function(id, r) {
     })
 
     # printing the filename to the console ----
-    observe({
+    observeEvent(userFile()$name, {
       msg <- sprintf("File %s was uploaded", userFile()$name)
       cat(msg, "\n")
     })
@@ -230,14 +232,14 @@ mod_loadfile02_server <- function(id, r) {
     # validating the data ----
     ## required number of numerical columns
     reqsumnum <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       ifelse(r$aim01$aim == "2values_unc", 2, 1)
     })
 
     ## required number of groups
     reqsumgroup <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       switch(
         r$aim01$aim,
@@ -251,7 +253,7 @@ mod_loadfile02_server <- function(id, r) {
 
     ## required minimum number of values
     reqminvalues <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       switch(
         r$aim01$aim,
@@ -265,7 +267,7 @@ mod_loadfile02_server <- function(id, r) {
 
     ## required maximum number of values
     reqmaxvalues <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       switch(
         r$aim01$aim,
@@ -418,14 +420,14 @@ mod_loadfile02_server <- function(id, r) {
     # updating the UI with the new data ----
     ## trigger for the columnnames tabsetPanel
     isloaded <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       ifelse(isTRUE(dataok()), "dataloaded", "")
     })
 
     ## trigger for the ext_unc tabsetPanel
     is2values <- reactive({
-      req(length(r$aim01$aim) == 1)
+      req(is_length_aim_one())
 
       ifelse(isTRUE(dataok()),
              ifelse(r$aim01$aim == "2values_unc", "2values", "not_2values"),
@@ -566,9 +568,3 @@ mod_loadfile02_server <- function(id, r) {
 
   })
 }
-
-## To be copied in the UI
-# mod_loadfile_ui("loadfile_1")
-
-## To be copied in the server
-# mod_loadfile_server("loadfile_1")
