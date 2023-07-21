@@ -251,6 +251,63 @@ testServer(
 
   })
 
+effectdata <- data.table::data.table(
+  myparameter = c("noeff", "noeff", "yeseff", "yeseff"),
+  mygroup = rep(letters[1:2], 2),
+  myvalue = c(2.14, 4.85, 4.84, 2.15),
+  myuncertainty = c(1.02, 2.50, 2.30, 1.02))
+
+testServer(
+  mod_compare03_server,
+  # Add here your module params
+  args = list(r), {
+
+    # testing for 2samples with parameters
+    r$aim01$aim <- "2values_unc"
+    r$loadfile02$data <- effectdata
+    r$loadfile02$parvar <- "myparameter"
+    r$loadfile02$responsevar <- "myvalue"
+    r$loadfile02$uncertaintyvar <- "myuncertainty"
+    r$loadfile02$groupvar <- "mygroup"
+    r$loadfile02$parlist <- c("noeff", "yeseff")
+
+    session$setInputs(parameter = "noeff")
+    session$flushReact()
+
+    ns <- session$ns
+    expect_true(inherits(ns, "function"))
+    expect_true(grepl(id, ns("")))
+    expect_true(grepl("test", ns("test")))
+
+    ## testing the inputs
+    expect_true(r$compare03$myparameter == "noeff")
+
+
+    r$compare03x$udm <- "ug/L"
+    session$flushReact()
+
+    ## testing the flags
+    expect_equal(savedel_flag(), "save")
+    expect_equal(somethingsaved(), "not_saved")
+
+    session$setInputs(save = 1)
+
+    expect_true(input$save == 1)
+
+    ## testing the outputs
+    expect_named(r$compare03$noeff,
+                 c("saved", "boxplot", "normality",
+                   "summary", "data", "udm", "outliers",
+                   "parameter", "ttest", "ftest"), ignore.order = TRUE)
+    expect_length(names(r$compare03$noeff), 10)
+
+    ## testing the flags
+    expect_equal(savedel_flag(), "delete")
+    expect_equal(somethingsaved(), "saved")
+
+
+  })
+
 
 test_that("module compareinput ui works", {
   ui <- mod_compare03_ui(id = "test")

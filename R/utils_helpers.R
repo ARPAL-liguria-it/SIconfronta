@@ -26,12 +26,16 @@ signiftodigits <- function(value,
 
   # splitting integers from decimals
   value_digits <- strsplit(value_text, "\\.")
-
+  value_digits[[1]][[1]] <- gsub("-", "" , value_digits[[1]][[1]])
 
   # counting the integers
   integers <- value_digits[[1]][[1]]
   value_integers <- nchar(integers)
 
+  # if the integers are not enough for the requested significant figures,
+  # or the data has been expressed in scientific notation, the number of decimals
+  # is 0, otherwise, the decimals are counted.
+  if(value_integers < signif) {
   # counting the decimals
   decimals <- ifelse(length(value_digits[[1]]) == 1,
                      paste0(rep("0", signif - value_integers), collapse = ""),
@@ -41,14 +45,14 @@ signiftodigits <- function(value,
   # checking if the number is scientific notation
   is_scientific <- "e" %in% strsplit(decimals, "")[[1]]
 
-  # if the integers are not enough for the requested significant figures,
-  # or the data has been expressed in scientific notation, the number of decimals
-  # is 0, otherwise, the decimals are counted.
-  ndigits <- ifelse(value_integers >= signif | is_scientific,
-                    0,
-                    value_decimals)
+  ndigits <- ifelse(is_scientific, 0, value_decimals)
   ndigits
 
+  } else {
+
+    ndigits <- 0
+    ndigits
+    }
   }
 }
 
@@ -119,6 +123,7 @@ htmltormarkdown <- function(htmlstring){
     (\(x) gsub("<i>", "_", x) )() |>
     (\(x) gsub("</i>", "_", x) )() |>
     (\(x) gsub("</br>", "  \n ", x) )() |>
+    (\(x) gsub("E<sub>n</sub>", "$E_n$", x) )() |>
     (\(x) gsub("\u03C7<sup>2</sup>", "$\\\\chi^2$", x) )() |>
     (\(x) gsub("\u03C7\u00B2", "$\\\\chi^2$", x) )()
   }

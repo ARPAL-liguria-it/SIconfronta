@@ -155,7 +155,7 @@ boxplot_2values_unc <- function(data,
         size = 30,
         symbol = "square"
         ),
-      name = "values",
+      name = "valori",
       color = I("#D55E00"),
       showlegend = FALSE,
       hoverinfo = "y",
@@ -287,8 +287,10 @@ rowsummary_2values_unc <- function(data,
   values <- data[[response]]
   uncertainties <- data[[uncertainty]]
 
-  df <- data.frame(c(paste0("valore (", udm, ")"),
-                     paste0("incertezza estesa (", udm, ")")),
+  myudm <- ifelse(udm == "", "", paste0("(", udm, ")"))
+
+  df <- data.frame(c(paste0("valore ", myudm),
+                     paste0("incertezza estesa ", myudm)),
                    c(values[1] |> format_sigfig(), uncertainties[1] |> format_sigfig()),
                    c(values[2] |> format_sigfig(), uncertainties[2] |> format_sigfig()))
   colnames(df) <- c("statistica", group_level)
