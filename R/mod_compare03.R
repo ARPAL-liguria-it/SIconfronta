@@ -71,7 +71,7 @@ mod_compare03_ui <- function(id) {
         id = ns("savedel"),
         type = "hidden",
 
-        tabPanel(""),
+        tabPanel("cantsave"),
         # show the save button when data is not saved
         tabPanel("save",
                  # 5. click on the save button
@@ -222,6 +222,9 @@ mod_compare03_server <- function(id, r) {
       req(input$parameter != "")
 
       r$compare03$myparameter <- input$parameter
+      r$compare03[[input$parameter]]$saved <- ifelse(is.null(r$compare03[[input$parameter]]$saved),
+                                                     FALSE,
+                                                     r$compare03[[input$parameter]]$saved)
     })
 
     # passing the r reactiveValues to different modules depending on the aim option ----
@@ -282,23 +285,48 @@ mod_compare03_server <- function(id, r) {
 
       r$compare03[[input$parameter]]$parameter <- r$compare03x$parameter
       r$compare03[[input$parameter]]$udm <- r$compare03x$udm
-      r$compare03[[input$parameter]]$data <- r$compare03x$data
-      r$compare03[[input$parameter]]$summary <- r$compare03x$summary
       r$compare03[[input$parameter]]$alternative <- r$compare03x$alternative
       r$compare03[[input$parameter]]$significance <- r$compare03x$significance
+      r$compare03[[input$parameter]]$label2 <- r$compare03x$label2
+      r$compare03[[input$parameter]]$mean2 <- r$compare03x$mean2
+      r$compare03[[input$parameter]]$sd2 <- r$compare03x$sd2
+      r$compare03[[input$parameter]]$n2 <- r$compare03x$n2
+      r$compare03[[input$parameter]]$data <- r$compare03x$data
+      r$compare03[[input$parameter]]$summary <- r$compare03x$summary
+      r$compare03[[input$parameter]]$normality_html <- r$compare03x$normality
+      r$compare03[[input$parameter]]$outliers_html <- r$compare03x$outliers
+      r$compare03[[input$parameter]]$ttest_html <- r$compare03x$ttest
+      r$compare03[[input$parameter]]$ftest_html <- r$compare03x$ftest
       r$compare03[[input$parameter]]$normality <- r$compare03x$normality |> htmltormarkdown()
       r$compare03[[input$parameter]]$outliers <- r$compare03x$outliers |> htmltormarkdown()
       r$compare03[[input$parameter]]$ttest <- r$compare03x$ttest |> htmltormarkdown()
       r$compare03[[input$parameter]]$ftest <- r$compare03x$ftest |> htmltormarkdown()
+      r$compare03[[input$parameter]]$plotlyboxplot <- r$compare03x$plotlyboxplot
       r$compare03[[input$parameter]]$boxplot <- myggbox()
       r$compare03[[input$parameter]]$saved <- TRUE
 
+
+      showModal(
+        modalDialog(
+          title = "Hai salvato i risultati",
+          shiny::HTML(
+            "Per sovrascrivere i risultati salvati, clicca sui pulsanti
+            cancella e poi nuovamente su salva, altrimenti le modifiche andranno perse.
+            <br>
+            Trovi i pulsanti in basso nella barra dei comandi,
+            nella parte sinistra della pagina"
+          ),
+          easyClose = TRUE,
+          footer = modalButton("Va bene")
+        )
+      )
     })
 
     # when delete is clicked the results removed from r ----
     observeEvent(input$delete, {
 
       r$compare03[[input$parameter]] <- NULL
+      r$compare03[[input$parameter]]$saved <- FALSE
     })
 
     # updating the save and delete panels ----
@@ -306,17 +334,14 @@ mod_compare03_server <- function(id, r) {
     savedel_flag <- reactive({
       req(input$parameter)
 
-      ifelse(r$compare03x$ready != 1, "",
+      ifelse(r$compare03x$ready != 1, "cantsave",
       ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
       )
     })
 
-
     observeEvent(savedel_flag(), {
-
       updateTabsetPanel(inputId = "savedel", selected = savedel_flag())
     })
-
 
     # updating the next panel ----
 
@@ -359,9 +384,3 @@ mod_compare03_server <- function(id, r) {
 
   })
 }
-
-## To be copied in the UI
-# mod_tests_ui("tests_1")
-
-## To be copied in the server
-# mod_tests_server("tests_1")
