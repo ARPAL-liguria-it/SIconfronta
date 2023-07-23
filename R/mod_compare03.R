@@ -334,7 +334,7 @@ mod_compare03_server <- function(id, r) {
     savedel_flag <- reactive({
       req(input$parameter)
 
-      ifelse(r$compare03x$ready != 1, "cantsave",
+      ifelse(r$compare03x$click != 1, "cantsave",
       ifelse(r$compare03[[input$parameter]]$saved |> isTRUE(), "delete", "save")
       )
     })

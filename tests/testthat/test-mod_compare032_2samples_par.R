@@ -99,9 +99,11 @@ testServer(
     # ## Testing the reactive list as output
     expect_true(inherits(r$compare03x, "reactivevalues"))
     expect_named(r$compare03x,
-                c("ftest", "ttest", "significance", "alternative", "outliers",
-                  "normality", "summary", "data", "udm", "parameter", "ggsummary",
-                  "label2", "mean2", "sd2", "n2", "ready", "click"),
+                c('alternative', 'click', 'data', 'ftest',
+                  'ggsummary', 'label2', 'mean2', 'n2',
+                  'normality', 'outliers', 'parameter',
+                  'plotlyboxplot', 'sd2', 'significance',
+                  'summary', 'ttest', 'udm'),
                 ignore.order = TRUE)
     expect_length(names(r$compare03x), 17)
 })

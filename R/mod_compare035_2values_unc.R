@@ -120,6 +120,32 @@ mod_compare035_2values_unc_server <- function(id, r) {
       # updating the tabset switching from help to results tabs
       help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
       updateTabsetPanel(inputId = "help_results", selected = help_results)
+
+      if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
+
+        freezeReactiveValue(input, "udm")
+
+        updateTextInput(session,
+                        "udm",
+                        value = r$compare03[[r$compare03$myparameter]]$udm)
+
+        showModal(
+          modalDialog(
+            title = "Hai gi\u00E0 salvato i risultati",
+            shiny::HTML(
+              "Per sovrascrivere i risultati salvati, clicca sui pulsanti
+            cancella e poi nuovamente su salva, altrimenti le modifiche andranno perse.
+            <br>
+            Trovi i pulsanti in basso nella barra dei comandi,
+            nella parte sinistra della pagina"
+            ),
+            easyClose = TRUE,
+            footer = modalButton("Va bene")
+          )
+        )
+
+        r$compare03x$click <- 1
+      }
     })
 
     ## unit of measurement
@@ -160,7 +186,16 @@ mod_compare035_2values_unc_server <- function(id, r) {
     })
 
     output$boxplot <- plotly::renderPlotly({
-      plotlyboxplot()
+      # if results were saved, restore the boxplot
+      if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
+
+        r$compare03[[r$compare03$myparameter]]$plotlyboxplot
+
+        # else a new boxplot is calculated and shown
+      } else {
+
+        plotlyboxplot()
+      }
     })
 
 
@@ -181,16 +216,24 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
     output$summarytable <- DT::renderDT({
 
-      DT::datatable(
-        summarytable(),
-        options = list(dom = "t"),
-        rownames = FALSE
-      )
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
+                      options = list(dom = "t"),
+                      rownames = FALSE)
+      } else {
+
+        DT::datatable(summarytable(),
+                      options = list(dom = "t"),
+                      rownames = FALSE)
+      }
 
     })
 
     #### results for the En-test ----
     entest_list <- reactive({
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       fct_entest_2values_unc(
         data = input_data(),
@@ -232,16 +275,18 @@ mod_compare035_2values_unc_server <- function(id, r) {
     output$ttest <- renderText({
       req(input_data())
 
-      entest_html()
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        r$compare03[[r$compare03$myparameter]]$ttest_html
+
+      } else {
+
+        entest_html()
+      }
     })
 
     # saving the outputs ----
-    trigger <- reactive({
-      input_data()
-      r$compare03x$udm
-    })
-
-    observeEvent(trigger(), {
+    observeEvent(entest_html(), {
 
       # output dataset
       r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
@@ -249,13 +294,16 @@ mod_compare035_2values_unc_server <- function(id, r) {
       # summary table
       r$compare03x$summary <- summarytable()
 
+      # boxplot
+      r$compare03x$plotlyboxplot <- plotlyboxplot()
+
       # test results
       r$compare03x$normality <- NA
       r$compare03x$outliers <- NA
       r$compare03x$ftest <- NA
       r$compare03x$ttest <- entest_html()
       # flag for when ready to be saved
-      r$compare03x$ready <- 1
+      r$compare03x$click <- 1
 
       # the plot is saved only when the save button is clicked
     })

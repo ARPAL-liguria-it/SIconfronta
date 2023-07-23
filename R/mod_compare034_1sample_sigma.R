@@ -199,15 +199,70 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
       r$compare03x$label2 <- input$label
       r$compare03x$sd2 <- input$sd
 
-      r$compare03x$click <- 1
+      if (r$compare03x$label2 != "" &
+          is.character(r$compare03x$label2) &
+          r$compare03x$sd2 > 0) {
+
+        r$compare03x$click <- 1
+
+      } else {
+
+        r$compare03x$click <- 0
+      }
     })
 
     ## reset reference label and sd after changing the parameter
     observeEvent(r$compare03$myparameter, ignoreNULL = FALSE, {
+
+      if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
+
+        freezeReactiveValue(input, "alternative")
+        freezeReactiveValue(input, "significance")
+        freezeReactiveValue(input, "udm")
+        freezeReactiveValue(input, "label")
+        freezeReactiveValue(input, "sd")
+
+        updateRadioButtons(session,
+                           "alternative",
+                           selected = r$compare03[[r$compare03$myparameter]]$alternative)
+        updateRadioButtons(session,
+                           "significance",
+                           selected = r$compare03[[r$compare03$myparameter]]$significance)
+        updateTextInput(session,
+                        "udm",
+                        value = r$compare03[[r$compare03$myparameter]]$udm)
+        updateTextInput(session,
+                        "label",
+                        value = r$compare03[[r$compare03$myparameter]]$label2)
+        updateNumericInput(session,
+                           "sd",
+                           value = r$compare03[[r$compare03$myparameter]]$sd2)
+
+        showModal(
+          modalDialog(
+            title = "Hai gi\u00E0 salvato i risultati",
+            shiny::HTML(
+              "Per sovrascrivere i risultati salvati, clicca sui pulsanti
+            cancella e poi nuovamente su salva, altrimenti le modifiche andranno perse.
+            <br>
+            Trovi i pulsanti in basso nella barra dei comandi,
+            nella parte sinistra della pagina"
+            ),
+            easyClose = TRUE,
+            footer = modalButton("Va bene")
+          )
+        )
+
+        r$compare03x$click <- 1
+
+        # else, just use the default initial values
+      } else {
       updateTextInput(session, "label", value = "")
       updateNumericInput(session, "sd", value = 0)
 
       r$compare03x$click <- 0
+
+    }
     })
 
     ## unit of measurement
@@ -323,7 +378,16 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
              message = "Il nome del valore di riferimento deve essere una stringa di caratteri")
       )
 
-      plotlyboxplot()
+      # if results were saved, restore the boxplot
+      if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
+
+        r$compare03[[r$compare03$myparameter]]$plotlyboxplot
+
+        # else a new boxplot is calculated and shown
+      } else {
+
+        plotlyboxplot()
+      }
     })
 
 
@@ -349,11 +413,17 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
              message = FALSE)
       )
 
-      DT::datatable(
-        summarytable(),
-        options = list(dom = "t"),
-        rownames = FALSE
-      )
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
+                      options = list(dom = "t"),
+                      rownames = FALSE)
+      } else {
+
+        DT::datatable(summarytable(),
+                      options = list(dom = "t"),
+                      rownames = FALSE)
+      }
 
     })
 
@@ -442,6 +512,8 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
       req(r$compare03x$click == 1)
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       fct_chitest_1sample_sigma(
         data = selected_data(),
@@ -467,6 +539,7 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
 \u21e8 %s"
 
     chitest_html <- reactive({
+      req(r$compare03x$click == 1)
 
       sprintf(
         chitest_text,
@@ -500,17 +573,21 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
              message = "Il nome del valore di riferimento deve essere una stringa di caratteri")
       )
 
-      chitest_html()
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        r$compare03[[r$compare03$myparameter]]$ftest_html
+
+      } else {
+
+        chitest_html()
+      }
     })
 
 
     # saving the outputs ----
     trigger <- reactive({
-      input_data()
-      r$compare03x$significance
-      r$compare03x$alternative
+      chitest_html()
       r$compare03x$udm
-      r$compare03x$click
     })
 
     observeEvent(trigger(), {
@@ -522,13 +599,14 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
       # summary table
       r$compare03x$summary <- summarytable()
 
+      # boxplot
+      r$compare03x$plotlyboxplot <- plotlyboxplot()
+
       # test results
       r$compare03x$normality <- shapiro_html()
       r$compare03x$outliers <- outliers_html()
       r$compare03x$ftest <- chitest_html()
       r$compare03x$ttest <- NA
-      # flag for when ready to be saved
-      r$compare03x$ready <- 1
 
       # the plot is saved only when the save button is clicked
     })

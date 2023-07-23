@@ -102,10 +102,12 @@ testServer(
     # ## Testing the reactive list as output
     expect_true(inherits(r$compare03x, "reactivevalues"))
     expect_named(r$compare03x,
-                c("ftest", "ttest", "significance", "alternative", "outliers",
-                  "normality", "summary", "data", "udm", "parameter", "ready"),
+                c('alternative', 'click', 'data',
+                  'ftest', 'normality', 'outliers',
+                  'parameter', 'plotlyboxplot', 'significance',
+                  'summary', 'ttest', 'udm'),
                 ignore.order = TRUE)
-    expect_length(names(r$compare03x), 11)
+    expect_length(names(r$compare03x), 12)
 })
 
 test_that("module compare031 for 2 samples input ui works", {

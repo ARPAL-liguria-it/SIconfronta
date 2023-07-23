@@ -48,11 +48,12 @@ testServer(
     # ## Testing the reactive list as output
     expect_true(inherits(r$compare03x, "reactivevalues"))
     expect_named(r$compare03x,
-                c("ftest", "ttest", "outliers",
-                  "normality", "summary", "data",
-                  "udm", "parameter", "ready"),
+                c('click', 'data', 'ftest',
+                  'normality', 'outliers', 'parameter',
+                  'plotlyboxplot', 'summary', 'ttest',
+                  'udm'),
                 ignore.order = TRUE)
-    expect_length(names(r$compare03x), 9)
+    expect_length(names(r$compare03x), 10)
 
     # switching the parameter
     r$compare03$myparameter <- "noeff"

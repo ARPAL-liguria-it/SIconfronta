@@ -15,13 +15,11 @@
 #'   Quotation (" ") is not required.
 #' @param group the name of a single-level factor variable that identifies the
 #'   the group in \code{data}. Quotation (" ") is not required.
-#' @param reflabel a character value with the name of the reference value.
-#' @param reference a numeric value with the reference mean.
 #'
 #' @details \eqn{E_n}-test is calculated with the following equation:
 #' \deqn{E_n = \frac{\abs{x - y}}{\sqrt{U(x)^2 + U(y)^2}}}
 #' for \eqn{E_n \leq 1} the difference of the two values \eqn{x} and \eqn{y} is
-#' accounted by their extended uncertainties (\eqn(U)) and the null hypothesis is
+#' accounted by their extended uncertainties (\eqn{U}) and the null hypothesis is
 #' not rejected. When \eqn{E_n > 1} the two values are different and the null
 #' hypothesis is rejected.
 #'
@@ -205,6 +203,11 @@ ggboxplot_2values_unc <- function(data,
     is.character(uncertainty),
     is.character(udm)
   )
+
+  min_error <- NULL
+  max_error <- NULL
+  label <- NULL
+  value <- NULL
 
   xlabtitle <- group
   ylabtitle <- paste0(response, ifelse(udm != "", paste0(" (", udm, ")"), ""))

@@ -43,10 +43,13 @@ testServer(
 
     ## testing the outputs
     expect_named(r$compare03$yield,
-                 c("saved", "boxplot", "significance", "alternative",
-                   "outliers", "normality", "summary", "data", "udm",
-                   "parameter", "ttest", "ftest"), ignore.order = TRUE)
-    expect_length(names(r$compare03$yield), 12)
+                 c('alternative', 'boxplot', 'data',
+                   'ftest', 'ftest_html', 'normality',
+                   'normality_html', 'outliers', 'outliers_html',
+                   'parameter', 'plotlyboxplot', 'saved',
+                   'significance', 'summary', 'ttest',
+                   'ttest_html', 'udm'), ignore.order = TRUE)
+    expect_length(names(r$compare03$yield), 17)
 
     ## testing the flags
     expect_equal(savedel_flag(), "delete")
@@ -110,10 +113,14 @@ testServer(
 
     ## testing the outputs
     expect_named(r$compare03$yield,
-                 c("saved", "boxplot", "significance", "alternative",
-                   "outliers", "normality", "summary", "data", "udm",
-                   "parameter", "ttest", "ftest"), ignore.order = TRUE)
-    expect_length(names(r$compare03$yield), 12)
+                 c('alternative', 'boxplot', 'data',
+                   'ftest', 'ftest_html', 'label2',
+                   'mean2', 'n2', 'normality',
+                   'normality_html', 'outliers', 'outliers_html',
+                   'parameter', 'plotlyboxplot', 'saved',
+                   'sd2', 'significance', 'summary',
+                   'ttest', 'ttest_html', 'udm'), ignore.order = TRUE)
+    expect_length(names(r$compare03$yield), 21)
 
     ## testing the flags
     expect_equal(savedel_flag(), "delete")
@@ -175,10 +182,14 @@ testServer(
 
     ## testing the outputs
     expect_named(r$compare03$yield,
-                 c("saved", "boxplot", "significance", "alternative",
-                   "outliers", "normality", "summary", "data", "udm",
-                   "parameter", "ttest", "ftest"), ignore.order = TRUE)
-    expect_length(names(r$compare03$yield), 12)
+                 c('alternative', 'boxplot', 'data',
+                   'ftest', 'ftest_html', 'label2',
+                   'mean2', 'normality', 'normality_html',
+                   'outliers', 'outliers_html', 'parameter',
+                   'plotlyboxplot', 'saved', 'significance',
+                   'summary', 'ttest', 'ttest_html', 'udm'),
+                 ignore.order = TRUE)
+    expect_length(names(r$compare03$yield), 19)
 
     ## testing the flags
     expect_equal(savedel_flag(), "delete")
@@ -202,7 +213,7 @@ testServer(
   # Add here your module params
   args = list(r), {
 
-    # testing for 2samples with parameters
+    # testing for 1sample vs known population standard deviation
     r$aim01$aim <- "1sample_sigma"
     r$loadfile02$data <- tomato_a
     r$loadfile02$parvar <- "parameter"
@@ -239,10 +250,14 @@ testServer(
 
     ## testing the outputs
     expect_named(r$compare03$yield,
-                 c("saved", "boxplot", "significance", "alternative",
-                   "outliers", "normality", "summary", "data", "udm",
-                   "parameter", "ttest", "ftest"), ignore.order = TRUE)
-    expect_length(names(r$compare03$yield), 12)
+                 c('alternative', 'boxplot', 'data',
+                   'ftest', 'ftest_html', 'label2',
+                   'normality', 'normality_html', 'outliers',
+                   'outliers_html', 'parameter', 'plotlyboxplot',
+                   'saved', 'sd2', 'significance', 'summary',
+                   'ttest', 'ttest_html', 'udm'),
+                 ignore.order = TRUE)
+    expect_length(names(r$compare03$yield), 19)
 
     ## testing the flags
     expect_equal(savedel_flag(), "delete")
@@ -296,10 +311,12 @@ testServer(
 
     ## testing the outputs
     expect_named(r$compare03$noeff,
-                 c("saved", "boxplot", "normality",
-                   "summary", "data", "udm", "outliers",
-                   "parameter", "ttest", "ftest"), ignore.order = TRUE)
-    expect_length(names(r$compare03$noeff), 10)
+                 c('boxplot', 'data', 'ftest',
+                   'ftest_html', 'normality', 'normality_html',
+                   'outliers', 'outliers_html', 'parameter',
+                   'plotlyboxplot', 'saved', 'summary',
+                   'ttest', 'ttest_html', 'udm'), ignore.order = TRUE)
+    expect_length(names(r$compare03$noeff), 15)
 
     ## testing the flags
     expect_equal(savedel_flag(), "delete")

@@ -181,6 +181,40 @@ mod_compare031_2samples_server <- function(id, r) {
       # updating the tabset switching from help to results tabs
       help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
       updateTabsetPanel(inputId = "help_results", selected = help_results)
+
+      if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
+
+        freezeReactiveValue(input, "alternative")
+        freezeReactiveValue(input, "significance")
+        freezeReactiveValue(input, "udm")
+
+        updateRadioButtons(session,
+                           "alternative",
+                           selected = r$compare03[[r$compare03$myparameter]]$alternative)
+        updateRadioButtons(session,
+                           "significance",
+                           selected = r$compare03[[r$compare03$myparameter]]$significance)
+        updateTextInput(session,
+                        "udm",
+                        value = r$compare03[[r$compare03$myparameter]]$udm)
+
+        showModal(
+          modalDialog(
+            title = "Hai gi\u00E0 salvato i risultati",
+            shiny::HTML(
+              "Per sovrascrivere i risultati salvati, clicca sui pulsanti
+            cancella e poi nuovamente su salva, altrimenti le modifiche andranno perse.
+            <br>
+            Trovi i pulsanti in basso nella barra dei comandi,
+            nella parte sinistra della pagina"
+            ),
+            easyClose = TRUE,
+            footer = modalButton("Va bene")
+          )
+        )
+
+        r$compare03x$click <- 1
+      }
     })
 
     ## unit of measurement
@@ -284,8 +318,16 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     output$boxplot <- plotly::renderPlotly({
+      # if results were saved, restore the boxplot
+      if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
-      plotlyboxplot()
+        r$compare03[[r$compare03$myparameter]]$plotlyboxplot
+
+        # else a new boxplot is calculated and shown
+      } else {
+
+        plotlyboxplot()
+      }
       })
 
 
@@ -302,9 +344,21 @@ mod_compare031_2samples_server <- function(id, r) {
 
     })
 
-    output$summarytable <- DT::renderDT(summarytable(),
-                                        options = list(dom = "t"),
-                                        rownames = FALSE)
+    output$summarytable <- DT::renderDT({
+
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
+                      options = list(dom = "t"),
+                      rownames = FALSE)
+      } else {
+
+        DT::datatable(summarytable(),
+                      options = list(dom = "t"),
+                      rownames = FALSE)
+      }
+
+    })
 
 
     # results of normality check ----
@@ -390,6 +444,8 @@ mod_compare031_2samples_server <- function(id, r) {
       req(selected_data())
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       fct_ttest_2samples(
         selected_data(),
@@ -439,7 +495,15 @@ mod_compare031_2samples_server <- function(id, r) {
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
 
-      ttest_html()
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        r$compare03[[r$compare03$myparameter]]$ttest_html
+
+      } else {
+
+        ttest_html()
+      }
+
       })
 
 
@@ -448,6 +512,8 @@ mod_compare031_2samples_server <- function(id, r) {
       req(selected_data())
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE()||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       fct_ftest_2samples(
         selected_data(),
@@ -496,18 +562,20 @@ mod_compare031_2samples_server <- function(id, r) {
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
 
-      ftest_html()
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
+
+        r$compare03[[r$compare03$myparameter]]$ftest_html
+
+      } else {
+
+        ftest_html()
+      }
+
       })
 
     # saving the outputs ----
-    trigger <- reactive({
-      input_data()
-      r$compare03x$significance
-      r$compare03x$alternative
-      r$compare03x$udm
-    })
 
-    observeEvent(trigger(), {
+    observeEvent(ttest_html(), {
 
       # output dataset
       r$compare03x$data <- mydata()[, !r$loadfile02$parvar, with = FALSE]
@@ -516,13 +584,16 @@ mod_compare031_2samples_server <- function(id, r) {
       # summary table
       r$compare03x$summary <- summarytable()
 
+      # boxplot
+      r$compare03x$plotlyboxplot <- plotlyboxplot()
+
       # test results
       r$compare03x$normality <- shapiro_html()
       r$compare03x$outliers <- outliers_html()
       r$compare03x$ttest <- ttest_html()
       r$compare03x$ftest <- ftest_html()
       # flag for when ready to be saved
-      r$compare03x$ready <- 1
+      r$compare03x$click <- 1
 
       # the plot is saved only when the save button is clicked
     })

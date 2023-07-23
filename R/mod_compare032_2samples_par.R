@@ -231,12 +231,10 @@ mod_compare032_2samples_par_server <- function(id, r) {
           r$compare03x$n2 >= 5) {
 
         r$compare03x$click <- 1
-        r$compare03x$ready <- 1
 
       } else {
 
         r$compare03x$click <- 0
-        r$compare03x$ready <- 0
       }
 
     })
@@ -279,7 +277,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
 
         showModal(
           modalDialog(
-            title = "Hai già salvato i risultati",
+            title = "Hai gi\u00E0 salvato i risultati",
             shiny::HTML(
               "Per sovrascrivere i risultati salvati, clicca sui pulsanti
             cancella e poi nuovamente su salva, altrimenti le modifiche andranno perse.
@@ -293,7 +291,6 @@ mod_compare032_2samples_par_server <- function(id, r) {
         )
 
         r$compare03x$click <- 1
-        r$compare03x$ready <- 1
 
       # else, just use the default initial values
       } else {
@@ -302,7 +299,6 @@ mod_compare032_2samples_par_server <- function(id, r) {
       updateNumericInput(session, "sd", value = 0)
       updateNumericInput(session, "n", value = 5)
       r$compare03x$click <- 0
-      r$compare03x$ready <- 0
       }
 
     })
@@ -610,6 +606,9 @@ mod_compare032_2samples_par_server <- function(id, r) {
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
       req(r$compare03x$click == 1)
+      # don't update if the results has been already saved
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+          r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       fct_ttest_2samples_par(
         group1 = label_a(),
@@ -638,6 +637,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
 \u21e8 %s"
 
     ttest_html <- reactive({
+      req(r$compare03x$click == 1)
 
       sprintf(
         ttest_text,
@@ -693,6 +693,9 @@ mod_compare032_2samples_par_server <- function(id, r) {
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
       req(r$compare03x$click == 1)
+      # don't update if the results has been already saved
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE()||
+          r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       fct_ftest_2samples_par(
         group1 = label_a(),
@@ -785,9 +788,8 @@ mod_compare032_2samples_par_server <- function(id, r) {
       r$compare03x$outliers <- outliers_html()
       r$compare03x$ttest <- ttest_html()
       r$compare03x$ftest <- ftest_html()
-      # flag for when ready to be saved
 
-      # the plot is saved only when the save button is clicked
+      # the ggplot boxplot is saved only when the save button is clicked
     })
 
   })

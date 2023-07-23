@@ -60,6 +60,9 @@ mod_report04_server <- function(id, r){
     observeEvent(r$compare03$saved_flag, {
       mylist <- reactiveValuesToList(r$compare03)
       mylist <- mylist[names(mylist) %notin% c("myparameter", "saved_flag")]
+      # removing not saved results
+      mylist <- sapply(mylist, function(x) isTRUE(x$saved)) |>
+        (\(x) mylist[x])()
 
       normality <- sapply(mylist, function(x) ! is.na(x$normality)) |>
         sum() |>
