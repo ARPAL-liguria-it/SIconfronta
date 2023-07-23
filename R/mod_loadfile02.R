@@ -468,6 +468,7 @@ mod_loadfile02_server <- function(id, r) {
     observeEvent(charcol(), {
       req(isTRUE(charok()))
 
+      freezeReactiveValue(input, "parvar")
       updateSelectizeInput(session,
                            "parvar",
                            selected = charcol()[1],
@@ -478,6 +479,7 @@ mod_loadfile02_server <- function(id, r) {
     observeEvent(charcol(), {
       req(isTRUE(charok()))
 
+      freezeReactiveValue(input, "groupvar")
       updateSelectizeInput(session,
                            "groupvar",
                            selected = charcol()[2],
@@ -488,6 +490,7 @@ mod_loadfile02_server <- function(id, r) {
     observeEvent(numcol(), {
       req(isTRUE(numok()))
 
+      freezeReactiveValue(input, "responsevar")
       updateSelectizeInput(session,
                            "responsevar",
                            selected = numcol()[1],
@@ -498,6 +501,7 @@ mod_loadfile02_server <- function(id, r) {
     observeEvent(input$responsevar, {
       req(is2values() == "2values")
 
+      freezeReactiveValue(input, "uncertaintyvar")
       updateSelectizeInput(session,
                            "uncertaintyvar",
                            selected = numcol()[2],

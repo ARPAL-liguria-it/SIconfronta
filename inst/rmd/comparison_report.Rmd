@@ -68,6 +68,7 @@ myorder <- as.character(params$loadfile02$parlist)
 
 ordered_analytes <- analytes[order(match(analytes, myorder))]
 for (i in ordered_analytes) {
+
   if (params$compare03[[i]]$saved == TRUE) {
 
   # title with analyte name

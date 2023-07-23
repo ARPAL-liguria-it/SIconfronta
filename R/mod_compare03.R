@@ -189,7 +189,6 @@ mod_compare03_server <- function(id, r) {
     r$compare03 <- reactiveValues()
 
     # updating the UI ----
-
     # updating the controls in the sidebar
     observeEvent(r$aim01$aim, {
       req(length(r$aim01$aim) == 1)
@@ -240,6 +239,7 @@ mod_compare03_server <- function(id, r) {
 
     })
 
+    # getting a ggplot2 version of the boxplot for the rmarkdown report ----
     myggbox <- reactive({
       switch (r$aim01$aim,
               "2samples" = ggboxplot_2samples(data = r$compare03x$data,
@@ -322,7 +322,7 @@ mod_compare03_server <- function(id, r) {
       )
     })
 
-    # when delete is clicked the results removed from r ----
+    # when delete is clicked the results is removed from r ----
     observeEvent(input$delete, {
 
       r$compare03[[input$parameter]] <- NULL
@@ -330,7 +330,6 @@ mod_compare03_server <- function(id, r) {
     })
 
     # updating the save and delete panels ----
-
     savedel_flag <- reactive({
       req(input$parameter)
 
@@ -344,7 +343,6 @@ mod_compare03_server <- function(id, r) {
     })
 
     # updating the next panel ----
-
     somethingsaved <- reactive({
       req(input$parameter)
 

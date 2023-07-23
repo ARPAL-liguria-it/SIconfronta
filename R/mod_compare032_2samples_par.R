@@ -224,8 +224,12 @@ mod_compare032_2samples_par_server <- function(id, r) {
       r$compare03x$sd2 <- input$sd
       r$compare03x$n2 <- input$n
 
+      # validate the inputs
       if (r$compare03x$label2 != "" &
           is.character(r$compare03x$label2) &
+          is.numeric(r$compare03x$mean2) &
+          is.numeric(r$compare03x$sd2) &
+          is.numeric(r$compare03x$n2) &
           r$compare03x$mean2 >= 0 &
           r$compare03x$sd2 > 0 &
           r$compare03x$n2 >= 5) {
@@ -242,7 +246,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
     ## reset label, mean, sd and n for the second group after changing the parameter
     observeEvent(r$compare03$myparameter, ignoreNULL = FALSE, {
 
-      # if results were saved, restore the input values
+      # if results have been saved, restore the input values
       if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
         freezeReactiveValue(input, "alternative")
@@ -295,6 +299,9 @@ mod_compare032_2samples_par_server <- function(id, r) {
       # else, just use the default initial values
       } else {
 
+      freezeReactiveValue(input, "mean")
+      freezeReactiveValue(input, "sd")
+      freezeReactiveValue(input, "n")
       updateNumericInput(session, "mean", value = 0)
       updateNumericInput(session, "sd", value = 0)
       updateNumericInput(session, "n", value = 5)
@@ -457,7 +464,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
              message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
       )
 
-      # if results were saved, restore the boxplot
+      # if results have been saved, restore the boxplot
       if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
         r$compare03[[r$compare03$myparameter]]$plotlyboxplot
@@ -490,7 +497,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
 
     output$summarytable <- DT::renderDT({
       validate(need(r$compare03x$click == 1, message = FALSE))
-
+      # if results were saved, restore the summary table
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
@@ -519,6 +526,9 @@ mod_compare032_2samples_par_server <- function(id, r) {
 
     shapirotest_list <- reactive({
       req(lvl())
+      # don't update the list if results have been already saved
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       sapply(lvl(), function(x) {
         shapiro_output <- selected_data()[which(selected_data()$group == x),
@@ -542,7 +552,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
-
+      # if results have been saved, restore the normality test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$normality_html
@@ -562,6 +572,9 @@ mod_compare032_2samples_par_server <- function(id, r) {
     outtest_list <- reactive({
       req(selected_data())
       req(minval() >= 5)
+      # don't update the list if results have been already saved
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       sapply(lvl(), function(x) {
         outtest_output95 <-
@@ -587,7 +600,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
-
+      # if results have been saved, restore the outliers test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$outliers_html
@@ -674,7 +687,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
           need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
                message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
         )
-
+      # if results have been saved, restore the t-test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$ttest_html
@@ -757,7 +770,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
           need(ifelse(r$compare03x$click == 0, TRUE, ifelse(r$compare03x$label2 != "", TRUE, FALSE)),
                message = "Il nome del secondo gruppo deve essere una stringa di caratteri")
         )
-
+      # if results have been saved, restore the F-test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$ftest_html

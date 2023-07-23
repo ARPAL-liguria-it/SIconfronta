@@ -182,6 +182,7 @@ mod_compare031_2samples_server <- function(id, r) {
       help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
       updateTabsetPanel(inputId = "help_results", selected = help_results)
 
+      # if the results have been saved, restore the input values
       if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
         freezeReactiveValue(input, "alternative")
@@ -318,7 +319,7 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     output$boxplot <- plotly::renderPlotly({
-      # if results were saved, restore the boxplot
+      # if results have been saved, restore the boxplot
       if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
         r$compare03[[r$compare03$myparameter]]$plotlyboxplot
@@ -345,7 +346,7 @@ mod_compare031_2samples_server <- function(id, r) {
     })
 
     output$summarytable <- DT::renderDT({
-
+      # if results have been saved, restore the summarytable
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
@@ -374,6 +375,9 @@ mod_compare031_2samples_server <- function(id, r) {
 
     shapirotest_list <- reactive({
       req(lvl())
+      # don't update the list if results have been already saved
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       sapply(lvl(), function(x) {
         shapiro_output <- selected_data()[which(selected_data()$group == x),
@@ -397,8 +401,15 @@ mod_compare031_2samples_server <- function(id, r) {
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
+      # if results have been saved, restore the normality test results
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
-      shapiro_html()
+        r$compare03[[r$compare03$myparameter]]$normality_html
+
+      } else {
+
+        shapiro_html()
+      }
     })
 
 
@@ -409,6 +420,9 @@ mod_compare031_2samples_server <- function(id, r) {
     outtest_list <- reactive({
       req(selected_data())
       req(minval() >= 5)
+      # don't update the list if results have been already saved
+      req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
+            r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
       sapply(lvl(), function(x) {
         outtest_output95 <-
@@ -434,8 +448,15 @@ mod_compare031_2samples_server <- function(id, r) {
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
+      # if results have been saved, restore the outliers test results
+      if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
-      outliers_html()
+        r$compare03[[r$compare03$myparameter]]$outliers_html
+
+      } else {
+
+        outliers_html()
+      }
     })
 
 
@@ -444,6 +465,7 @@ mod_compare031_2samples_server <- function(id, r) {
       req(selected_data())
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
+      # don't update if results have been saved
       req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
             r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
@@ -494,7 +516,7 @@ mod_compare031_2samples_server <- function(id, r) {
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
-
+      # if results have been saved, restore the t-test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$ttest_html
@@ -512,6 +534,7 @@ mod_compare031_2samples_server <- function(id, r) {
       req(selected_data())
       req(r$compare03x$significance)
       req(r$compare03x$alternative)
+      # don't update if results have been saved
       req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE()||
             r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
@@ -561,7 +584,7 @@ mod_compare031_2samples_server <- function(id, r) {
         need(minval() >= 5,
              message = "Servono almeno 5 valori per poter eseguire i test")
       )
-
+      # if results have been saved, restore the F-test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$ftest_html

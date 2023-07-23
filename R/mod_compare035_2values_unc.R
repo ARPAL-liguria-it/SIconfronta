@@ -121,6 +121,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
       help_results <- ifelse(r$compare03x$parameter == "", "help", "results")
       updateTabsetPanel(inputId = "help_results", selected = help_results)
 
+      # if the results have been saved, restore the input values
       if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
         freezeReactiveValue(input, "udm")
@@ -186,7 +187,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
     })
 
     output$boxplot <- plotly::renderPlotly({
-      # if results were saved, restore the boxplot
+      # if results have been saved, restore the boxplot
       if(r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()){
 
         r$compare03[[r$compare03$myparameter]]$plotlyboxplot
@@ -215,7 +216,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
 
     output$summarytable <- DT::renderDT({
-
+      # if results have been saved, restore the summarytable
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
@@ -232,6 +233,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
     #### results for the En-test ----
     entest_list <- reactive({
+      # don't update if results have been saved
       req(r$compare03[[r$compare03$myparameter]]$saved |> isFALSE() ||
             r$compare03[[r$compare03$myparameter]]$saved |> is.null())
 
@@ -274,7 +276,7 @@ mod_compare035_2values_unc_server <- function(id, r) {
 
     output$ttest <- renderText({
       req(input_data())
-
+      # if results have been saved, restore the En-test results
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         r$compare03[[r$compare03$myparameter]]$ttest_html

@@ -82,6 +82,7 @@ mod_report04_server <- function(id, r){
       mychoices <- c(normality, ttest, ftest)
       mychoices <- mychoices[!is.na(mychoices)]
 
+      freezeReactiveValue(input, "content")
       updateCheckboxGroupInput(session,
                                "content",
                                choices = mychoices,
@@ -96,6 +97,7 @@ mod_report04_server <- function(id, r){
         paste0("comparison_report-", Sys.Date(), ".pdf")
       },
       content = function(file) {
+        withProgress(message = "Sto scrivendo il report...", {
         # The report template is copied in a temporary directory to prevent
         # user permission issues
         reportpath <- system.file("rmd", "comparison_report.Rmd",
@@ -118,18 +120,18 @@ mod_report04_server <- function(id, r){
         # input parameters for the rmd file ----
         params <- isolate(lapply(r, reactiveValuesToList))
 
-        id <- showNotification(
-        	"Preparazione del report...",
-                duration = NULL,
-                closeButton = FALSE
-                            )
-        on.exit(removeNotification(id), add = TRUE)
+        n_par <- length(params$compare03) - 2
+        for (i in n_par) {
+          Sys.sleep(1)
+          incProgress(1 / n_par)
+        }
 
         # the report is compiled in a separate R environment with a future promise
         render_report(input = tempReport,
                       output = file,
                       params = params)
 
+        })
       }
     )
 
