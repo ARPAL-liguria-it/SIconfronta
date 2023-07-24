@@ -6,28 +6,81 @@ output: html_document
 ---
 ## CompaRat
 
-Il software CompaRat è stato sviluppato per ARPAL allo scopo di effettuare confronti di medie e varianze per coppie di campioni.
+Il software CompaRat è stato sviluppato per ARPAL allo scopo di effettuare confronti
+di medie e varianze tra:
+* due serie di misure;
+* una serie di misure e un valore noto esattamente;
+* due valori dotati di incertezze estese.
+
+Il software permette di sottoporre a test sequenziali più di un analita, riassumendo
+i risultati in un unico report in formato pdf.
 
 #### Cosa può fare CompaRat?
-* ottenere statistiche di base sulle due serie di valori;
-* escludere manualmente valori potenzialmente anomali;
-* effettuare un test di normalità (Shapiro-Wilk) per le due serie di valori;
-* effettuare un test (_t_-test o Welch test) per confrontare le medie delle due serie di valori;
-* effettuare un test (_F_-test) per confrontare le varianze delle due serie di valori;
+* ottenere statistiche di base sulle serie di valori;
+* effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
+* identificare mediante il test _generalized extreme studentized deviate_ (GESD) la presenza di potenziali valori anomali;
+* escludere manualmente i valori potenzialmente anomali;
+* effettuare un test (_t_-test, Welch test o E<sub>n</sun>-test) per il confronto delle medie;
+* effettuare un test (_F_-test o \u03C7<sup>2</sup>-test) per il confronto delle varianze;
 * esportare i risultati in un report .pdf.
 
 #### Di cosa ha bisogno CompaRat?
-Un file .csv con almeno:
-* una colonna testuale con i nomi degli analiti di interesse;
-* una colonna testuale che permetta di identificare a quale gruppo appartengano i singoli valori;
-* una colonna numerica con i valori di interesse;
-* il punto (.) come un separatore decimale per i valori numerici; 
-* intestazioni testuali delle colonne.
+Un file .csv con almeno i cui requisiti variano a seconda dello scopo prefissato.
 
-<details>
-<summary> Un esempio è meglio di mille parole: clicca! </summary>
-<img src="../extdata/inputcsv.png">
-</details>
+* Nel caso del confronto tra due serie di misure, comprensive dei singoli valori, serviranno:
+    * una colonna testuale con i nomi degli analiti di interesse;
+    * una colonna testuale con due soli valori, di modo da permettere l'identificazione del gruppo di appartenenza dei singoli valori;
+    * una colonna numerica con i valori delle misure.
+
+* Nel caso del confronto tra due serie di misure, di cui solo una comprensiva dei singoli valori, serviranno:
+    * una colonna testuale con i nomi degli analiti di interesse;
+    * una colonna testuale con il nome del gruppo di appartenenza dei valori;
+    * una colonna numerica con i valori delle misure.
+
+Nel corso dell'esecuzione dei test, per la serie di misure per cui non si dispongono i singoli valori, si dovranno inserire:
+* il nome del gruppo;
+* il valore della media;
+* il valore di deviazione standard;
+* la numerosità 
+
+* Nel caso del confronto tra una serie di misure e un valore noto:
+    * una colonna testuale con i nomi degli analiti di interesse;
+    * una colonna testuale con il nome del gruppo di appartenenza dei valori disponibili;
+    * una colonna numerica con i valori delle misure.
+
+Nel corso dell'esecuzione dei test si dovranno inserire:
+* il nome da assegnare al valore noto;
+* il valore noto con cui operare il confronto.
+
+* Nel caso del confronto tra una serie di misure e una deviazione standard nota:
+    * una colonna testuale con i nomi degli analiti di interesse;
+    * una colonna testuale con il nome del gruppo di appartenenza dei valori;
+    * una colonna numerica con i valori delle misure.
+
+Nel corso dell'esecuzione dei test si dovranno inserire:
+* il nome da assegnare al valore noto;
+* il valore noto con cui operare il confronto.
+
+Per tutti casi elencati in precedenza, il software accetta da un minimo di 5 a un massimo di 30 valori
+per ogni coppia formata dall'identificativo dell'analita e del gruppo.
+
+* Nel caso del confronto tra due misure dotate di incertezza estesa:
+    * una colonna testuale con i nomi degli analiti di interesse;
+    * una colonna testuale con il nome del gruppo di appartenenza dei valori disponibili;
+    * una colonna numerica con i valori delle misure;
+    * una colonna numerica con i valori delle incertezze estese delle misure.
+    
+Per questa casistica, il software accetta una sola misura per ogni coppia
+formata dall'identificativo dell'analita e del gruppo.
+
+Per tutti i casi presentati è obbligatorio l'utilizzo del punto (.) come separatore decimale 
+per i valori numerici e l'utilizzo di intestazioni testuali delle colonne del file csv.
+
+#### Come sono stati scelti i test di Calibrat?
+Il test _generalized extreme studentized deviate_ (GESD) per l'identificazione dei valori anomali è
+stato implementato sulla base del paragrafo 4.3 e dell'Annex A della norma UNI ISO 16269-4:2019.
+I risultati del test sono risultati identici a quelli riportati come esempio nella stessa norma (pag. 15).
+
 
 #### Come funziona Calibrat?
 L'applicazione è suddivisa in tre schede con cui l'utente deve interagire in sequenza.
