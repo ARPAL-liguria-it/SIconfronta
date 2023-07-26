@@ -147,9 +147,9 @@ fct_chitest_1sample_sigma <- function(data,
   )
 
   chitheo <- switch (alternative,
-                     "different" = paste0(chicritical[1] |> round(4), ", ",
-                                        chicritical[2] |> round(4)),
-                     "greater" = paste0(chicritical |> round(4))
+                     "different" = paste0(chicritical[1] |> (\(x) sprintf("%.4f", x))(), ", ",
+                                        chicritical[2] |> (\(x) sprintf("%.4f", x))()),
+                     "greater" = paste0(chicritical |> (\(x) sprintf("%.4f", x))())
   )
 
 
@@ -159,11 +159,11 @@ fct_chitest_1sample_sigma <- function(data,
        ratio = c("sd" = data_sd |> format_sigfig(),
                  "lwrci" = ci[1] |> format_sigfig(),
                  "uprci" = ci[2] |> format_sigfig()),
-       test = list("dof" = dof,
-                   "alpha" = alpha,
-                   "chisper" = chivalue |> format_sigfig(),
+       test = list("dof" = dof |> (\(x) sprintf("%.0f", x))(),
+                   "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
+                   "chisper" = chivalue |> (\(x) sprintf("%.4f", x))(),
                    "chitheo" = chitheo,
-                   "pvalue" = pvalue |> round(4)),
+                   "pvalue" = pvalue |> (\(x) sprintf("%.4f", x))()),
        result = result)
 
 }

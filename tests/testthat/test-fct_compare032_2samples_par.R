@@ -47,7 +47,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and alterna
   expect_equal(ttest_result2$difference[[2]], "-5.695")
   expect_equal(ttest_result2$difference[[3]], "Inf")
   expect_equal(ttest_result2$test[[1]], "7.3369")
-  expect_equal(ttest_result2$test[[2]], "0.95")
+  expect_equal(ttest_result2$test[[2]], "0.950")
   expect_equal(ttest_result2$test[[3]], "0.4313")
   expect_equal(ttest_result2$test[[4]], "1.8816")
   expect_equal(ttest_result2$test[[5]], "0.3393")
@@ -67,6 +67,22 @@ test_that("Calculations are correct for t-test on 2 groups of values and confide
   expect_equal(ttest_result3$test[[3]], "0.4313")
   expect_equal(ttest_result3$test[[4]], "3.4454")
   expect_equal(ttest_result3$test[[5]],  "0.6787")
+})
+
+# results from prospect C' and D' (pag. 39) of UNI ISO 2854:1988
+ttest_result4 <- fct_ttest_2samples_par(group1 = "a", mean1 = 2.176, sd1 = sqrt(0.13960), n1 = 10,
+                                        group2 = "b", mean2 = 2.520, sd2 = sqrt(0.12634), n2 = 12)
+test_that("Calculations are correct for t-test on 2 groups of values", {
+  expect_equal(ttest_result4$hypotheses[[1]], "media di b = media di a")
+  expect_equal(ttest_result4$hypotheses[[2]], "media di b ≠ media di a")
+  expect_equal(ttest_result4$difference[[1]], "0.3440")
+  expect_equal(ttest_result4$difference[[2]], "0.01635")
+  expect_equal(ttest_result4$difference[[3]], "0.6717")
+  expect_equal(ttest_result4$test[[1]], "18.8992")
+  expect_equal(ttest_result4$test[[2]], "0.975")
+  expect_equal(ttest_result4$test[[3]], "2.1983")
+  expect_equal(ttest_result4$test[[4]], "2.0938")
+  expect_equal(ttest_result4$test[[5]],  "0.0406") # not reported on the reference
 })
 
 test_that("Errors are correctly handled for F-test on two groups of values", {
@@ -99,12 +115,30 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(ftest_result1$ratio[[1]], "1.628")
   expect_equal(ftest_result1$ratio[[2]], "0.1695")
   expect_equal(ftest_result1$ratio[[3]], "15.64")
-  expect_equal(ftest_result1$test$dof, c("numeratore" = 4, "denominatore" = 4))
-  expect_equal(ftest_result1$test$alpha, 0.975)
-  expect_equal(ftest_result1$test$fsper, "1.628")
+  expect_equal(ftest_result1$test$dof, c("numeratore" = "4", "denominatore" = "4"))
+  expect_equal(ftest_result1$test$alpha, "0.975")
+  expect_equal(ftest_result1$test$fsper, "1.6281")
   expect_equal(ftest_result1$test$ftheo, "0.1041, 9.6045")
-  expect_equal(ftest_result1$test$pvalue, 0.6483)
+  expect_equal(ftest_result1$test$pvalue, "0.6483")
 })
+
+# results from prospect G and H of UNI ISO 2854:1988 (pag 40)
+ftest_result2 <- fct_ftest_2samples_par(group1 = "a", sd1 = sqrt(0.13960), n1 = 10,
+                                        group2 = "b", sd2 = sqrt(0.12634), n2 = 12)
+
+test_that("Calculations are correct for f-test and alternative = different", {
+  expect_equal(ftest_result2$hypotheses[[1]], "varianza di a = varianza di b")
+  expect_equal(ftest_result2$hypotheses[[2]], "varianza di a ≠ varianza di b")
+  expect_equal(ftest_result2$ratio[[1]], "1.105")
+  expect_equal(ftest_result2$ratio[[2]], "0.3080") # 0.31
+  expect_equal(ftest_result2$ratio[[3]], "4.323") # 4.4
+  expect_equal(ftest_result2$test$dof, c("numeratore" = "9", "denominatore" = "11"))
+  expect_equal(ftest_result2$test$alpha, "0.975")
+  expect_equal(ftest_result2$test$fsper, "1.1050")
+  expect_equal(ftest_result2$test$ftheo, "0.2556, 3.5879") # 0.25, 3.6
+  expect_equal(ftest_result2$test$pvalue, "0.8612") # not reported
+})
+
 
 
 test_that("ggboxplot_2samples_par works well", {

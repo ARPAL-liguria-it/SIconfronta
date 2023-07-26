@@ -99,10 +99,10 @@ fct_ttest_1sample_mu <- function(data,
   mymeanconfint <- c(NA, NA)
   mymeanconfint[1] <- ttest$conf.int[1] |> format_sigfig()
   mymeanconfint[2] <- ttest$conf.int[2] |> format_sigfig()
-  tvalue <- ttest$statistic |> abs() |> round(4)
-  dof <- ttest$parameter |> round(0)
-  tcritical <- stats::qt(alpha, dof) |> round(3)
-  pvalue <- ttest$p.value |> round(4)
+  tvalue <- ttest$statistic |> abs() |> (\(x) sprintf("%.4f", x))()
+  dof <- ttest$parameter
+  tcritical <- stats::qt(alpha, dof) |> (\(x) sprintf("%.4f", x))()
+  pvalue <- ttest$p.value |> (\(x) sprintf("%.4f", x))()
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -132,8 +132,8 @@ fct_ttest_1sample_mu <- function(data,
        mean = c("mean" = mymean,
                 "lwrci" = mymeanconfint[1],
                 "uprci" = mymeanconfint[2]),
-       test = c("dof" = unname(dof),
-                "alpha" = alpha,
+       test = c("dof" = dof |> (\(x) sprintf("%.0f", x))(),
+                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
                 "tsper" = unname(tvalue),
                 "ttheo" = tcritical,
                 "pvalue" = pvalue),

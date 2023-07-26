@@ -484,9 +484,9 @@ mod_compare031_2samples_server <- function(id, r) {
 <b>H1:</b> %s
 <ul>
   <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
-  <li> <i>t</i> sperimentale = %.3f </li>
-  <li> <i>t</i> critico (\u03b1 = %.3f, \u03bd = %.3f) = %.3f </li>
-  <li> <i>p</i>-value = %.4f </li>
+  <li> <i>t</i> sperimentale = %s </li>
+  <li> <i>t</i> critico (\u03b1 = %s, \u03bd = %s) = %s </li>
+  <li> <i>p</i>-value = %s </li>
 </ul>
 \u21e8 %s"
 
@@ -553,9 +553,9 @@ mod_compare031_2samples_server <- function(id, r) {
 <b>H1:</b> %s
 <ul>
   <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>
-  <li> <i>F</i> sperimentale = %.3f </li>
-  <li> <i>F</i> critico (\u03b1 = %.3f, \u03bd = %.0f, %.0f) = %s </li>
-  <li> <i>p</i>-value = %.4f </li>
+  <li> <i>F</i> sperimentale = %s </li>
+  <li> <i>F</i> critico (\u03b1 = %s, \u03bd = %s, %s) = %s </li>
+  <li> <i>p</i>-value = %s </li>
 </ul>
 \u21e8 %s"
 

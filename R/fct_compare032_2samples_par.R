@@ -158,11 +158,11 @@ fct_ttest_2samples_par <- function(group1,
        difference = c("mean" = diff_mean |> format_sigfig(),
                       "lwrci" = ci[1] |> format_sigfig(),
                       "uprci" = ifelse(h1 == "two.sided", ci[2] |> format_sigfig(), Inf)),
-       test = c("dof" = dof |> round(4),
-                "alpha" = alpha,
-                "tsper" = tvalue |> format_sigfig(),
-                "ttheo" = tcritical |> round(4),
-                "pvalue" = pvalue |> round(4)),
+       test = c("dof" = dof |> (\(x) sprintf("%.4f", x))(),
+                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
+                "tsper" = tvalue |> (\(x) sprintf("%.4f", x))(),
+                "ttheo" = tcritical |> (\(x) sprintf("%.4f", x))(),
+                "pvalue" = pvalue |> (\(x) sprintf("%.4f", x))()),
        result = result)
 
 }
@@ -266,12 +266,13 @@ fct_ftest_2samples_par <- function(group1,
 
   # get the critical F value
   fcritical <- if(h1 == "two.sided")
-    c(stats::qf(1-alpha, dof[2], dof[1]), 1/stats::qf(1-alpha, dof[1], dof[2]))
+    c(stats::qf(1-alpha, dof[1], dof[2]), stats::qf(alpha, dof[1], dof[2]))
   else
-    stats::qf(1-alpha, dof[2], dof[1])
+    c(stats::qf(alpha, dof[1], dof[2]))
 
   # get the confidence interval
-  ci <- fcritical  * fvalue
+  ci <- fvalue / fcritical
+  ci <- ci[order(ci)]
   ci[2] <- ifelse(h1 == "two.sided",
                   ci[2],
                   Inf)
@@ -311,9 +312,9 @@ fct_ftest_2samples_par <- function(group1,
   )
 
   ftheo <- switch (alternative,
-                    "different" = paste0(fcritical[1] |> round(4), ", ",
-                                         fcritical[2] |> round(4)),
-                    "greater" = paste0(fcritical |> round(4))
+                    "different" = paste0(fcritical[1] |> (\(x) sprintf("%.4f", x))(), ", ",
+                                         fcritical[2] |> (\(x) sprintf("%.4f", x))()),
+                    "greater" = paste0(fcritical |> (\(x) sprintf("%.4f", x))())
   )
 
 
@@ -323,12 +324,12 @@ fct_ftest_2samples_par <- function(group1,
        ratio = c("mean" = fvalue |> format_sigfig(),
                       "lwrci" = ci[1] |> format_sigfig(),
                       "uprci" = ci[2] |> format_sigfig()),
-       test = list("dof" = c("numeratore" = dof[1],
-                             "denominatore" = dof[2]),
-                "alpha" = alpha,
-                "fsper" = fvalue |> format_sigfig(),
+       test = list("dof" = c("numeratore" = dof[1] |> (\(x) sprintf("%.0f", x))(),
+                             "denominatore" = dof[2] |> (\(x) sprintf("%.0f", x))()),
+                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
+                "fsper" = fvalue |> (\(x) sprintf("%.4f", x))(),
                 "ftheo" = ftheo,
-                "pvalue" = pvalue |> round(4)),
+                "pvalue" = pvalue |> (\(x) sprintf("%.4f", x))()),
        result = result)
 
 }

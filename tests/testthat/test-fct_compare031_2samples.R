@@ -24,15 +24,15 @@ test_that("Calculations are correct for t-test on samples and alternative = diff
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$difference[[3]],
                "10.89")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[1]],
-               7.3369)
+               "7.3369")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[2]],
-               0.975)
+               "0.975")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[3]],
-               0.4313)
+               "0.4313")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[4]],
-               2.3430)
+               "2.3428")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[5]],
-               0.33935 * 2)
+               "0.6787")
 })
 
 test_that("Calculations are correct for t-test on 2 groups of values and alternative = greater", {
@@ -63,27 +63,27 @@ test_that("Calculations are correct for t-test on 2 groups of values and alterna
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
               alternative = "greater")$test[[1]],
-    7.3369
+    "7.3369"
   )
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
               alternative = "greater")$test[[2]],
-    0.950
+    "0.950"
   )
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
               alternative = "greater")$test[[3]],
-    0.4313
+    "0.4313"
   )
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
               alternative = "greater")$test[[4]],
-    1.8820
+    "1.8816"
   )
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
               alternative = "greater")$test[[5]],
-    0.3393
+    "0.3393"
   )
 })
 
@@ -109,19 +109,55 @@ test_that("Calculations are correct for t-test on 2 groups of values and confide
                "15.22")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[1]],
-               7.3369)
+               "7.3369")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[2]],
-               0.995)
+               "0.995")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[3]],
-               0.4313)
+               "0.4313")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[4]],
-               3.4450)
+               "3.4454")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[5]],
-               0.33935 * 2)
+               "0.6787")
+})
+
+# prospect C' and D' of UNI ISO 2854:1988 (pag. 39)
+test_that("Calculations are correct for t-test on 2 groups of values", {
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$hypotheses[[1]],
+    "media di b = media di a"
+  )
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$hypotheses[[2]],
+    "media di b ≠ media di a"
+  )
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$difference[[1]],
+    "0.3440")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$difference[[2]],
+               "0.01633")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$difference[[3]],
+               "0.6716")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[1]],
+               "18.8994")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[2]],
+               "0.975")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[3]],
+               "2.1982")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[4]],
+               "2.0938")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[5]],
+               "0.0406")
 })
 
 test_that("Errors are correctly handled for F-test on two groups of values", {
@@ -151,20 +187,58 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$ratio[[3]],
                "15.64")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$dof,
-               c("numeratore" = 4, "denominatore" = 4))
+               c("numeratore" = "4", "denominatore" = "4"))
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$alpha,
-                0.975)
+                "0.975")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$fsper,
-               1.6281)
+               "1.6281")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$ftheo,
                "0.1041, 9.6045")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$pvalue,
-               0.6483)
+               "0.6483")
 })
 
-# Results from Support of Microsoft Excel F.TEST function
-# https://support.microsoft.com/en-us/office/
-#   f-test-function-100a59e7-4108-46f8-8443-78ffacb6c0a7
+# results from prospect G and H of UNI ISO 2854:1988 (pag. 40)
+test_that("Calculations are correct for f-test and alternative = different", {
+  expect_equal(
+    fct_ftest_2samples(uniiso_2854_x, "value", "group")$hypotheses[[1]],
+    "varianza di a = varianza di b"
+  )
+  expect_equal(
+    fct_ftest_2samples(uniiso_2854_x, "value", "group")$hypotheses[[2]],
+    "varianza di a ≠ varianza di b"
+  )
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$ratio[[1]],
+               "1.105") # 1.10
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$ratio[[2]],
+               "0.3080") # 0.31
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$ratio[[3]],
+               "4.322") # 4.4
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$dof,
+               c("numeratore" = "9", "denominatore" = "11"))
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$alpha,
+               "0.975")
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$fsper,
+               "1.1049")
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$ftheo,
+               "0.2556, 3.5879") # 0.25 e 3.6
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$pvalue,
+               "0.8613") # not reported
+})
+
+test_that("Calculations are correct for f-test and alternative = different
+            significance = 0.99", {
+expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group",
+                                significance = 0.99)$ratio[[2]],
+             "0.1996") # 0.20
+expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group",
+                                significance = 0.99)$ratio[[3]],
+             "6.977") # 7.0
+})
+
+# Results from An analysis of variance test for normality (complete samples),
+#'  Biometrika (1965), 52, 3 and 2, p. 591.
+#'  Section 4 - Examples, pag. 606, Example 1.
 test_that("Calculations are correct for Shapiro-Wilk test", {
   expect_equal(
     fct_shapiro(shapirotest_reference)$W %>% round(2),

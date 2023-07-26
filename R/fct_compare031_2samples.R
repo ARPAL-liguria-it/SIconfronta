@@ -246,10 +246,10 @@ fct_ttest_2samples <- function(data,
   diffconfint <- c(NA, NA)
   diffconfint[1] <- ttest$conf.int[1] |> format_sigfig()
   diffconfint[2] <- ttest$conf.int[2] |> format_sigfig()
-  tvalue <- ttest$statistic |> round(4)
-  dof <- ttest$parameter |> round(4)
-  tcritical <- stats::qt(alpha, dof) |> round(3)
-  pvalue <- ttest$p.value |> round(4)
+  tvalue <- ttest$statistic |> (\(x) sprintf("%.4f", x))()
+  dof <- ttest$parameter
+  tcritical <- stats::qt(alpha, dof) |> (\(x) sprintf("%.4f", x))()
+  pvalue <- ttest$p.value |> (\(x) sprintf("%.4f", x))()
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -279,12 +279,12 @@ fct_ttest_2samples <- function(data,
        difference = c("mean" = difference,
                       "lwrci" = diffconfint[1],
                       "uprci" = diffconfint[2]),
-       test = c("dof" = unname(dof),
-                "alpha" = alpha,
+       test = c("dof" = dof |> (\(x) sprintf("%.4f", x))(),
+                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
                 "tsper" = unname(tvalue),
                 "ttheo" = tcritical,
                 "pvalue" = pvalue),
-       result = unname(result))
+       result = result)
 
 }
 
@@ -380,11 +380,11 @@ fct_ftest_2samples <- function(data,
   ratioconfint <- c(NA, NA)
   ratioconfint[1] <- ftest$conf.int[1] |> format_sigfig()
   ratioconfint[2] <- ftest$conf.int[2] |> format_sigfig()
-  fvalue <- ftest$statistic |> round(4)
+  fvalue <- ftest$statistic |> (\(x) sprintf("%.4f", x))()
   dof <- ftest$parameter |> unname() # numerator and denominator
   fcritical <- c(stats::qf(1-alpha, dof[[1]], dof[[2]]),
-                 stats::qf(alpha, dof[[1]], dof[[2]])) |> round(4)
-  pvalue <- ftest$p.value |> round(4)
+                 stats::qf(alpha, dof[[1]], dof[[2]])) |> round(5)
+  pvalue <- ftest$p.value |> (\(x) sprintf("%.4f", x))()
 
   # Being clear with some text
   h0_text <- switch (alternative,
@@ -417,8 +417,10 @@ fct_ftest_2samples <- function(data,
   )
 
   ftheo <- switch (alternative,
-                    "different" = paste0(fcritical[1], ", ", fcritical[2]),
-                    "greater" = paste0(fcritical[2])
+                    "different" = paste0(fcritical[1] |> (\(x) sprintf("%.4f", x))(),
+                                         ", ",
+                                         fcritical[2] |> (\(x) sprintf("%.4f", x))()),
+                    "greater" = paste0(fcritical[2] |> (\(x) sprintf("%.4f", x))())
   )
 
 
@@ -428,9 +430,9 @@ fct_ftest_2samples <- function(data,
        ratio = c("mean" = ratio,
                       "lwrci" = ratioconfint[1],
                       "uprci" = ratioconfint[2]),
-       test = list("dof" = c("numeratore" = dof[[1]],
-                             "denominatore" = dof[[2]]),
-                "alpha" = alpha,
+       test = list("dof" = c("numeratore" = dof[[1]] |> (\(x) sprintf("%.0f", x))(),
+                             "denominatore" = dof[[2]] |> (\(x) sprintf("%.0f", x))()),
+                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
                 "fsper" = unname(fvalue),
                 "ftheo" = ftheo,
                 "pvalue" = pvalue),

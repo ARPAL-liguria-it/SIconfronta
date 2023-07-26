@@ -729,8 +729,8 @@ mod_compare032_2samples_par_server <- function(id, r) {
 <ul>
   <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>
   <li> <i>F</i> sperimentale = %s </li>
-  <li> <i>F</i> critico (\u03b1 = %.3f, \u03bd = %s, %s) = %s </li>
-  <li> <i>p</i>-value = %.4f </li>
+  <li> <i>F</i> critico (\u03b1 = %s, \u03bd = %s, %s) = %s </li>
+  <li> <i>p</i>-value = %s </li>
 </ul>
 \u21e8 %s"
 
