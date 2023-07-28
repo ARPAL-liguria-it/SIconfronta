@@ -7,7 +7,7 @@
 #'
 #' @import shiny
 #' @importFrom future plan multisession
-#' @importFrom bslib bs_theme page_navbar nav_panel
+#' @importFrom bslib bs_theme
 future::plan(future::multisession)
 
 app_ui <- function(request) {
@@ -16,29 +16,28 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
 
-    bslib::page_navbar(
+    navbarPage(
       id = "navbar",
       theme = bslib::bs_theme(version = 5, bootswatch = "sandstone"),
       title = tags$div(class = "navbar-brand", href = "#",
                        tags$img(src = "www/comparatlogo.png",
                                 alt = "Comparat",
                                 height = 50)),
-      window_title = "Comparat",
+      windowTitle = "Comparat",
       padding = 50,
       inverse = FALSE,
       position = "static-top",
       fluid = FALSE,
       collapsible = TRUE,
-      fillable = FALSE,
       lang = "it",
 
       # Navbar items ----
-      bslib::nav_panel("Scopo", value = "aim", mod_aim01_ui("scopo")),
-      bslib::nav_panel("Dati", value = "data", mod_loadfile02_ui("dati")),
-      bslib::nav_panel("Confronti", value = "compare", mod_compare03_ui("confronto")),
-      bslib::nav_panel("Report", value = "report", mod_report04_ui("report")),
-      bslib::nav_panel("Leggimi", value = "readme",
-                       includeMarkdown(system.file("rmd", "readme.Rmd",package = "comparat")))
+      tabPanel("Scopo", value = "aim", mod_aim01_ui("scopo")),
+      tabPanel("Dati", value = "data", mod_loadfile02_ui("dati")),
+      tabPanel("Confronti", value = "compare", mod_compare03_ui("confronto")),
+      tabPanel("Report", value = "report", mod_report04_ui("report")),
+      tabPanel("Leggimi", value = "readme",
+               includeMarkdown(system.file("rmd", "readme.Rmd",package = "comparat")))
 
     )
   )

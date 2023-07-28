@@ -7,6 +7,7 @@ testServer(
   # Add here your module params
   args = list(r), {
 
+    r$aim01$aim <- "1sample_sigma"
     r$loadfile02$parvar <- "parameter"
     r$loadfile02$responsevar <- "pounds"
     r$loadfile02$groupvar <- "fertilizer"
@@ -15,6 +16,7 @@ testServer(
     r$compare03$yield$normality <- "myresult"
     r$compare03$yield$ttest <- NA
     r$compare03$yield$ftest <- "ftestresult"
+    r$compare03$yield$saved <- TRUE
     r$compare03$saved_flag <- 1
     session$flushReact()
 

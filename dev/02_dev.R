@@ -61,7 +61,7 @@ devtools::build_vignettes()
 
 ## Code Coverage----
 ## Set the code coverage service ("codecov" or "coveralls")
-usethis::use_coverage()
+usethis::use_coverage("codecov")
 
 # Create a summary readme for the testthat subdirectory
 covrpage::covrpage()
@@ -77,19 +77,10 @@ usethis::use_github()
 usethis::use_github_action()
 # Chose one of the three
 # See https://usethis.r-lib.org/reference/use_github_action.html
-usethis::use_github_action_check_release()
-usethis::use_github_action_check_standard()
-usethis::use_github_action_check_full()
-# Add action for PR
-usethis::use_github_action_pr_commands()
-
-# Travis CI
-usethis::use_travis()
-usethis::use_travis_badge()
-
-# AppVeyor
-usethis::use_appveyor()
-usethis::use_appveyor_badge()
+usethis::use_github_action("check-standard", badge = TRUE)
+usethis::use_github_action("test-coverage", badge = TRUE)
+usethis::use_github_action("document")
+usethis::use_github_action("style")
 
 # Circle CI
 usethis::use_circleci()
