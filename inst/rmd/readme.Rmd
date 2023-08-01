@@ -208,6 +208,13 @@ in ambito professionale da milioni di persone, da circa 30 anni.
 La correttezza dei risultati forniti dalle funzioni impiegate da Comparat, l'interazione
 tra le funzioni e la stabilità dell'interfaccia utente, sono oggetto di oltre 650 test.
 Tali test sono eseguiti in automatico ad ogni nuovo rilascio di versione.
+La frazione di codice coperta dai test è circa il 93% del totale.
+L'esito dei controlli e la percentuale di codice coperta dai test per l'ultima versione rilasciata,
+è riassunto nelle seguenti etichette aggiornate automaticamente:
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml) [![test-coverage](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/gh/andreabz/comparat/branch/experimental/graph/badge.svg?token=XLFI6Z4IBG)](https://codecov.io/gh/andreabz/comparat)
+<!-- badges: end -->
 
 Infine, il software Comparat è ospitato all'interno di un server ad accesso controllato
 e non soggetto ad aggiornamento o modifiche non intenzionali.
