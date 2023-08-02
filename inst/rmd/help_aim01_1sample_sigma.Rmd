@@ -51,7 +51,7 @@ Puoi creare i file .csv sia a mano in un editor di testo, come il Blocco note, s
 
 </div>
 </details>
-
+<br>
 
 
 Una volta caricato il file, nella scheda **Confronti** dovrai fornire le indicazioni circa il valore di deviazione standard nota ($\sigma$). Inoltre, dovrai selezionare l'ipotesi alternativa e il livello di significatività a cui desideri effettuare i test statistici, potrai inserire le unità di misura e quindi salvare i risultati, parametro per parametro.

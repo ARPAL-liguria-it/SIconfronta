@@ -44,7 +44,7 @@ Puoi creare i file .csv sia a mano in un editor di testo, come il Blocco note, s
 
 </div>
 </details>
-
+<br>
 
 
 Una volta caricato il file, nella scheda **Confronti** dovrai elezionare l'ipotesi alternativa associata al test statistico per il confronto tra valori, inoltre potrai inserire le unità di misura e quindi salvare i risultati, parametro per parametro.
