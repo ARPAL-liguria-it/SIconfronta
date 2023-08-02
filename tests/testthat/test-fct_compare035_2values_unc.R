@@ -8,37 +8,37 @@ test_that("Errors are correctly handled for En-test on two values with
 })
 
 
-noeffectdata <- data.frame(mygroup = letters[1:2],
-                           myvalue = c(2.15, 4.84),
-                           myuncertainty = c(1.02, 2.50))
+# from ISO 13528:2022(E) Section E4
+noeffectdata <- data.frame(mygroup = c("L03", "pt"),
+                           myvalue = c(0.037, 0.044),
+                           myuncertainty = c(0.013, 0.0082))
 
 noeffect_result <- fct_entest_2values_unc(noeffectdata, "myvalue", "myuncertainty", "mygroup")
 
-# comparison vs EnvStats::varTest(tomato_yields_a$pounds, sigma.squared = ref_sd^2)
 test_that("Calculations are correct for En-test when no differences are expected", {
-  expect_equal(noeffect_result$hypotheses[[1]], "b = a")
-  expect_equal(noeffect_result$hypotheses[[2]], "b ≠ a")
-  expect_equal(noeffect_result$difference[[1]], "2.690") # 2.69
-  expect_equal(noeffect_result$difference[[2]], "-0.01007") # -0.01007407
-  expect_equal(noeffect_result$difference[[3]], "5.390") # 5.390074
-  expect_equal(noeffect_result$test[[1]], "0.9963") # 0.996269
+  expect_equal(noeffect_result$hypotheses[[1]], "pt = L03")
+  expect_equal(noeffect_result$hypotheses[[2]], "pt ≠ L03")
+  expect_equal(noeffect_result$difference[[1]], "0.007000") # 0.0070000
+  expect_equal(noeffect_result$difference[[2]], "-0.008370") # -0.008370 not reported
+  expect_equal(noeffect_result$difference[[3]], "0.02237") # 0.02237 not reported
+  expect_equal(noeffect_result$test[[1]], "0.4554") # 0.46
   expect_equal(noeffect_result$test[[2]], "1.000") # 1
 })
 
-
-yeseffectdata <- data.frame(mygroup = letters[1:2],
-                            myvalue = c(4.84, 2.15),
-                            myuncertainty = c(2.30, 1.02))
+# from ISO 13528:2022(E) Section E4
+yeseffectdata <- data.frame(mygroup = c("L12", "pt"),
+                            myvalue = c(0.0239, 0.044),
+                            myuncertainty = c(0.0036, 0.0082))
 
 yeseffect_result <- fct_entest_2values_unc(yeseffectdata, "myvalue", "myuncertainty", "mygroup")
 
 test_that("Calculations are correct for En-test when a difference is expected", {
-  expect_equal(yeseffect_result$hypotheses[[1]], "a = b")
-  expect_equal(yeseffect_result$hypotheses[[2]], "a ≠ b")
-  expect_equal(yeseffect_result$difference[[1]], "2.690") # 2.69
-  expect_equal(yeseffect_result$difference[[2]], "0.1740") # 0.1739714
-  expect_equal(yeseffect_result$difference[[3]], "5.206") # 5.206029
-  expect_equal(yeseffect_result$test[[1]], "1.069") #  1.069145
+  expect_equal(yeseffect_result$hypotheses[[1]], "pt = L12")
+  expect_equal(yeseffect_result$hypotheses[[2]], "pt ≠ L12")
+  expect_equal(yeseffect_result$difference[[1]], "0.02010") # 0.02010 not reported
+  expect_equal(yeseffect_result$difference[[2]], "0.01114") # 0.01114 not reported
+  expect_equal(yeseffect_result$difference[[3]], "0.02906") # 0.02906 not reported
+  expect_equal(yeseffect_result$test[[1]], "2.244") #  2.24
   expect_equal(yeseffect_result$test[[2]], "1.000") # 1
 })
 
@@ -51,12 +51,12 @@ test_that("ggboxplot_2values_unc", {
 })
 
 test_that("rowsummary_2values_unc works well", {
-  mytbl <- rowsummary_2values_unc(yeseffectdata, "myvalue", "myuncertainty", "mygroup", "kg")
+  mytbl <- rowsummary_2values_unc(yeseffectdata, "myvalue", "myuncertainty", "mygroup", "mg/kg")
 
-  expect_equal(mytbl$statistica |> unlist(), c("valore (kg)", "incertezza estesa (kg)"))
-  expect_equal(colnames(mytbl), c("statistica", "a", "b"))
-  expect_equal(mytbl[which(mytbl$statistica == "valore (kg)"), "a"], "4.840")
-  expect_equal(mytbl[which(mytbl$statistica == "valore (kg)"), "b"], "2.150")
-  expect_equal(mytbl[which(mytbl$statistica == "incertezza estesa (kg)"), "a"], "2.300")
-  expect_equal(mytbl[which(mytbl$statistica == "incertezza estesa (kg)"), "b"], "1.020")
+  expect_equal(mytbl$statistica |> unlist(), c("valore (mg/kg)", "incertezza estesa (mg/kg)"))
+  expect_equal(colnames(mytbl), c("statistica", "L12", "pt"))
+  expect_equal(mytbl[which(mytbl$statistica == "valore (mg/kg)"), "L12"], "0.02390")
+  expect_equal(mytbl[which(mytbl$statistica == "valore (mg/kg)"), "pt"], "0.04400")
+  expect_equal(mytbl[which(mytbl$statistica == "incertezza estesa (mg/kg)"), "L12"], "0.003600")
+  expect_equal(mytbl[which(mytbl$statistica == "incertezza estesa (mg/kg)"), "pt"], "0.008200")
 })
