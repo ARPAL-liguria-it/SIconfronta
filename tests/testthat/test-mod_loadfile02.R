@@ -145,7 +145,7 @@ testServer(mod_loadfile02_server,
              expect_equal(colnames(datafile()),
                           c("analita", "gruppo", "valore"))
              # dimensions of the dataset
-             expect_equal(dim(datafile()), c(19, 3))
+             expect_equal(dim(datafile()), c(15, 3))
              # the first column is factor
              expect_equal(class(datafile()[["analita"]]), "factor")
              # the second column is numeric
@@ -153,7 +153,7 @@ testServer(mod_loadfile02_server,
              # the third column is numeric
              expect_equal(class(datafile()[["valore"]]), "numeric")
              # number of values for the two groups
-             expect_equal(datafile()[, .N, by = "gruppo"][, N], 19)
+             expect_equal(datafile()[, .N, by = "gruppo"][, N], 15)
 
 
              # required number of numeric columns
@@ -200,7 +200,7 @@ testServer(mod_loadfile02_server,
              # is2values is not_2values
              expect_equal(is2values(), "not_2values")
              # parlist is yields
-             expect_equal(parlist(), factor(c("primo", "secondo")))
+             expect_equal(parlist(), factor(c("yield", "load")))
 
              session$setInputs(nextbtn = 1,
                                yesbtn = 1)
@@ -209,7 +209,7 @@ testServer(mod_loadfile02_server,
              expect_equal(class(r$loadfile02), "reactivevalues")
              expect_equal(r$loadfile02$data, datafile())
              expect_equal(r$loadfile02$parvar, "analita")
-             expect_equal(r$loadfile02$parlist, factor(c("primo", "secondo")))
+             expect_equal(r$loadfile02$parlist, factor(c("yield", "load")))
              expect_equal(r$loadfile02$groupvar, "gruppo")
              expect_equal(r$loadfile02$responsevar, "valore")
              expect_equal(r$loadfile02$uncertaintyvar, NULL)
@@ -306,7 +306,7 @@ testServer(mod_loadfile02_server,
              # is2values is 2values
              expect_equal(is2values(), "2values")
              # parlist is yields
-             expect_equal(parlist(), factor(c("primo", "secondo")))
+             expect_equal(parlist(), factor(c("L03", "L12")))
 
              session$setInputs(nextbtn = 1,
                                yesbtn = 1)
@@ -315,7 +315,7 @@ testServer(mod_loadfile02_server,
              expect_equal(class(r$loadfile02), "reactivevalues")
              expect_equal(r$loadfile02$data, datafile())
              expect_equal(r$loadfile02$parvar, "analita")
-             expect_equal(r$loadfile02$parlist, factor(c("primo", "secondo")))
+             expect_equal(r$loadfile02$parlist, factor(c("L03", "L12")))
              expect_equal(r$loadfile02$groupvar, "gruppo")
              expect_equal(r$loadfile02$responsevar, "valore")
              expect_equal(r$loadfile02$uncertaintyvar, "unc")

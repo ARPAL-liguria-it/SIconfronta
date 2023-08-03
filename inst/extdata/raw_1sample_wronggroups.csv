@@ -1,23 +1,28 @@
 analita;gruppo;valore
-primo;monte;0.246841351
-primo;monte;4.776264708
-primo;monte;4.288073867
-primo;monte;0.95327485
-primo;monte;4.161880396
-primo;monte;0.041974378
-primo;monte;0.23978671
-primo;monte;2.477955146
-primo;monte;2.924311054
-secondo;monte;1.648553192
-secondo;monte;3.536794852
-secondo;monte;5.823476296
-secondo;monte;8.67246863
-secondo;monte;1.242761424
-secondo;monte;9.84332495
-secondo;monte;5.346691495
-secondo;monte;3.426854502
-secondo;monte;7.917610542
-secondo;monte;4.049519868
-secondo;valle;4.326854502
-secondo;valle;9.17610542
-secondo;valle;4.49519868
+yield;a;29.9
+yield;a;11.4
+yield;a;25.3
+yield;a;16.5
+yield;a;21.1
+load; a; 2.297
+load; a; 2.582
+load; a; 1.949
+load; a; 2.362
+load; a; 2.040
+load; a; 2.133
+load; a; 1.855
+load; a; 1.986
+load; a; 1.642
+load; a; 2.915
+load; b; 2.286
+load; b; 2.327
+load; b; 2.388
+load; b; 3.172
+load; b; 3.158
+load; b; 2.751
+load; b; 2.222
+load; b; 2.367
+load; b; 2.247
+load; b; 2.512
+load; b; 2.104
+load; b; 2.707
