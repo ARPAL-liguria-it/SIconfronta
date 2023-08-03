@@ -115,7 +115,7 @@ mod_compare031_2samples_output_ui <- function(id) {
                       htmlOutput(ns("outliers"))
                       ),
              tabPanel("Medie",
-                      h4("Test per la differenza tra medie (Welch)"),
+                      h4("Test per la differenza tra medie (t-test, Welch)"),
                       htmlOutput(ns("ttest"))
                       ),
              tabPanel("Varianze",
