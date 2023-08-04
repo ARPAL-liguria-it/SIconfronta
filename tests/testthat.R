@@ -7,6 +7,8 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
+# library(shinytest2)
 library(comparat)
 
 test_check("comparat")
+# shinytest2::test_app(check_setup = FALSE)

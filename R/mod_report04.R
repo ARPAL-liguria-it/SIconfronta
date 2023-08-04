@@ -89,12 +89,14 @@ mod_report04_server <- function(id, r){
                                selected = mychoices)
     })
 
+   sysdate <- ifelse(isTRUE(getOption("shiny.testmode")), "testdate",
+                     Sys.Date() |> as.character())
 
     r$report04 <- reactiveValues()
 
     output$makereport <- downloadHandler(
       filename = function() {
-        paste0("comparison_report-", Sys.Date(), ".pdf")
+        paste0("comparison_report-", sysdate, ".pdf")
       },
       content = function(file) {
         withProgress(message = "Sto scrivendo il report...", {
@@ -116,6 +118,7 @@ mod_report04_server <- function(id, r){
         r$report04$description <- input$description
         r$report04$discussion <- input$discussion
         r$report04$content <- input$content
+        r$report04$testmode <- isTRUE(getOption("shiny.testmode"))
 
         # input parameters for the rmd file ----
         params <- isolate(lapply(r, reactiveValuesToList))

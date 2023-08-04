@@ -34,6 +34,10 @@ title: "`r params$report04$title`"
 ```{r libraries, include=FALSE}
 library(data.table)
 `%notin%` = Negate(`%in%`)
+sysdate <- ifelse(params$report04$testmode, "testdate", 
+                  Sys.Date() |> as.character())
+systime <- ifelse(params$report04$testmode, "testtime", 
+                  strsplit(as.character(Sys.time()), " ")[[1]][2])
 ```
 
 ```{r description, echo=FALSE, results = "asis"}
@@ -196,7 +200,7 @@ knitr::kable(
 ```
 \renewcommand{\arraystretch}{1} <!-- reset row height/line spacing -->
 
-Report creato il `r Sys.Date()` alle `r strsplit(as.character(Sys.time()), " ")[[1]][2]`.
+Report creato il `r sysdate` alle `r systime`.
 
 \vfill
 ```{r end, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}

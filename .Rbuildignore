@@ -12,3 +12,4 @@ $run_dev.*
 ^\.github$
 ^codecov\.yml$
 ^README\.html$
+_\.new\.png$
