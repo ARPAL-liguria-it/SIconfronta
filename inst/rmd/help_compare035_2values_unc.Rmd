@@ -1,0 +1,16 @@
+---
+output: html_document
+---
+
+
+  1. Seleziona un analita;
+  2. digita le unità di misura;
+  3. salva il risultato;
+  4. passa all'analita successivo;
+  5. quando hai finito clicca su avanti per passare alla creazione del report.
+  
+Per ogni analita otterrai i seguenti output:
+  
+  - un confronto grafico tra i due valori mediante _scatter plot_ (in alto);
+  - una tabella riassuntiva delle principali statistiche (in basso);
+  - il risultato del calcolo dell'E<sub>n</sub> (E _number_).

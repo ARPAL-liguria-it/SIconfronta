@@ -23,69 +23,58 @@ signiftodigits <- function(value,
   # the number is converted to text with the desired significant figures
   sprintf_txt <- paste0("%#.", signif, "g")
   value_text <- sprintf(sprintf_txt, value)
+
   # splitting integers from decimals
   value_digits <- strsplit(value_text, "\\.")
+  value_digits[[1]][[1]] <- gsub("-", "" , value_digits[[1]][[1]])
+
   # counting the integers
-  value_integers <- nchar(value_digits[[1]][[1]])
-  # checking if the number is scientific notation
-  is_scientific <- "e" %in% strsplit(value_digits[[1]][[2]], "")[[1]]
+  integers <- value_digits[[1]][[1]]
+  value_integers <- nchar(integers)
+
   # if the integers are not enough for the requested significant figures,
   # or the data has been expressed in scientific notation, the number of decimals
   # is 0, otherwise, the decimals are counted.
-  ndigits <- ifelse(value_integers >= signif | is_scientific,
-                    0,
-                    nchar(value_digits[[1]][[2]]))
+  if(value_integers < signif) {
+  # counting the decimals
+  decimals <- ifelse(length(value_digits[[1]]) == 1,
+                     paste0(rep("0", signif - value_integers), collapse = ""),
+                     value_digits[[1]][[2]])
+  value_decimals <- nchar(decimals)
+
+  # checking if the number is scientific notation
+  is_scientific <- "e" %in% strsplit(decimals, "")[[1]]
+
+  ndigits <- ifelse(is_scientific, 0, value_decimals)
   ndigits
 
+  } else {
+
+    ndigits <- 0
+    ndigits
+    }
   }
 }
 
-#' Summary arranged on rows for two or more groups
+#' Formatting a number with a given number of significant figures
 #'
-#' @description The function returns a table with max, mean, median, min, sd and n
-#'  values arranged on rows while groups are on columns. Numbers are formatted as
-#'  text in order to provide the desired significant figures.
+#' @description The function returns a character values with a number formatted
+#' with the desired significant figures
 #'
-#' @param data the \code{data.frame} or \code{data.table} to be summarised.
-#' @param response a string with the name of the variable to summarise.
-#' @param group a string with the name of the grouping variable.
-#' @param signif a integer with the number of desired significant figures.
+#' @param number the input number to be formatted
+#' @param sigfig an integer with the number of desired significant figures
 #'
-#' @return a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
-#'   levels of the group variable.
+#' @return a character value with the number formatted with the desired
+#' significant figures
 #'
-#' @export
-rowsummary <- function(data,
-                       response,
-                       group,
-                       signif = 3L){
+#' @noRd
+format_sigfig <- function(number, sigfig = 4L){
+  stopifnot(
+    is.numeric(number),
+    is.integer(sigfig)
+  )
+sprintf("%.*f", signiftodigits(number, sigfig), number)
 
-  stopifnot(is.data.frame(data),
-            is.character(response),
-            is.character(group),
-            all.equal(signif, as.integer(signif)),
-            response %in% colnames(data),
-            group %in% colnames(data))
-
-  mydata <- data.table(data)
-  lvl <- levels(as.factor(mydata[[group]]))
-  roworder <- c("n", "max", "mean", "median", "min", "sd")
-  fm <- as.formula(paste("statistica", '~', group))
-
-  mydata[, lapply(.SD, function(x) {
-            c(
-              n = .N,
-              max = max(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              mean = mean(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              median = median(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              min = min(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .),
-              sd = sd(x, na.rm = TRUE) %>% sprintf('%#.*g', signif, .)
-            )
-              }),
-         by = group,
-         .SDcols = response][,
-          "statistica" := rep(roworder, length(lvl))] %>%
-   dcast(eval(fm), value.var = response) %>% .[roworder]
 }
 
 #' Conversion of an HTML formatted string to a RMarkdown string
@@ -101,28 +90,43 @@ rowsummary <- function(data,
 #'
 #' @noRd
 htmltormarkdown <- function(htmlstring){
-  htmlstring %>%
-    { gsub("<h4>", "\n###", .) } %>%
-    { gsub(" </h4>", "  \n" , .) } %>%
-    { gsub("<h5>", "\n", .) } %>%
-    { gsub("</h5>", "", .) } %>%
-    { gsub("<ul>", "\n", .) } %>%
-    { gsub("</ul>", "  \n", .) } %>%
-    { gsub("<li>", "\n  *", .) } %>%
-    { gsub("</li>", "", .) } %>%
-    { gsub("\u03b1", "$\\\\alpha$", .) } %>%
-    { gsub("\u03bd", "$\\\\nu$", .) } %>%
-    { gsub("\u2013", "\\\\textendash\\\\", .) } %>%
-    { gsub("\u21e8", "\n $\\\\Rightarrow$", .) } %>%
-    { gsub("\u00b1", "$\\\\pm$", .) } %>%
-    { gsub("R\u00B2", "$\\\\mathrm{R}^2$", .) } %>%
-    { gsub("\u2264", "$\\\\leq$", .) } %>%
-    { gsub("\u2260", "$\\\\neq$", .) } %>%
-    { gsub("<b>", "**", .) } %>%
-    { gsub("</b>", "**", .) } %>%
-    { gsub("<i>", "_", .) } %>%
-    { gsub("</i>", "_", .) } %>%
-    { gsub("</br>", "  \n ", .) }
+
+  stopifnot(
+    !is.null(htmlstring)
+  )
+
+  if (is.na(htmlstring)) {
+
+    NA
+
+  } else {
+
+  htmlstring |>
+    (\(x) gsub("<h4>", "\n###", x) )() |>
+    (\(x) gsub(" </h4>", "  \n" , x) )() |>
+    (\(x) gsub("<h5>", "\n####", x) )() |>
+    (\(x) gsub("</h5>", "  \n", x) )() |>
+    (\(x) gsub("<ul>", "\n", x) )() |>
+    (\(x) gsub("</ul>", "  \n", x) )() |>
+    (\(x) gsub("<li>", "\n  *", x) )() |>
+    (\(x) gsub("</li>", "", x) )() |>
+    (\(x) gsub("\u03b1", "$\\\\alpha$", x) )() |>
+    (\(x) gsub("\u03bd", "$\\\\nu$", x) )() |>
+    (\(x) gsub("\u2013", "\\\\textendash\\\\", x) )() |>
+    (\(x) gsub("\u21e8", "\n $\\\\Rightarrow$", x) )() |>
+    (\(x) gsub("\u00b1", "$\\\\pm$", x) )() |>
+    (\(x) gsub("R\u00B2", "$\\\\mathrm{R}^2$", x) )() |>
+    (\(x) gsub("\u2264", "$\\\\leq$", x) )() |>
+    (\(x) gsub("\u2260", "$\\\\neq$", x) )() |>
+    (\(x) gsub("<b>", "**", x) )() |>
+    (\(x) gsub("</b>", "**", x) )() |>
+    (\(x) gsub("<i>", "_", x) )() |>
+    (\(x) gsub("</i>", "_", x) )() |>
+    (\(x) gsub("</br>", "  \n ", x) )() |>
+    (\(x) gsub("E<sub>n</sub>", "$E_n$", x) )() |>
+    (\(x) gsub("\u03C7<sup>2</sup>", "$\\\\chi^2$", x) )() |>
+    (\(x) gsub("\u03C7\u00B2", "$\\\\chi^2$", x) )()
+  }
 }
 
 #' Rendering of an RMarkdown report as future promise

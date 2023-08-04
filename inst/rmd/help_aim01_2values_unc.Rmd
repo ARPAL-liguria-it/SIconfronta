@@ -1,0 +1,54 @@
+---
+output: html_document
+---
+
+Nella scheda **Dati** dovrai caricare un file contenente le informazioni necessarie per eseguire il confronto tra i valori di interesse.
+
+Portati avanti e prepara un file .csv organizzato su 4 colonne con separatore virgola (,) o punto e virgola (;):
+  1. la prima colonna conterrà un'intestazione e una variabile testuale indicante il nome del parametro o dei parametri di interesse;
+  2. la seconda colonna conterrà un'intestazione e una variabile testuale indicante il nome dei due gruppi da confrontare;
+  3. la terza colonna conterrà un'intestazione e una variabile numerica indicante i valori impiegati per effettuare il confronto. Il separatore decimale deve essere il punto (.).
+  4. la quarta colonna conterrà un'intestazione e una variabile numerica indicante i valori di incertezza estesa associati ai risultati riportati nella terza colonna; anche qui il separatore decimale deve essere il punto (.).
+  
+È ammesso un solo valore numerico per ogni coppia di parametro e gruppo.
+
+Puoi creare i file .csv sia a mano in un editor di testo, come il Blocco note, sia esportarlo da programmi quali LibreOffice Calc o Office Excel, o ancora meglio. Tieni presente che molti strumenti analitici permettono già di esportare i dati in questo formato.
+
+
+
+<details>
+<summary> Clicca per un esempio </summary>
+
+<style>
+
+    .basic-styling table,
+    .basic-styling td,
+    .basic-styling th {
+    padding:10px;
+    }
+    
+</style>
+
+<div class="basic-styling">
+<div></div>
+<div class="table-caption">
+  <span class="table-number"></span>
+</div>
+
+| Parametro     | , | Gruppo        | , | Concentrazione  | , | Uext |
+|:--------------|:-:|:--------------|:-:|----------------:|:-:|-----:|
+| Cu            | , | strumento 1   | , | 15.1            | , | 2.3  |
+| Cu            | , | strumento 2   | , | 22.3            | , | 3.5  |
+| Zn            | , | strumento 1   | , | 200.1           | , | 10.2 |
+| Zn            | , | strumento 2   | , | 185.9           | , | 8.4  |
+
+</div>
+</details>
+<br>
+
+
+Una volta caricato il file, nella scheda **Confronti** dovrai elezionare l'ipotesi alternativa associata al test statistico per il confronto tra valori, inoltre potrai inserire le unità di misura e quindi salvare i risultati, parametro per parametro.
+
+Infine, nella scheda **Report** dovrai fornire un po' di informazioni di contesto: la descrizione e lo scopo dell'esperimento di confronto e l'interpretazione dei risultati.
+
+Al termine della procedura, verrà prodotto un file pdf.

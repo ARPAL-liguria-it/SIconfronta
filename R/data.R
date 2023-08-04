@@ -90,3 +90,20 @@
 #'  \url{https://store.uni.com/uni-iso-16269-4-2019}.
 #' @keywords data
 "uniiso_16269_4_432"
+
+#' UNI ISO 2854:1988 Prospetto X
+#'
+#' A dataset with 22 values divided in two groups with 10 and 12 values, respectively.
+#' The dataset is' provided for testing the \code{fct_test} results.
+#'
+#' @format a dataframe with 12 rows and 2 columns:
+#' \describe{
+#'    \item{group}{the grouping variable, either \code{a} or \code{b}}
+#'    \item{value}{the breaking load numerical values for the tested yarns, expressed in Newton.}
+#' }
+#'
+#' @name uniiso_2854_x
+#' @docType data
+#' @source \url{https://store.uni.com/uni-iso-2854-1988}
+#' @keywords data
+"uniiso_2854_x"

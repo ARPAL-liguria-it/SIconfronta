@@ -9,3 +9,7 @@ $run_dev.*
 ^CODE_OF_CONDUCT\.md$
 ^app\.R$
 ^rsconnect$
+^\.github$
+^codecov\.yml$
+^README\.html$
+_\.new\.png$
