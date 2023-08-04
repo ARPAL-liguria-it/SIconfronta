@@ -10,12 +10,6 @@
     <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/notebook.html</loc>
-  </url>
-  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -25,25 +19,85 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/boxplot_1sample_mu.html</loc>
+  </url>
+  <url>
+    <loc>/reference/boxplot_1sample_sigma.html</loc>
+  </url>
+  <url>
+    <loc>/reference/boxplot_2samples.html</loc>
+  </url>
+  <url>
+    <loc>/reference/boxplot_2samples_par.html</loc>
+  </url>
+  <url>
+    <loc>/reference/boxplot_2values_unc.html</loc>
+  </url>
+  <url>
     <loc>/reference/comparat-package.html</loc>
   </url>
   <url>
-    <loc>/reference/fct_ftest.html</loc>
+    <loc>/reference/fct_chitest_1sample_sigma.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fct_entest_2values_unc.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fct_ftest_2samples.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fct_ftest_2samples_par.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fct_gesd.html</loc>
   </url>
   <url>
     <loc>/reference/fct_shapiro.html</loc>
   </url>
   <url>
-    <loc>/reference/fct_ttest.html</loc>
+    <loc>/reference/fct_ttest_1sample_mu.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fct_ttest_2samples.html</loc>
+  </url>
+  <url>
+    <loc>/reference/fct_ttest_2samples_par.html</loc>
   </url>
   <url>
     <loc>/reference/ftest_reference.html</loc>
   </url>
   <url>
+    <loc>/reference/ggboxplot_1sample_mu.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ggboxplot_1sample_sigma.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ggboxplot_2samples.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ggboxplot_2samples_par.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ggboxplot_2values_unc.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/rowsummary.html</loc>
+    <loc>/reference/rowsummary_1sample_mu.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rowsummary_1sample_sigma.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rowsummary_2samples.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rowsummary_2samples_par.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rowsummary_2values_unc.html</loc>
   </url>
   <url>
     <loc>/reference/run_app.html</loc>
@@ -53,5 +107,14 @@
   </url>
   <url>
     <loc>/reference/tomato_yields.html</loc>
+  </url>
+  <url>
+    <loc>/reference/uniiso_16269_4_432.html</loc>
+  </url>
+  <url>
+    <loc>/reference/uniiso_2854_x.html</loc>
+  </url>
+  <url>
+    <loc>/reference/uranium_cps.html</loc>
   </url>
 </urlset>

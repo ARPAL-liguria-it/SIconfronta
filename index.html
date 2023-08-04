@@ -42,18 +42,6 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/notebook.html">Comparat: notebook</a>
-    </li>
-  </ul>
-</li>
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
@@ -70,13 +58,11 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-<p><a href="https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --></p>
-<!-- badges: start -->
-
 <div class="section level2">
 <h2 id="comparat">CompaRat<a class="anchor" aria-label="anchor" href="#comparat"></a>
 </h2>
+<!-- badges: start -->
+
 <p>Il software CompaRat è stato sviluppato allo scopo di effettuare confronti di medie e varianze per coppie di campioni.</p>
 <div class="section level4">
 <h4 id="cosa-può-fare-comparat">Cosa può fare CompaRat?<a class="anchor" aria-label="anchor" href="#cosa-pu%C3%B2-fare-comparat"></a>
@@ -93,7 +79,14 @@
 <div class="section level4">
 <h4 id="di-cosa-ha-bisogno-comparat">Di cosa ha bisogno CompaRat?<a class="anchor" aria-label="anchor" href="#di-cosa-ha-bisogno-comparat"></a>
 </h4>
-<p>Un file .csv con almeno: * una colonna testuale con i nomi degli analiti di interesse; * una colonna testuale che permetta di identificare a quale gruppo appartengano i singoli valori; * una colonna numerica con i valori di interesse; * il punto (.) come un separatore decimale per i valori numerici; * intestazioni testuali delle colonne.</p>
+<p>Un file .csv con almeno:</p>
+<ul>
+<li>una colonna testuale con i nomi degli analiti di interesse;</li>
+<li>una colonna testuale che permetta di identificare a quale gruppo appartengano i singoli valori;</li>
+<li>una colonna numerica con i valori di interesse;</li>
+<li>il punto (.) come un separatore decimale per i valori numerici;</li>
+<li>intestazioni testuali delle colonne.</li>
+</ul>
 <details><summary>
 Un esempio è meglio di mille parole: clicca!
 </summary><img src="./inst/extdata/inputcsv.png"></details>
@@ -102,17 +95,15 @@ Un esempio è meglio di mille parole: clicca!
 <h4 id="come-funziona-comparat">Come funziona Comparat?<a class="anchor" aria-label="anchor" href="#come-funziona-comparat"></a>
 </h4>
 <p>L’applicazione è suddivisa in tre schede con cui l’utente deve interagire in sequenza.</p>
+<p>Dalla scheda <strong>Dati</strong></p>
 <ol style="list-style-type: decimal">
-<li>Dalla scheda <strong>Dati</strong>
-</li>
 <li>caricare il file .csv;</li>
 <li>controllare e selezionare le variabili di interesse nei menù a tendina.</li>
 </ol>
 <details><summary>
 Clicca per un esempio
-</summary><img src="./inst/extdata/dati.png"></details><ol style="list-style-type: decimal">
-<li>Dalla scheda <strong>Confronti</strong>
-</li>
+</summary><img src="./inst/extdata/dati.png"></details><p>Dalla scheda <strong>Confronti</strong></p>
+<ol style="list-style-type: decimal">
 <li>selezionare l’analita di interesse;</li>
 <li>visualizzare il grafici e le statistiche di base;</li>
 <li>digitare le unità di misura;</li>
@@ -126,9 +117,8 @@ Clicca per un esempio
 </ol>
 <details><summary>
 Che ne diresti di un esempio? Clicca
-</summary><img src="./inst/extdata/confronti.png"></details><ol style="list-style-type: decimal">
-<li>Dalla scheda <strong>Report</strong>
-</li>
+</summary><img src="./inst/extdata/confronti.png"></details><p>Dalla scheda <strong>Report</strong></p>
+<ol style="list-style-type: decimal">
 <li>completare i campi con le informazioni accessorie;</li>
 <li>selezionare le sezioni da includere nel report;</li>
 <li>generare il report;</li>
@@ -147,10 +137,9 @@ Ormai hai capito. Clicca!
 <h4 id="con-quale-licenza-è-rilasciato-comparat">Con quale licenza è rilasciato CompaRat?<a class="anchor" aria-label="anchor" href="#con-quale-licenza-%C3%A8-rilasciato-comparat"></a>
 </h4>
 <p>Con la Affero GPL versione 3.</p>
-<div class="figure">
-<img src="./inst/extdata/agplv3.png" alt=""><p class="caption">gplv3</p>
-</div>
-<details><summary>
+<figure><img src="./inst/extdata/agplv3.png" alt="gplv3"><figcaption aria-hidden="true">
+gplv3
+</figcaption></figure><details><summary>
 Ecco il testo integrale della licenza
 </summary></details>
 </div>
@@ -390,7 +379,6 @@ You should also get your employer (if you work as a programmer) or school, if an
 <p>Copyright (C) 2023, Andrea Bazzano.</p>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -426,7 +414,9 @@ You should also get your employer (if you work as a programmer) or school, if an
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml/badge.svg" alt="test-coverage"></a></li>
+<li><a href="https://codecov.io/gh/andreabz/comparat" class="external-link"><img src="https://codecov.io/gh/andreabz/comparat/branch/master/graph/badge.svg?token=XLFI6Z4IBG" alt="codecov"></a></li>
 </ul>
 </div>
 
