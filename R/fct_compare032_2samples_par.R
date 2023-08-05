@@ -2,7 +2,7 @@
 #' which only mean, standard deviation and number of samples are reported.
 #'
 #' @description The function displays the results of a \eqn{t}-test performed
-#'  on two groups of values for one of which only mean, standard deviation and
+#'  on two groups of values, for one of which only mean, standard deviation and
 #'  number of samples are reported.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
@@ -16,14 +16,14 @@
 #' @param n2 a numeric value with the number of values for the second group.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
-#' @param alternative a character string specifying the alternative hypotesis,
+#' @param alternative a character string specifying the alternative hypothesis,
 #'   must be one of \code{"different"} or \code{"greater"}.
 #'
 #' @details \eqn{t}-test is calculated using the group with the numerically
 #'  larger mean as first argument.
 #'  As a consequence, for the means of two series of values \eqn{A} and \eqn{B},
 #'  being the first one numerically greater than the second one, the alternative
-#'  hypotheses tested can only be \eqn{\bar{A} \neq \bar{B}}
+#'  hypothesis tested can only be \eqn{\bar{A} \neq \bar{B}}
 #'  (\code{alternative = "different"}) or \eqn{\bar{A} > \bar{B}}
 #'  (\code{alternative = "greater"}).
 #' @return A list with the following items:
@@ -167,11 +167,11 @@ fct_ttest_2samples_par <- function(group1,
 
 }
 
-#' Displays the results of a \eqn{F}-test for two groups of values for one of
+#' Displays the results of an \eqn{F}-test for two groups of values for one of
 #' which only mean, standard deviation and number of samples are reported.
 #'
-#' @description The function displays the results of a \eqn{F}-test performed
-#'  on two groups of values for one of which only mean, standard deviation and
+#' @description The function displays the results of an \eqn{F}-test performed
+#'  on two groups of values, for one of which only mean, standard deviation and
 #'  number of samples are reported.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
@@ -183,14 +183,14 @@ fct_ttest_2samples_par <- function(group1,
 #' @param n2 a numeric value with the number of values for the second group.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
-#' @param alternative a character string specifying the alternative hypotesis,
+#' @param alternative a character string specifying the alternative hypothesis,
 #'   must be one of \code{"different"} or \code{"greater"}.
 #'
 #' @details \eqn{F}-test is calculated using the base-R function \code{var.test},
 #'  with the group with the numerically larger variance as first argument.
 #'  As a consequence, for the variances of two series of values \eqn{A} and \eqn{B},
 #'  being the first one numerically greater than the second one, the alternative
-#'  hypotheses tested can only be \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}
+#'  hypothesis tested can only be \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}
 #'  (\code{alternative = "different"}) or \eqn{\mathrm{Var}(A) > \mathrm{Var}(B)}
 #'  (\code{alternative = "greater"}).
 #' @return A list with the following items:
@@ -354,7 +354,7 @@ fct_ftest_2samples_par <- function(group1,
 #' name of the group1 and name of the group2.
 #'
 #' @return A {plotly} boxplot for comparing two group of values. Raw data values
-#' are overlayed on top of the boxes.
+#' are overlaid on top of the boxes.
 #'
 #' @export
 #'
@@ -458,7 +458,7 @@ boxplot_2samples_par <- function(data,
 
 }
 
-#' GGplot2 boxplots for comparing two groups of values for one of which only mean,
+#' GGplot2 boxplots for comparing two groups of values, for one of which only mean,
 #' standard deviation and number of samples are reported.
 #'
 #' @description The function provides a simple {ggplot2} boxplot for comparing
@@ -479,7 +479,7 @@ boxplot_2samples_par <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {ggplot2} boxplot for comparing two group of values. Raw data values
-#' are overlayed on top of the boxes.
+#' are overlaid on top of the boxes.
 #'
 #' @export
 #'
@@ -596,7 +596,7 @@ ggboxplot_2samples_par <- function(data,
 #' and number of samples are reported.
 #'
 #' @description The function returns a table with max, mean, median, min, sd and n
-#'  values arranged on rows while groups are on columns. Numbers are formatted as
+#'  values arranged on rows whereas groups are on columns. Numbers are formatted as
 #'  text in order to provide the desired significant figures.
 #'
 #' @param data the \code{data.frame} or \code{data.table} to be summarised.
@@ -607,7 +607,7 @@ ggboxplot_2samples_par <- function(data,
 #' @param sd2 a numeric value with the standard deviation for the second group.
 #' @param n2 a numeric value with the number of values for the second group.
 #' @param udm a string with the unit of measurement.
-#' @param signif a integer with the number of desired significant figures.
+#' @param signif an integer with the number of desired significant figures.
 #'
 #' @return a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
 #'   levels of the group variable.

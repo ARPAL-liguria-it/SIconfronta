@@ -9,13 +9,13 @@
 #'   and a \code{numeric} vector with the measurements should be included.
 #' @param response the name of a numeric vector in \code{data}.
 #'   Quotation (" ") is not required.
-#' @param group the name of a single-level factor variable that identifies the
+#' @param group the name of a single-level factor variable that identifies
 #'   the group in \code{data}. Quotation (" ") is not required.
 #' @param reflabel a character value with the name of the reference value.
 #' @param reference a numeric value with the reference mean.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
-#' @param alternative a character string specifying the alternative hypotesis,
+#' @param alternative a character string specifying the alternative hypothesis,
 #'   must be one of \code{"different"} or \code{"greater"}.
 #'
 #' @details \eqn{t}-test is calculated using the base-R function \code{t.test}.
@@ -158,7 +158,7 @@ fct_ttest_1sample_mu <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {plotly} boxplot for comparing a group of values with a reference value.
-#' Raw data values are overlayed on top of the box.
+#' Raw data values are overlaid on top of the box.
 #'
 #' @export
 #'
@@ -272,7 +272,7 @@ boxplot_1sample_mu <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {ggplot2} boxplot for comparing a group of values with a reference value.
-#' Raw data values are overlayed on top of the box.
+#' Raw data values are overlaid on top of the box.
 #'
 #' @export
 #'
@@ -340,7 +340,7 @@ ggboxplot_1sample_mu <- function(data,
 #' Summary arranged on rows for one group vs a mean reference value
 #'
 #' @description The function returns a table with max, mean, median, min, sd and n
-#'  values arranged on rows while groups are on columns. Numbers are formatted as
+#'  values arranged on rows whereas groups are on columns. Numbers are formatted as
 #'  text in order to provide the desired significant figures.
 #'
 #' @param data the \code{data.frame} or \code{data.table} to be summarised.
@@ -349,7 +349,7 @@ ggboxplot_1sample_mu <- function(data,
 #' @param reflabel a character value with the name of the reference value.
 #' @param reference a numeric value with the reference mean.
 #' @param udm a string with the unit of measurement.
-#' @param signif a integer with the number of desired significant figures.
+#' @param signif an integer with the number of desired significant figures.
 #'
 #' @return a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
 #'   levels of the group variable.
