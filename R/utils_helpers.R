@@ -162,3 +162,36 @@ render_report <- function(input, output, params) {
 #'
 #' @noRd
 `%notin%` = Negate(`%in%`)
+
+#' Bslib card with help tips
+#'
+#' @description The function provides a {bslib} card with help text.
+#' The help text is stored in Rmarkwdown file placed into the \code{/inst/rmd}
+#' package folder.
+#'
+#' @param card_title the title of the card. Default is "Help".
+#' @param rmdfile the name of the Rmarkdown file with the help instructions.
+#' The file must be placed in the \code{/inst/rmd} folder of the package.
+#' @param rmdpackage the package name.
+#'
+#' @return a {bslib} card with the help text.
+#'
+#' @noRd
+#' @importFrom bslib card card_header card_body
+#' @importFrom shiny icon
+help_card <- function(card_title,
+                      rmdfile,
+                      rmdpackage) {
+
+  rmdpath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                  rmdfile, rmdpackage)) |>
+    eval()
+
+  bslib::card(
+    bslib::card_header(icon("hammer"), card_title),
+    bslib::card_body(
+      includeMarkdown(rmdpath)
+      )
+    )
+
+}

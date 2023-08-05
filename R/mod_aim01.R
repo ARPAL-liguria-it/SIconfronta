@@ -12,70 +12,99 @@
 #'
 #' @import shiny
 #' @import markdown
+#' @importFrom bslib card card_header card_body navset_hidden nav_panel accordion accordion_panel layout_columns
 mod_aim01_ui <- function(id) {
   ns <- NS(id)
-  tagList(fluidRow(
+  tagList(
+    bslib::layout_columns(
+    col_widths = c(7, 5),
 
-
-    column(7,
-
-      # selecting the aim of the comparison ----
-      radioButtons(
-        ns("aim"),
-        label = h4("Cosa vuoi fare"),
-        choices = c(
-          "Confrontare due serie di dati complete" = "2samples",
-          "Confrontare due serie di dati di cui una completa e l'altra riassunta nei suoi parametri" = "2samples_par",
-          "Cofrontare una serie di dati con un valore medio noto esattamente" = "1sample_mu",
-          "Confrontare una serie di dati con un valore di deviazione standard noto esattamente" = "1sample_sigma",
-          "Confrontare due valori dotati di incertezza estesa" = "2values_unc"
+    # selecting the aim of the comparison ----
+    bslib::card(
+      bslib::card_header(icon("hand-point-right"), "Scegli cosa devi fare"),
+      bslib::card_body(
+        class = "gap-2 container",
+        radioButtons(
+          ns("aim"),
+          label = NULL,
+          choices = c(
+            "Confrontare due serie di dati complete" = "2samples",
+            "Confrontare due serie di dati di cui una completa e l'altra riassunta nei suoi parametri" = "2samples_par",
+            "Cofrontare una serie di dati con un valore medio noto esattamente" = "1sample_mu",
+            "Confrontare una serie di dati con un valore di deviazione standard noto esattamente" = "1sample_sigma",
+            "Confrontare due valori dotati di incertezza estesa" = "2values_unc"
+          ),
+          width = "100%"
         ),
-        width = "100%"
-      ),
 
-      actionButton(
-        ns("nextbtn"),
-        label = "Avanti",
-        icon = icon("circle-right")
-      ),
+        tags$div(actionButton(
+          ns("nextbtn"),
+          label = "Avanti",
+          icon = icon("circle-right")
+        ))
+      )
     ),
 
+    # conditional tabset with examples and instructions for the different options ----
+    bslib::navset_hidden(
+      id = ns("example"),
 
-    column(5,
-      # conditional tabset with examples and instructions for the different options ----
-      tabsetPanel(
-        id = ns("example"),
-        type = "hidden",
+      bslib::nav_panel("2samples",
+        help_card(
+          card_title = "Cosa devi fare",
+          rmdfile = "help_aim01_2samples.Rmd",
+          rmdpackage = "comparat"
+        )
+      ),
 
-        tabPanel("2samples",
-                 includeMarkdown(
-                   system.file("rmd", "help_aim01_2samples.Rmd", package = "comparat")
-                 )),
+      bslib::nav_panel("2samples_par",
+        help_card(
+          card_title = "Cosa ti serve",
+          rmdfile = "help_aim01_2samples_par.Rmd",
+          rmdpackage = "comparat"
+        )
+      ),
 
-        tabPanel("2samples_par",
-                 includeMarkdown(
-                   system.file("rmd", "help_aim01_2samples_par.Rmd", package = "comparat")
-                 )),
+      bslib::nav_panel("1sample_mu",
+        withMathJax(
+        help_card(
+          card_title = "Cosa ti serve",
+          rmdfile = "help_aim01_1sample_mu.Rmd",
+          rmdpackage = "comparat"
+        )
+      )),
 
-        tabPanel("1sample_mu",
-                 withMathJax(includeMarkdown(
-                   system.file("rmd", "help_aim01_1sample_mu.Rmd", package = "comparat")
-                 ))),
+      bslib::nav_panel("1sample_sigma",
+        withMathJax(
+        help_card(
+         card_title = "Cosa ti serve",
+         rmdfile = "help_aim01_1sample_sigma.Rmd",
+         rmdpackage = "comparat"
+        )
+      )),
 
-        tabPanel("1sample_sigma",
-                 withMathJax(includeMarkdown(
-                   system.file("rmd", "help_aim01_1sample_sigma.Rmd", package = "comparat")
-                 ))),
+      bslib::nav_panel("2values_unc",
+        withMathJax(
+        help_card(
+         card_title = "Cosa ti serve",
+         rmdfile = "help_aim01_2values_unc.Rmd",
+         rmdpackage = "comparat"
+        )
+      )),
 
-        tabPanel("2values_unc",
-                 withMathJax(includeMarkdown(
-                   system.file("rmd", "help_aim01_2values_unc.Rmd", package = "comparat")
-                 )))
+      bslib::accordion(
+        id = "tip",
+        open = FALSE,
+        bslib::accordion_panel(
+          title = "Suggerimento",
+          "Puoi creare i file .csv sia a mano in un editor di testo,
+          come il Blocco note, sia esportarlo da programmi quali LibreOffice
+          Calc o Office Excel. Molti strumenti analitici
+          permettono già di esportare i dati in questo formato.",
+          icon = icon("lightbulb")
+        )
       )
-
-
     )
-
 
   ))
 }

@@ -125,52 +125,53 @@ mod_compare032_2samples_par_inputs_ui <- function(id) {
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bslib navset_hidden nav_panel card card_header card_body layout_columns navset_card_tab
 mod_compare032_2samples_par_output_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+  tagList(bslib::navset_hidden(
+    id = ns("help_results"),
 
+    bslib::nav_panel("help",
+      help_card(
+        card_title = "Cosa devi fare",
+        rmdfile = "help_compare032_2samples_par.Rmd",
+        rmdpackage = "comparat"
+      )
+    ),
 
-    tabsetPanel(
-      id = ns("help_results"),
-      type = "hidden",
+    bslib::nav_panel("results",
 
-      tabPanel("help",
-               includeMarkdown(system.file("rmd", "help_compare032_2samples_par.Rmd", package = "comparat"))),
+      bslib::layout_columns(
+        bslib::card(
+          bslib::card_header(icon("magnifying-glass"), "Boxplot e tabella riassuntiva"),
+          bslib::card_body(plotly::plotlyOutput(ns("boxplot")), ),
+          bslib::card_body(DT::DTOutput(ns("summarytable")))
+        ),
 
-      tabPanel("results",
+        bslib::navset_card_tab(
+          id = ns("tabresults"),
+          title = list(icon("vials"), "Test statistici"),
 
-               fluidRow(
-                 column(5,
-                        plotly::plotlyOutput(ns("boxplot"), width = "100%"),
-                        DT::DTOutput(ns("summarytable"))
-                 ),
-
-                 column(6,
-                        tabsetPanel(
-                          id = ns("tabresults"),
-                          type = "tabs",
-
-                          tabPanel("Normalit\u00E0",
-                                   h4("Test per la verifica della normalit\u00E0 (Shapiro-Wilk)"),
-                                   htmlOutput(ns("shapirotest")),
-                                   hr(),
-                                   h4("Test per identificare possibili outliers (GESD)"),
-                                   htmlOutput(ns("outliers"))
-                          ),
-                          tabPanel("Medie",
-                                   h4("Test per la differenza tra medie (t-test, Welch)"),
-                                   htmlOutput(ns("ttest"))
-                          ),
-                          tabPanel("Varianze",
-                                   h4("Test per il rapporto tra varianze (Fisher)"),
-                                   htmlOutput(ns("ftest")))
-                        )
-                 )
-               )
-
+          bslib::nav_panel("Normalit\u00E0",
+            h4("Test per la verifica della normalit\u00E0 (Shapiro-Wilk)"),
+            htmlOutput(ns("shapirotest")),
+            hr(),
+            h4("Test per identificare possibili outliers (GESD)"),
+            htmlOutput(ns("outliers"))
+          ),
+          bslib::nav_panel("Medie",
+            h4("Test per la differenza tra medie (t-test, Welch)"),
+            htmlOutput(ns("ttest"))
+          ),
+          bslib::nav_panel("Varianze",
+            h4("Test per il rapporto tra varianze (Fisher)"),
+            htmlOutput(ns("ftest"))
+          )
+        )
       )
     )
-  )
+
+  ))
 }
 
 #' compare Server Function
@@ -501,11 +502,15 @@ mod_compare032_2samples_par_server <- function(id, r) {
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
+                      style = "bootstrap5",
+                      fillContainer = TRUE,
                       options = list(dom = "t"),
                       rownames = FALSE)
       } else {
 
         DT::datatable(summarytable(),
+                      style = "bootstrap5",
+                      fillContainer = TRUE,
                       options = list(dom = "t"),
                       rownames = FALSE)
       }

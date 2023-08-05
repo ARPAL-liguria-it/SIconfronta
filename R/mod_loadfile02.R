@@ -27,14 +27,14 @@
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bslib layout_sidebar navset_hidden nav_panel
 mod_loadfile02_ui <- function(id) {
   ns <- NS(id)
 
-  tagList(sidebarLayout(
-    sidebarPanel(
-      width = 2,
+  tagList(bslib::layout_sidebar(
+    sidebar = list(
 
-
+      ## sidebar
       # control for choosing the file to be uploaded
       fileInput(
         ns("file"),
@@ -47,13 +47,12 @@ mod_loadfile02_ui <- function(id) {
 
 
       # Conditional panel for assigning the column names to their role
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("columnnames"),
-        type = "hidden",
 
-        tabPanel(""),
+        bslib::nav_panel(""),
 
-        tabPanel(
+        bslib::nav_panel(
           "dataloaded",
           ## 1. Select the variable for the parameter
           selectizeInput(
@@ -86,13 +85,12 @@ mod_loadfile02_ui <- function(id) {
       ),
 
 
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("ext_unc"),
-        type = "hidden",
 
-        tabPanel("not_2values"),
+        bslib::nav_panel("not_2values"),
 
-        tabPanel(
+        bslib::nav_panel(
           "2values",
           selectizeInput(
             ns("uncertaintyvar"),
@@ -106,36 +104,32 @@ mod_loadfile02_ui <- function(id) {
       ),
 
 
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("next"),
-        type = "hidden",
 
-        tabPanel(""),
+        bslib::nav_panel(""),
 
-        tabPanel(
-          "dataloaded",
-          actionButton(
-            ns("nextbtn"),
-            label = "Avanti",
-            icon = icon("circle-right")
-          )
-        )
+        bslib::nav_panel("dataloaded",
+                         actionButton(
+                           ns("nextbtn"),
+                           label = "Avanti",
+                           icon = icon("circle-right")
+                         ))
       )
 
     ),
 
-
-    mainPanel(tabsetPanel(
+    ## main panel
+    bslib::navset_hidden(
       id = ns("data"),
-      type = "hidden",
 
-      tabPanel("",
-               htmlOutput(ns("waiting"))),
+      bslib::nav_panel("",
+                       htmlOutput(ns("waiting"))),
 
 
-      tabPanel("dataloaded",
-               DT::DTOutput(ns("datatable")))
-    ))
+      bslib::nav_panel("dataloaded",
+                       DT::DTOutput(ns("datatable")))
+    )
   ))
 }
 
@@ -524,6 +518,7 @@ mod_loadfile02_server <- function(id, r) {
       datafile(),
       rownames = FALSE,
       style = "bootstrap5",
+      fillContainer = TRUE,
       options = list(
         language = list(
           search = "Cerca",
