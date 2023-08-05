@@ -22,9 +22,9 @@
 #' @keywords data
 "tomato_yields"
 
-#' F.Test data
+#' F-Test data
 #'
-#' A dataset with 10 values divided in two groups 5 values. The dataset is
+#' A dataset with 10 values divided in two groups of 5 values. The dataset is
 #' provided for testing the \code{fct_test} results.
 #'
 #' @format a dataframe with 5 rows and 2 columns:
@@ -91,10 +91,10 @@
 #' @keywords data
 "uniiso_16269_4_432"
 
-#' UNI ISO 2854:1988 Prospetto X
+#' UNI ISO 2854:1988 Section X
 #'
 #' A dataset with 22 values divided in two groups with 10 and 12 values, respectively.
-#' The dataset is' provided for testing the \code{fct_test} results.
+#' The dataset is provided for testing the \code{fct_test} results.
 #'
 #' @format a dataframe with 12 rows and 2 columns:
 #' \describe{

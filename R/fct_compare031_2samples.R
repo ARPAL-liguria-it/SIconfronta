@@ -37,10 +37,10 @@ fct_shapiro <- function(values) {
 
 }
 
-#' Displays the results of generelised extreme strudentized deviate (GESD) test
+#' Displays the results of a generalised extreme studentized deviate (GESD) test
 #'
-#' @description The function displays the results of generelised
-#'  extreme strudentized deviate (GESD) test for outlier detection.
+#' @description The function displays the results of generalised
+#'  extreme studentized deviate (GESD) test for outlier detection.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param values a \code{vector} with the values relevant for testing.
@@ -49,7 +49,7 @@ fct_shapiro <- function(values) {
 #' @param m maximum number of possible outliers to be tested.
 #'   Default is one third of the number of values.
 #'
-#' @details the GESD test is performed according to secton 4.3.2 of
+#' @details the GESD test is performed according to section 4.3.2 of
 #'  UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4: Detection
 #'  and treatment of outliers. The software implementation in performed in
 #'  accordance to Annex A of the same document.
@@ -63,7 +63,7 @@ fct_shapiro <- function(values) {
 #' \describe{
 #'    \item{I}{Numeric values inspected by the test.}
 #'    \item{R}{Numeric values for the extreme studentized deviate.}
-#'    \item{lambda}{numberic values with the critical values of the test statistics.}
+#'    \item{lambda}{numeric values with the critical values of the test statistics.}
 #'    \item{outliers}{a logical vector with the result of the test.}
 #'  }
 #'
@@ -167,14 +167,14 @@ fct_gesd <- function(values,
 #'   in \code{data}. Quotation (" ") is not required.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
-#' @param alternative a character string specifying the alternative hypotesis,
+#' @param alternative a character string specifying the alternative hypothesis,
 #'   must be one of \code{"different"} or \code{"greater"}.
 #'
 #' @details \eqn{t}-test is calculated using the base-R function \code{t.test},
 #'  with the group with the numerically larger mean as first argument.
 #'  As a consequence, for the means of two series of values \eqn{A} and \eqn{B},
 #'  being the first one numerically greater than the second one, the alternative
-#'  hypotheses tested can only be \eqn{\bar{A} \neq \bar{B}}
+#'  hypothesis tested can only be \eqn{\bar{A} \neq \bar{B}}
 #'  (\code{alternative = "different"}) or \eqn{\bar{A} > \bar{B}}
 #'  (\code{alternative = "greater"}).
 #' @return A list with the following items:
@@ -288,9 +288,9 @@ fct_ttest_2samples <- function(data,
 
 }
 
-#' Displays the results of a \eqn{F}-test for two groups of values
+#' Displays the results of an \eqn{F}-test for two groups of values
 #'
-#' @description The function displays the results of a \eqn{F}-test performed
+#' @description The function displays the results of an \eqn{F}-test performed
 #'  on two groups of values.
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
@@ -303,14 +303,14 @@ fct_ttest_2samples <- function(data,
 #'   in \code{data}. Quotation (" ") is not required.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
 #'   indicating the confidence level for the test.
-#' @param alternative a character string specifying the alternative hypotesis,
+#' @param alternative a character string specifying the alternative hypothesis,
 #'   must be one of \code{"different"} or \code{"greater"}.
 #'
 #' @details \eqn{F}-test is calculated using the base-R function \code{var.test},
 #'  with the group with the numerically larger variance as first argument.
 #'  As a consequence, for the variances of two series of values \eqn{A} and \eqn{B},
 #'  being the first one numerically greater than the second one, the alternative
-#'  hypotheses tested can only be \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}
+#'  hypothesis tested can only be \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}
 #'  (\code{alternative = "different"}) or \eqn{\mathrm{Var}(A) > \mathrm{Var}(B)}
 #'  (\code{alternative = "greater"}).
 #' @return A list with the following items:
@@ -454,7 +454,7 @@ fct_ftest_2samples <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {plotly} boxplot for comparing two group of values. Raw data values
-#' are overlayed on top of the boxes.
+#' are overlaid on top of the boxes.
 #'
 #' @export
 #'
@@ -533,7 +533,7 @@ boxplot_2samples <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {ggplot2} boxplot for comparing two group of values. Raw data values
-#' are overlayed on top of the boxes.
+#' are overlaid on top of the boxes.
 #'
 #' @export
 #'
@@ -587,14 +587,14 @@ ggboxplot_2samples <- function(data,
 #' Summary arranged on rows for two groups
 #'
 #' @description The function returns a table with max, mean, median, min, sd and n
-#'  values arranged on rows while groups are on columns. Numbers are formatted as
+#'  values arranged on rows whereas groups are on columns. Numbers are formatted as
 #'  text in order to provide the desired significant figures.
 #'
 #' @param data the \code{data.frame} or \code{data.table} to be summarised.
 #' @param response a string with the name of the variable to summarise.
 #' @param group a string with the name of the grouping variable.
 #' @param udm a string with the unit of measurement.
-#' @param signif a integer with the number of desired significant figures.
+#' @param signif an integer with the number of desired significant figures.
 #'
 #' @return a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
 #'   levels of the group variable.

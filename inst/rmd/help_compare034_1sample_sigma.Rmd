@@ -20,5 +20,5 @@ Per ogni analita otterrai i seguenti output:
   - una tabella riassuntiva delle principali statistiche (in basso);
   - i risultati dei seguenti test:
     - verifica della normalità mediante test di Shapiro-Wilk (nella scheda normalità, sulla destra);
-    - verifica della presenza di valori anomali mediante il test *generalized extreme studentized deviate* (GESD) (nella scheda normalità, sulla destra);
+    - verifica della presenza di valori anomali mediante il test *generalised extreme studentized deviate* (GESD) (nella scheda normalità, sulla destra);
     - comparazione delle varianze mediante $\chi^2$-test (nella scheda media, sulla destra).

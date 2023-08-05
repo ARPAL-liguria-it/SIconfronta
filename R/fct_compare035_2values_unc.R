@@ -1,4 +1,4 @@
-#' Displays the results of a \eqn{E_n}-test for two values with
+#' Displays the results of an \eqn{E_n}-test for two values with
 #' extended uncertainties
 #'
 #' @description The function displays the results of a \eqn{E_n}-test for two
@@ -6,19 +6,19 @@
 #'  The returned text is suitable for the {comparat} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
-#'   relevant for testing. A single-levels grouping \code{factor} variable
+#'   relevant for testing. A single-level grouping \code{factor} variable
 #'   and two \code{numeric} vectors with the measurements values and their
 #'   uncertainties should be included.
 #' @param response the name of a numeric vector in \code{data}.
 #'   Quotation (" ") is not required.
 #' @param uncertainty the name of a numeric vector in \code{data}.
 #'   Quotation (" ") is not required.
-#' @param group the name of a single-level factor variable that identifies the
+#' @param group the name of a single-level factor variable that identifies
 #'   the group in \code{data}. Quotation (" ") is not required.
 #'
 #' @details \eqn{E_n}-test is calculated with the following equation:
 #' \deqn{E_n = \frac{|x - y|}{\sqrt{U(x)^2 + U(y)^2}}}
-#' for \eqn{E_n \leq 1} the difference of the two values \eqn{x} and \eqn{y} is
+#' for \eqn{E_n \leq 1}, the difference of the two values \eqn{x} and \eqn{y} is
 #' accounted by their extended uncertainties (\eqn{U}) and the null hypothesis is
 #' not rejected. When \eqn{E_n > 1} the two values are different and the null
 #' hypothesis is rejected.
@@ -89,7 +89,7 @@ fct_entest_2values_unc <- function(data,
   }
 
 
-#' Plotly boxplots for comparing a two values with extended uncertainties
+#' Plotly boxplots for comparing two values with extended uncertainties
 #'
 #' @description The function provides a simple {plotly} boxplot for comparing
 #' two values with extended uncertainties.
@@ -104,7 +104,7 @@ fct_entest_2values_unc <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {plotly} boxplot for comparing a group of values with a reference value.
-#' Raw data values are overlayed on top of the box.
+#' Raw data values are overlaid on top of the box.
 #'
 #' @export
 #'
@@ -186,7 +186,7 @@ boxplot_2values_unc <- function(data,
 #' @param udm a character string with the unit of measurement.
 #'
 #' @return A {ggplot2} boxplot for comparing two values with extended uncertainties.
-#' Raw data values are overlayed on top of the box.
+#' Raw data values are overlaid on top of the box.
 #'
 #' @export
 #'
@@ -263,7 +263,7 @@ ggboxplot_2values_unc <- function(data,
 #' @param uncertainty a string with the name of the variable with the uncertainty values.
 #' @param group a string with the name of the grouping variable.
 #' @param udm a string with the unit of measurement.
-#' @param signif a integer with the number of desired significant figures.
+#' @param signif an integer with the number of desired significant figures.
 #'
 #' @return a \code{data.table} with 2 rows and 2 columns.
 #'
