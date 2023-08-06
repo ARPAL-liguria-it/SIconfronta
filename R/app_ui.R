@@ -20,18 +20,14 @@ app_ui <- function(request) {
       id = "navbar",
       theme = bslib::bs_theme(bootswatch = "sandstone",
                               version = 5),
-      title = tags$div(
-        class = "navbar-brand",
-        href = "#",
-        tags$img(
+      title = tags$img(
+          class = "d-inline-block align-text-top",
           src = "www/comparatlogo.png",
           alt = "Comparat",
           height = 50
-        )
       ),
       window_title = "Comparat",
       inverse = FALSE,
-      position = "static-top",
       fluid = TRUE,
       collapsible = TRUE,
       lang = "it",

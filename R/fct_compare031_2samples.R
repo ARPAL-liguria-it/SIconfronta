@@ -489,7 +489,7 @@ boxplot_2samples <- function(data,
       type = "box",
       boxmean = TRUE,
       boxpoints = FALSE,
-      color = I("#D55E00"),
+      color = I("#142536"),
       showlegend = FALSE,
       key = NULL
     ) |>

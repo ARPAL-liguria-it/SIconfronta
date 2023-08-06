@@ -154,7 +154,7 @@ boxplot_2values_unc <- function(data,
         symbol = "square"
         ),
       name = "valori",
-      color = I("#D55E00"),
+      color = I("#142536"),
       showlegend = FALSE,
       hoverinfo = "y",
       hovertemplate = paste('%{y:.3s}', udm)

@@ -20,7 +20,7 @@ mod_report04_ui <- function(id){
     bslib::card(
       bslib::card_header(icon("hand-point-down"), "Aggiungi qualche informazione"),
       bslib::card_body(
-        textInput(ns("title"), label = "Titolo del report"),
+        textInput(ns("title"), label = "Titolo del report", width = "100%"),
         textAreaInput(ns("description"), label = "Descrizione dell'esperimento",
                       rows = 20, width = "100%"),
         textAreaInput(ns("discussion"), label = "Interpretazione dei risultati",
