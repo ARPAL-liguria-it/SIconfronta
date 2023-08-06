@@ -26,7 +26,7 @@ in \code{data}. Quotation (" ") is not required.}
 \item{significance}{a number, typically either 0.90, 0.95 (default) or 0.99
 indicating the confidence level for the test.}
 
-\item{alternative}{a character string specifying the alternative hypotesis,
+\item{alternative}{a character string specifying the alternative hypothesis,
 must be one of \code{"different"} or \code{"greater"}.}
 }
 \value{
@@ -59,7 +59,7 @@ The function displays the results of a \eqn{t}-test performed
  with the group with the numerically larger mean as first argument.
  As a consequence, for the means of two series of values \eqn{A} and \eqn{B},
  being the first one numerically greater than the second one, the alternative
- hypotheses tested can only be \eqn{\bar{A} \neq \bar{B}}
+ hypothesis tested can only be \eqn{\bar{A} \neq \bar{B}}
  (\code{alternative = "different"}) or \eqn{\bar{A} > \bar{B}}
  (\code{alternative = "greater"}).
 }

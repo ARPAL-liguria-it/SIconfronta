@@ -126,7 +126,7 @@ mod_compare034_1sample_sigma_output_ui <- function(id) {
 
       bslib::layout_columns(
         bslib::card(
-          bslib::card_header(icon("magnifying-glass"), "Boxplot e tabella riassuntiva"),
+          bslib::card_header(icon("vials"), "Boxplot e tabella riassuntiva"),
           bslib::card_body(plotly::plotlyOutput(ns("boxplot")),),
           bslib::card_body(DT::DTOutput(ns("summarytable")))
         ),

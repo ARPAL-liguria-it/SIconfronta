@@ -31,7 +31,9 @@
 mod_loadfile02_ui <- function(id) {
   ns <- NS(id)
 
-  tagList(bslib::layout_sidebar(
+  tagList(
+
+    bslib::layout_sidebar(
     sidebar = list(
 
       ## sidebar

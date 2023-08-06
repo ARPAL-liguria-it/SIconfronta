@@ -3,7 +3,7 @@
 \docType{data}
 \name{uniiso_2854_x}
 \alias{uniiso_2854_x}
-\title{UNI ISO 2854:1988 Prospetto X}
+\title{UNI ISO 2854:1988 Section X}
 \format{
 a dataframe with 12 rows and 2 columns:
 \describe{
@@ -19,6 +19,6 @@ uniiso_2854_x
 }
 \description{
 A dataset with 22 values divided in two groups with 10 and 12 values, respectively.
-The dataset is' provided for testing the \code{fct_test} results.
+The dataset is provided for testing the \code{fct_test} results.
 }
 \keyword{data}

@@ -24,7 +24,7 @@ the group and a column named *outlier* with a logical vector.}
 }
 \value{
 A {plotly} boxplot for comparing a group of values with a reference value.
-Raw data values are overlayed on top of the box.
+Raw data values are overlaid on top of the box.
 }
 \description{
 The function provides a simple {plotly} boxplot for comparing

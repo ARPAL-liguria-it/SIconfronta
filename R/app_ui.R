@@ -18,6 +18,8 @@ app_ui <- function(request) {
 
     bslib::page_navbar(
       id = "navbar",
+      theme = bslib::bs_theme(bootswatch = "sandstone",
+                              version = 5),
       title = tags$div(
         class = "navbar-brand",
         href = "#",

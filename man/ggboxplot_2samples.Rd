@@ -20,7 +20,7 @@ column named *rimosso* with "sì" or "no" values.}
 }
 \value{
 A {ggplot2} boxplot for comparing two group of values. Raw data values
-are overlayed on top of the boxes.
+are overlaid on top of the boxes.
 }
 \description{
 The function provides a simple {ggplot2} boxplot for comparing

@@ -10,27 +10,42 @@
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bslib card card_header card_body layout_columns
 mod_report04_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h4("Informazioni aggiuntive"),
-    textInput(ns("title"), label = "Titolo del report", width = "80%"),
-    textAreaInput(ns("description"), label = "Descrizione dell'esperimento", width = "80%"),
-    textAreaInput(ns("discussion"), label = "Interpretazione dei risultati", width = "80%"),
 
-    hr(),
+    bslib::layout_columns(
+      col_widths = c(7, 5),
+    bslib::card(
+      bslib::card_header(icon("hand-point-down"), "Aggiungi qualche informazione"),
+      bslib::card_body(
+        textInput(ns("title"), label = "Titolo del report"),
+        textAreaInput(ns("description"), label = "Descrizione dell'esperimento",
+                      rows = 20, width = "100%"),
+        textAreaInput(ns("discussion"), label = "Interpretazione dei risultati",
+                      rows = 20, width = "100%")
+      )
+    ),
 
-    checkboxGroupInput(ns("content"),
+    bslib::card(
+      bslib::card_header(icon("hand-point-down"), "Seleziona cosa salvare"),
+      bslib::card_body(
+
+        checkboxGroupInput(ns("content"),
                        label = h4("Test da includere nel report"),
                        width = "80%",
                        choices = "",
-                       selected = ""),
+                       selected = "")
+        )
+      )
+    ),
 
-    hr(),
-
-    downloadButton(ns("makereport"), label = "Crea il report",
-      icon = icon("wand-magic-sparkles"),
-      width = '25%')
+    tags$div(
+      downloadButton(ns("makereport"), label = "Crea il report",
+                     icon = icon("wand-magic-sparkles"),
+                     width = '25%')
+    )
 
   )
 }

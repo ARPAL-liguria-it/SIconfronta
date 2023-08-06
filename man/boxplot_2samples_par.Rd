@@ -27,7 +27,7 @@ name of the group1 and name of the group2.}
 }
 \value{
 A {plotly} boxplot for comparing two group of values. Raw data values
-are overlayed on top of the boxes.
+are overlaid on top of the boxes.
 }
 \description{
 The function provides a simple {plotly} boxplot for comparing

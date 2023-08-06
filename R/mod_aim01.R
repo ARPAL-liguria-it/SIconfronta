@@ -12,7 +12,7 @@
 #'
 #' @import shiny
 #' @import markdown
-#' @importFrom bslib card card_header card_body navset_hidden nav_panel accordion accordion_panel layout_columns
+#' @importFrom bslib card card_header card_body navset_hidden nav_panel layout_columns
 mod_aim01_ui <- function(id) {
   ns <- NS(id)
   tagList(
@@ -21,7 +21,7 @@ mod_aim01_ui <- function(id) {
 
     # selecting the aim of the comparison ----
     bslib::card(
-      bslib::card_header(icon("hand-point-right"), "Scegli cosa devi fare"),
+      bslib::card_header(icon("hand-point-down"), "Scegli il tuo obiettivo"),
       bslib::card_body(
         class = "gap-2 container",
         radioButtons(
@@ -51,7 +51,7 @@ mod_aim01_ui <- function(id) {
 
       bslib::nav_panel("2samples",
         help_card(
-          card_title = "Cosa devi fare",
+          card_title = "Cosa ti serve",
           rmdfile = "help_aim01_2samples.Rmd",
           rmdpackage = "comparat"
         )
@@ -90,20 +90,7 @@ mod_aim01_ui <- function(id) {
          rmdfile = "help_aim01_2values_unc.Rmd",
          rmdpackage = "comparat"
         )
-      )),
-
-      bslib::accordion(
-        id = "tip",
-        open = FALSE,
-        bslib::accordion_panel(
-          title = "Suggerimento",
-          "Puoi creare i file .csv sia a mano in un editor di testo,
-          come il Blocco note, sia esportarlo da programmi quali LibreOffice
-          Calc o Office Excel. Molti strumenti analitici
-          permettono già di esportare i dati in questo formato.",
-          icon = icon("lightbulb")
-        )
-      )
+      ))
     )
 
   ))

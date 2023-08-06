@@ -23,7 +23,7 @@ and a \code{numeric} vector with the measurements should be included.}
 \item{response}{the name of a numeric vector in \code{data}.
 Quotation (" ") is not required.}
 
-\item{group}{the name of a single-level factor variable that identifies the
+\item{group}{the name of a single-level factor variable that identifies
 the group in \code{data}. Quotation (" ") is not required.}
 
 \item{reflabel}{a character value with the name of the reference value.}
@@ -33,7 +33,7 @@ the group in \code{data}. Quotation (" ") is not required.}
 \item{significance}{a number, typically either 0.90, 0.95 (default) or 0.99
 indicating the confidence level for the test.}
 
-\item{alternative}{a character string specifying the alternative hypotesis,
+\item{alternative}{a character string specifying the alternative hypothesis,
 must be one of \code{"different"} or \code{"greater"}.}
 }
 \value{
@@ -61,7 +61,7 @@ The function displays the results of a \eqn{\chi^2}-test performed
 }
 \details{
 \eqn{\chi^2}-test is with the numerically larger variance as numerator.
- As a consequence, the alternative  hypotheses tested can only be
+ As a consequence, the alternative  hypothesis tested can only be
  \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}  (\code{alternative = "different"})
  or \eqn{\mathrm{Var}(A) > \mathrm{Var}(B)} (\code{alternative = "greater"}).
 }

@@ -20,7 +20,7 @@ i risultati in un unico report in formato pdf.
 * effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
 * identificare mediante il test _genaralised extreme studentized deviate_ (GESD) la presenza di potenziali valori anomali;
 * escludere manualmente i valori potenzialmente anomali;
-* effettuare un test ( $t$-test, Welch test o calcolo dell'$E_n$) per il confronto delle medie;
+* effettuare un test ( $t$-test, Welch test o calcolo dell' $E_n$ ) per il confronto delle medie;
 * effettuare un test ( $F$-test o $\chi^2$-test) per il confronto delle varianze;
 * esportare i risultati in un report .pdf.
 
@@ -116,16 +116,16 @@ utilizzando la funzione `t.test` della libreria `stats` del software R.
 L'implementazione risulta coerente e in grado di replicare i risultati riportati nella norma
 UNI ISO 2854:1988 (prospetti B', C' e D').
 Tuttavia, rispetto a quanto riportato nella norma, le varianze dei due set di dati vengono supposte
-tra loro diverse, portando all'applicazione del _t_-test nella sua versione detta
+tra loro diverse, portando all'applicazione del $t$-test nella sua versione detta
 [Welch test](https://en.wikipedia.org/wiki/Welch%27s_t-test). Tale test si è rivelato maggiormente
-efficace rispetto al _t_-test classico nel contenere gli errori di tipo I nel caso di varianze 
+efficace rispetto al $t$-test classico nel contenere gli errori di tipo I nel caso di varianze 
 tra loro non uguali. Tale capacità si è evidenziata anche in situazioni in cui la differenza tra
 le varianze non sia sufficiente ad essere rilevata da un test sulla varianza di Fisher 
 (tipicamente poco potente per numerosità campionarie ridotte).
 Ulteriori informazioni in merito sono disponibili nei seguenti articoli:
 
  - Welch, B. L. (1951). _On the Comparison of Several Mean Values: An Alternative Approach_. 
- Biometrika. *38* (3/4): 330–336. doi:[10.2307/2332579](https://doi.org/10.2307%2F2332579)
+ Biometrika. *38* (3 / 4): 330–336. doi:[10.2307/2332579](https://doi.org/10.2307%2F2332579)
  - Zimmerman, D. W. (2004). _A note on preliminary tests of equality of variances_. 
  British Journal of Mathematical and Statistical Psychology. *57* (Pt 1): 173–181. 
  doi:[10.1348/000711004849222](https://doi.org/10.1348%2F000711004849222)
@@ -139,7 +139,7 @@ Il test per il confronto tra due varianze è stato implementato utilizzando la f
 L'implementazione risulta coerente e in grado di fornire risultati in linea con quanto riportato
 nella norma UNI ISO 2854:1988 (prospetti G e H).
 
-Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell'$E_n$ è
+Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell' $E_n$ è
 stato implementato sulla base di quanto riportato nella norma ISO 13528:2022, al paragrafo 9.7.
 Il calcolo implementato è stato in grado di replicare i risultati riportati nella sezione
 E.4. della medesima norma.

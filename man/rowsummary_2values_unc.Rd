@@ -24,7 +24,7 @@ rowsummary_2values_unc(
 
 \item{udm}{a string with the unit of measurement.}
 
-\item{signif}{a integer with the number of desired significant figures.}
+\item{signif}{an integer with the number of desired significant figures.}
 }
 \value{
 a \code{data.table} with 2 rows and 2 columns.
