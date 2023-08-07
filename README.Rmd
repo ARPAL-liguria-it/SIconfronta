@@ -4,7 +4,7 @@ author: "Andrea Bazzano"
 date: "2023-03-29"
 output:
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 
 ## CompaRat
@@ -31,7 +31,7 @@ i risultati in un unico report in formato pdf.
 * effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
 * identificare mediante il test _generalized extreme studentized deviate_ (GESD) la presenza di potenziali valori anomali;
 * escludere manualmente i valori potenzialmente anomali;
-* effettuare un test ( $t$-test, Welch test o calcolo dell'$E_n$) per il confronto delle medie;
+* effettuare un test ( $t$-test, Welch test o calcolo dell' $E_n$) per il confronto delle medie;
 * effettuare un test ( $F$-test o $\chi^2$-test) per il confronto delle varianze;
 * esportare i risultati in un report .pdf.
 
@@ -44,12 +44,8 @@ e la tipologia di colonne dipende dallo scopo:
 
 <details>
 
-<summary> 
-
-se vuoi confrontare due serie di misure di cui possiedi i singoli valori 
-per entrambe le serie, clicca qui 
-
-</summary>
+<summary> se vuoi confrontare due serie di misure di cui possiedi i singoli valori 
+per entrambe le serie, clicca qui </summary>
 
 Ti servirà organizzare il file con:
 
@@ -65,12 +61,8 @@ per ogni coppia formata dall'identificativo dell'analita e del gruppo
 
 <details>
 
-<summary>
-
-se vuoi confrontare due serie di misure di cui possiedi i singoli valori
-per una sola delle serie, clicca qui
-
-</summary>
+<summary> se vuoi confrontare due serie di misure di cui possiedi i singoli valori
+per una sola delle serie, clicca qui </summary>
 
 Ti servirà organizzare il file con:
   * una colonna testuale con i nomi degli analiti di interesse;
@@ -92,12 +84,7 @@ un massimo di 30 valori per ogni coppia formata dall'identificativo dell'analita
 
 <details>
 
-<summary>
-
-se vuoi confrontare una serie di misure con un valore noto,
-clicca qui
-
-</summary>
+<summary> se vuoi confrontare una serie di misure con un valore noto, clicca qui </summary>
 
 Ti servirà organizzare il file con:
 
@@ -117,12 +104,7 @@ per ogni coppia formata dall'identificativo dell'analita e del gruppo.
 
 <details>
 
-<summary>
-
-se vuoi confrontare due misure dotate di incertezza estesa,
-clicca qui
-
-</summary>
+<summary>  se vuoi confrontare due misure dotate di incertezza estesa, clicca qui </summary>
 
 Ti servirà organizzare il file con:
 
@@ -181,7 +163,7 @@ Il test per il confronto tra due varianze è stato implementato utilizzando la f
 L'implementazione risulta coerente e in grado di fornire risultati in linea con quanto riportato
 nella norma UNI ISO 2854:1988 (prospetti G e H).
 
-Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell'$E_n$ è
+Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell' $E_n$ è
 stato implementato sulla base di quanto riportato nella norma ISO 13528:2022, al paragrafo 9.7.
 Il calcolo implementato è stato in grado di replicare i risultati riportati nella sezione
 E.4. della medesima norma.
@@ -194,11 +176,7 @@ su di esso e confermata la propria scelta, l'utente non potrà tornare indietro.
 
 <details>
 
-<summary>
-
-Dalla scheda <b> Scopo </b>, clicca qui
-
-</summary>
+<summary> Dalla scheda <b> Scopo </b>, clicca qui </summary>
 
   1. selezionare una delle opzioni disponibili;
   2. leggere le istruzioni nella parte a destra dello schermo;
@@ -208,11 +186,7 @@ Dalla scheda <b> Scopo </b>, clicca qui
 
 <details>
 
-<summary> 
-
-Dalla scheda <b> Dati </b>, clicca qui
-
-</summary>
+<summary> Dalla scheda <b> Dati </b>, clicca qui </summary>
 
   1. leggere le istruzioni nella parte destra dello schermo;
   2. caricare il file .csv;
@@ -223,11 +197,7 @@ Dalla scheda <b> Dati </b>, clicca qui
 
 <details>
 
-<summary>
-
-Dalla scheda <b> Confronti </b>, clicca qui 
-
-</summary>
+<summary> Dalla scheda <b> Confronti </b>, clicca qui </summary>
 
   1. leggere le istruzioni nella parte a destra dello schermo;
   2. selezionare il parametro di interesse;
@@ -242,6 +212,7 @@ Dalla scheda <b> Confronti </b>, clicca qui
   11. cliccare su _Avanti_ e confermare la propria scelta.
   
 Nel caso si voglia modificare un risultato già salvato:
+
   1. accedere al menù a tendina in alto;
   2. selezionare il parametro di interesse;
   3. cliccare su _Cancella_;
@@ -253,11 +224,7 @@ Nel caso si voglia modificare un risultato già salvato:
 
 <details>
 
-<summary>
-
-Dalla scheda <b> Report </b>, clicca qui 
-
-</summary>
+<summary> Dalla scheda <b> Report </b>, clicca qui </summary>
 
   1. completare i campi con le informazioni accessorie;
   2. selezionare le sezioni da includere nel report;
@@ -289,7 +256,7 @@ A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali bachi](mailto
 #### Con quale licenza è rilasciato CompaRat?
 Con la Affero GPL versione 3.
 
-[![gplv3](inst/extdata/agplv3.png)](inst/extdata/agplv3.png)
+[![gplv3](https://www.gnu.org/graphics/agplv3-with-text-100x42.png)](https://www.gnu.org/graphics/agplv3-with-text-100x42.png)
 
 Il testo integrale della licenza è disponibile a questo indirizzo:
 [https://www.gnu.org/licenses/agpl-3.0.en.html#license-text](https://www.gnu.org/licenses/agpl-3.0.en.html#license-text).
