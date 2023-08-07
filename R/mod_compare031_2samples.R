@@ -353,14 +353,14 @@ mod_compare031_2samples_server <- function(id, r) {
       if (r$compare03[[r$compare03$myparameter]]$saved |> isTRUE()) {
 
         DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
-                      style = "bootstrap5",
+                      style = "bootstrap",
                       fillContainer = TRUE,
                       options = list(dom = "t"),
                       rownames = FALSE)
       } else {
 
         DT::datatable(summarytable(),
-                      style = "bootstrap5",
+                      style = "bootstrap",
                       fillContainer = TRUE,
                       options = list(dom = "t"),
                       rownames = FALSE)

@@ -47,50 +47,66 @@ mod_aim01_ui <- function(id) {
 
     # conditional tabset with examples and instructions for the different options ----
     bslib::navset_hidden(
+
       id = ns("example"),
 
       bslib::nav_panel("2samples",
-        help_card(
-          card_title = "Cosa ti serve",
-          rmdfile = "help_aim01_2samples.Rmd",
-          rmdpackage = "comparat"
-        )
+                       help_accordion(
+                         todotitle = "Cosa ti serve",
+                         tipstitle = "Suggerimento",
+                         togettitle = "Cosa otterrai",
+                         todofile = "help_aim01_2samples_todo.Rmd",
+                         tipsfile = "help_aim01_tips.Rmd",
+                         togetfile = "help_aim01_2samples_toget.Rmd"
+                       )
       ),
 
       bslib::nav_panel("2samples_par",
-        help_card(
-          card_title = "Cosa ti serve",
-          rmdfile = "help_aim01_2samples_par.Rmd",
-          rmdpackage = "comparat"
-        )
+                       help_accordion(
+                         todotitle = "Cosa ti serve",
+                         tipstitle = "Suggerimento",
+                         togettitle = "Cosa otterrai",
+                         todofile = "help_aim01_2samples_par_todo.Rmd",
+                         tipsfile = "help_aim01_tips.Rmd",
+                         togetfile = "help_aim01_2samples_par_toget.Rmd"
+                       )
       ),
 
       bslib::nav_panel("1sample_mu",
-        withMathJax(
-        help_card(
-          card_title = "Cosa ti serve",
-          rmdfile = "help_aim01_1sample_mu.Rmd",
-          rmdpackage = "comparat"
-        )
-      )),
+                       withMathJax(
+                         help_accordion(
+                           todotitle = "Cosa ti serve",
+                           tipstitle = "Suggerimento",
+                           togettitle = "Cosa otterrai",
+                           todofile = "help_aim01_1sample_mu_todo.Rmd",
+                           tipsfile = "help_aim01_tips.Rmd",
+                           togetfile = "help_aim01_1sample_mu_toget.Rmd"
+                         )
+                       )),
 
       bslib::nav_panel("1sample_sigma",
-        withMathJax(
-        help_card(
-         card_title = "Cosa ti serve",
-         rmdfile = "help_aim01_1sample_sigma.Rmd",
-         rmdpackage = "comparat"
-        )
-      )),
+                       withMathJax(
+                         help_accordion(
+                           todotitle = "Cosa ti serve",
+                           tipstitle = "Suggerimento",
+                           togettitle = "Cosa otterrai",
+                           todofile = "help_aim01_1sample_sigma_todo.Rmd",
+                           tipsfile = "help_aim01_tips.Rmd",
+                           togetfile = "help_aim01_1sample_sigma_toget.Rmd"
+                         )
+                       )),
 
       bslib::nav_panel("2values_unc",
-        withMathJax(
-        help_card(
-         card_title = "Cosa ti serve",
-         rmdfile = "help_aim01_2values_unc.Rmd",
-         rmdpackage = "comparat"
-        )
-      ))
+                       withMathJax(
+                         help_accordion(
+                           todotitle = "Cosa ti serve",
+                           tipstitle = "Suggerimento",
+                           togettitle = "Cosa otterrai",
+                           todofile = "help_aim01_2values_unc_todo.Rmd",
+                           tipsfile = "help_aim01_tips.Rmd",
+                           togetfile = "help_aim01_2values_unc_toget.Rmd"
+                         )
+                       ))
     )
 
   ))

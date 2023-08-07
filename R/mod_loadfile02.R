@@ -27,7 +27,7 @@
 #' @noRd
 #'
 #' @import shiny
-#' @importFrom bslib layout_sidebar navset_hidden nav_panel
+#' @importFrom bslib layout_sidebar navset_hidden nav_panel card card_header card_body
 mod_loadfile02_ui <- function(id) {
   ns <- NS(id)
 
@@ -112,6 +112,7 @@ mod_loadfile02_ui <- function(id) {
         bslib::nav_panel(""),
 
         bslib::nav_panel("dataloaded",
+                         hr(),
                          actionButton(
                            ns("nextbtn"),
                            label = "Avanti",
@@ -126,11 +127,20 @@ mod_loadfile02_ui <- function(id) {
       id = ns("data"),
 
       bslib::nav_panel("",
-                       htmlOutput(ns("waiting"))),
+                       bslib::card(
+                         bslib::card_header(icon("hammer"), "Cosa devi fare"),
+                         bslib::card_body(htmlOutput(ns("waiting")))
+                         )
+                       ),
 
 
       bslib::nav_panel("dataloaded",
-                       DT::DTOutput(ns("datatable")))
+                      bslib::card(
+                        bslib::card_header(icon("vials"), "Dati caricati"),
+                        bslib::card_body(
+                          DT::DTOutput(ns("datatable")))
+                       )
+                      )
     )
   ))
 }
@@ -519,7 +529,7 @@ mod_loadfile02_server <- function(id, r) {
       DT::datatable(
       datafile(),
       rownames = FALSE,
-      style = "bootstrap5",
+      style = "bootstrap",
       fillContainer = TRUE,
       options = list(
         language = list(

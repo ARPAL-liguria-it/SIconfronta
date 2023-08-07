@@ -66,9 +66,11 @@ mod_compare03_ui <- function(id) {
       bslib::navset_hidden(
         id = ns("savedel"),
 
+
         bslib::nav_panel("cantsave"),
         # show the save button when data is not saved
         bslib::nav_panel("save",
+                br(),
                  # 5. click on the save button
                  actionButton(
                    ns("save"),
@@ -78,6 +80,7 @@ mod_compare03_ui <- function(id) {
 
         # show the delete button when data has been saved
         bslib::nav_panel("delete",
+                 br(),
                  # 6. click on the delete buttons (if you spot a mistake)
                  actionButton(
                    ns("delete"),
@@ -92,10 +95,13 @@ mod_compare03_ui <- function(id) {
       bslib::navset_hidden(
         id = ns("nextpanel"),
 
-        bslib::nav_panel("not_saved"),
+        bslib::nav_panel("not_saved",
+                hr()
+                ),
 
         bslib::nav_panel("saved",
-                 hr(),
+                hr(),
+
                  actionButton(
                    ns("nextbtn"),
                    label = "Avanti",

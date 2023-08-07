@@ -195,3 +195,62 @@ help_card <- function(card_title,
     )
 
 }
+
+#' Bslib accordion with help tips
+#'
+#' @description The function provides a {bslib} accordion with help text
+#' arranged on three panels.
+#' The help text is stored in Rmarkwdown files placed into the \code{/inst/rmd}
+#' package folder.
+#'
+#' @param todotitle the title for the first panel.
+#' @param tipstitle the title for the second panel.
+#' @param togettitle the title for the third panel.
+#' @param todofile the name of the Rmarkdown file with the help instructions.
+#' @param tipsfile the name of the Rmarkdown file with the help instructions.
+#' @param togetfile the name of the Rmarkdown file with the help instructions.
+#'
+#' @details Files must be placed in the \code{/inst/rmd} folder of the package.
+#'
+#' @return a {bslib} accordion with three panels.
+#'
+#' @noRd
+#' @importFrom bslib accordion accordion_panel
+#' @importFrom shiny icon includeMarkdown
+help_accordion <- function(todotitle,
+                           tipstitle,
+                           togettitle,
+                           todofile,
+                           tipsfile,
+                           togetfile) {
+
+  todopath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                   todofile, package = "comparat")) |>
+    eval()
+
+  tipspath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                   tipsfile, package = "comparat")) |>
+    eval()
+
+  togetpath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                    togetfile, package = "comparat")) |>
+    eval()
+
+  bslib::accordion(
+    id = "help",
+    open = "todo",
+    bslib::accordion_panel(icon = shiny::icon("hammer"),
+                    title = todotitle,
+                    value = "todo",
+                    shiny::includeMarkdown(todopath)),
+    bslib::accordion_panel(icon = shiny::icon("lightbulb"),
+                    title = tipstitle,
+                    value = "tips",
+                    shiny::includeMarkdown(tipspath)),
+    bslib::accordion_panel(icon = shiny::icon("vials"),
+                    title = togettitle,
+                    tips = "toget",
+                    shiny::includeMarkdown(togetpath))
+  )
+
+}
