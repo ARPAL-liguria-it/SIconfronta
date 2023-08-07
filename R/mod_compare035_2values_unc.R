@@ -226,14 +226,14 @@ mod_compare035_2values_unc_server <- function(id, r) {
         DT::datatable(r$compare03[[r$compare03$myparameter]]$summary,
                       options = list(dom = "t"),
                       rownames = FALSE,
-                      style = "bootstrap",
+                      style = "bootstrap4",
                       fillContainer = TRUE)
       } else {
 
         DT::datatable(summarytable(),
                       options = list(dom = "t"),
                       rownames = FALSE,
-                      style = "bootstrap",
+                      style = "bootstrap4",
                       fillContainer = TRUE)
       }
 

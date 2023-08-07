@@ -529,7 +529,7 @@ mod_loadfile02_server <- function(id, r) {
       DT::datatable(
       datafile(),
       rownames = FALSE,
-      style = "bootstrap",
+      style = "bootstrap4",
       fillContainer = TRUE,
       options = list(
         language = list(
