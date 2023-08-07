@@ -78,8 +78,8 @@
 <li>effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;</li>
 <li>identificare mediante il test <em>generalized extreme studentized deviate</em> (GESD) la presenza di potenziali valori anomali;</li>
 <li>escludere manualmente i valori potenzialmente anomali;</li>
-<li>effettuare un test ( <em>t</em>-test, Welch test o calcolo dell’<em>E</em><sub><em>n</em></sub>) per il confronto delle medie;</li>
-<li>effettuare un test ( <em>F</em>-test o <em>χ</em><sup>2</sup>-test) per il confronto delle varianze;</li>
+<li>effettuare un test ( <span class="math inline"><em>t</em></span>-test, Welch test o calcolo dell’ <span class="math inline"><em>E</em><sub><em>n</em></sub></span>) per il confronto delle medie;</li>
+<li>effettuare un test ( <span class="math inline"><em>F</em></span>-test o <span class="math inline"><em>χ</em><sup>2</sup></span>-test) per il confronto delle varianze;</li>
 <li>esportare i risultati in un report .pdf.</li>
 </ul>
 </div>
@@ -145,9 +145,9 @@ se vuoi confrontare due misure dotate di incertezza estesa, clicca qui
 <li>Zimmerman, D. W. (2004). <em>A note on preliminary tests of equality of variances</em>. British Journal of Mathematical and Statistical Psychology. <em>57</em> (Pt 1): 173–181. doi: <a href="https://doi.org/10.1348%2F000711004849222" class="external-link">10.1348/000711004849222</a>
 </li>
 </ul>
-<p>Il test per il confronto tra una varianza e un valore assegnato è stato implementato sulla base del test del <em>χ</em><sup>2</sup> riportato nel prospetto E della norma UNI ISO 2854:1988. Il test implementato è stato in grado di replicare i risultati riportati nella medesima norma.</p>
+<p>Il test per il confronto tra una varianza e un valore assegnato è stato implementato sulla base del test del <span class="math inline"><em>χ</em><sup>2</sup></span> riportato nel prospetto E della norma UNI ISO 2854:1988. Il test implementato è stato in grado di replicare i risultati riportati nella medesima norma.</p>
 <p>Il test per il confronto tra due varianze è stato implementato utilizzando la funzione <code>var.test</code> della libreria <code>stats</code> del software R. L’implementazione risulta coerente e in grado di fornire risultati in linea con quanto riportato nella norma UNI ISO 2854:1988 (prospetti G e H).</p>
-<p>Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell’<em>E</em><sub><em>n</em></sub> è stato implementato sulla base di quanto riportato nella norma ISO 13528:2022, al paragrafo 9.7. Il calcolo implementato è stato in grado di replicare i risultati riportati nella sezione E.4. della medesima norma.</p>
+<p>Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell’ <span class="math inline"><em>E</em><sub><em>n</em></sub></span> è stato implementato sulla base di quanto riportato nella norma ISO 13528:2022, al paragrafo 9.7. Il calcolo implementato è stato in grado di replicare i risultati riportati nella sezione E.4. della medesima norma.</p>
 </div>
 <div class="section level4">
 <h4 id="come-funziona-calibrat">Come funziona Calibrat?<a class="anchor" aria-label="anchor" href="#come-funziona-calibrat"></a>
