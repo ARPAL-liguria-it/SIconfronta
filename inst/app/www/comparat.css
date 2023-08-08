@@ -4,3 +4,8 @@
 .nav-tabs > li > a {
   font-size: 15px;
 }
+
+/* for fill datatables from https://github.com/rstudio/DT/issues/951 */
+.dataTables_scrollBody {
+  max-height: none !important;
+}
