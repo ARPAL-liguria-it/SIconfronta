@@ -50,7 +50,7 @@ mod_report04_ui <- function(id){
       bslib::card_header(icon("lightbulb"), "Suggerimento"),
       bslib::card_body(
         "Una volta cliccato il tasto 'Crea il report',
-        non chiudere o ricaricare la pagina finché non troverai
+        non chiudere o ricaricare la pagina finch\u00E9 non troverai
         nella tua cartella Download un file con il nome
         'comparison-report_' seguito dalla data di oggi.
 
