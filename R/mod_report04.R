@@ -10,23 +10,29 @@
 #' @noRd
 #'
 #' @import shiny
-#' @importFrom bslib card card_header card_body layout_columns
+#' @importFrom bslib card card_header card_body layout_columns layout_column_wrap
 mod_report04_ui <- function(id){
   ns <- NS(id)
   tagList(
 
     bslib::layout_columns(
       col_widths = c(7, 5),
+      fill = FALSE,
+
     bslib::card(
       bslib::card_header(icon("hand-point-down"), "Aggiungi qualche informazione"),
       bslib::card_body(
         textInput(ns("title"), label = "Titolo del report", width = "100%"),
         textAreaInput(ns("description"), label = "Descrizione dell'esperimento",
-                      rows = 8, width = "100%"),
+                      rows = 10, width = "100%"),
         textAreaInput(ns("discussion"), label = "Interpretazione dei risultati",
-                      rows = 8, width = "100%")
+                      rows = 10, width = "100%")
       )
     ),
+
+    bslib::layout_column_wrap(
+      width = 1,
+      heights_equal = "row",
 
     bslib::card(
       bslib::card_header(icon("hand-point-down"), "Seleziona cosa salvare"),
@@ -38,7 +44,22 @@ mod_report04_ui <- function(id){
                        choices = "",
                        selected = "")
         )
+      ),
+
+    bslib::card(
+      bslib::card_header(icon("lightbulb"), "Suggerimento"),
+      bslib::card_body(
+        "Una volta cliccato il tasto 'Crea il report',
+        non chiudere o ricaricare la pagina finché non troverai
+        nella tua cartella Download un file con il nome
+        'comparison-report_' seguito dalla data di oggi.
+
+        A seconda di quanti parametri hai salvato, potrebbero volerci
+        fino a un massimo di dieci minuti,
+        anche se tipicamente ne bastano un paio."
       )
+    )
+    )
     ),
 
     tags$div(

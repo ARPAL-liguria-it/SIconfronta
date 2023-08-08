@@ -18,6 +18,7 @@ mod_aim01_ui <- function(id) {
   tagList(
     bslib::layout_columns(
     col_widths = c(7, 5),
+    fill = FALSE,
 
     # selecting the aim of the comparison ----
     bslib::card(
