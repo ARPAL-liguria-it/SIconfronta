@@ -18,17 +18,13 @@ app_ui <- function(request) {
 
     bslib::page_navbar(
       id = "navbar",
-      theme = bslib::bs_theme(bootswatch = "sandstone",
-                              version = 5),
-      title = tags$img(
-          class = "d-inline-block align-text-top",
-          src = "www/comparatlogo.png",
-          alt = "Comparat",
-          height = 50,
-          width = 265
-      ),
+      theme = bslib::bs_theme(bootswatch = "cosmo",
+                              version = 5,
+                              "navbar-bg" = "#2780E3",
+                              "navbar-brand-font-size" = "2rem"),
+      title = "SI confronta",
       window_title = "Comparat",
-      inverse = FALSE,
+      inverse = TRUE,
       fluid = TRUE,
       collapsible = TRUE,
       lang = "it",
@@ -67,7 +63,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Comparat",
+      app_title = "SI confronta",
     ),
     # Add here other external resources
     shinyjs::useShinyjs()

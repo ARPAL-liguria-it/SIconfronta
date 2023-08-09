@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.1",
+    "Version": "4.3.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -243,7 +243,6 @@
         "ggplot2",
         "golem",
         "markdown",
-        "pkgload",
         "plotly",
         "promises",
         "rmarkdown",
@@ -251,7 +250,7 @@
         "shinyjs",
         "stats"
       ],
-      "Hash": "50a9d93501e190dcca0dec8908d4f8f9"
+      "Hash": "83acd67599643b42284387d2ed4a95c4"
     },
     "config": {
       "Package": "config",

@@ -224,7 +224,7 @@ boxplot_1sample_mu <- function(data,
       type = "box",
       boxmean = TRUE,
       boxpoints = FALSE,
-      color = I("#142536"),
+      color = I("#2780E3"),
       showlegend = FALSE,
       key = NULL
     ) |>
