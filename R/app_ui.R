@@ -24,7 +24,8 @@ app_ui <- function(request) {
           class = "d-inline-block align-text-top",
           src = "www/comparatlogo.png",
           alt = "Comparat",
-          height = 50
+          height = 50,
+          width = 265
       ),
       window_title = "Comparat",
       inverse = FALSE,
