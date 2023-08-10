@@ -1,5 +1,5 @@
-Package: comparat
-Title: comparat
+Package: SIconfronta
+Title: SIconfronta
 Version: 1.0.0
 Authors@R: person('Andrea', 'Bazzano', email = 'andrea.bazzano@arpal.liguria.it', role = c('cre', 'aut'))
 Description: Comparat provides a Shiny application for comparing means and variances for two indipendent samples.

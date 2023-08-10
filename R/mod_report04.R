@@ -79,7 +79,7 @@ mod_report04_ui <- function(id){
 #' @param inputreport a list of saved results to be passed to the {rmd}
 #'  report template. Additionally, the module uses a report template named
 #'  {comparison_report.Rmd} and a pdf logo named {"logoarpal.pdf"} located in
-#'  the {"comparat/inst"} folder.
+#'  the {"SIconfronta/inst"} folder.
 #' @return a {pdf} report compiled following the {comparison_report.Rmd} template.
 #'  The report compilation is performed as a \code{future_promise} from package
 #'  {promises}.
@@ -139,9 +139,9 @@ mod_report04_server <- function(id, r){
         # The report template is copied in a temporary directory to prevent
         # user permission issues
         reportpath <- system.file("rmd", "comparison_report.Rmd",
-                                  package = "comparat")
+                                  package = "SIconfronta")
         logopath <- system.file("rmd", "logo.pdf",
-                                package = "comparat")
+                                package = "SIconfronta")
 
         tempReport <- tempfile(fileext = ".Rmd")
         tempLogo <- tempfile(fileext = ".pdf")

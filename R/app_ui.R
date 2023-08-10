@@ -23,7 +23,7 @@ app_ui <- function(request) {
                               "navbar-bg" = "#2780E3",
                               "navbar-brand-font-size" = "2rem"),
       title = "SI confronta",
-      window_title = "Comparat",
+      window_title = "SI confronta",
       inverse = TRUE,
       fluid = TRUE,
       collapsible = TRUE,
@@ -36,7 +36,7 @@ app_ui <- function(request) {
       bslib::nav_panel("Report", value = "report", mod_report04_ui("report")),
       bslib::nav_panel("Leggimi", value = "readme",
                        includeMarkdown(
-                         system.file("rmd", "readme.Rmd", package = "comparat")
+                         system.file("rmd", "readme.Rmd", package = "SIconfronta")
                        ))
 
     )

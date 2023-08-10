@@ -225,15 +225,15 @@ help_accordion <- function(todotitle,
                            togetfile) {
 
   todopath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
-                                   todofile, package = "comparat")) |>
+                                   todofile, package = "SIconfronta")) |>
     eval()
 
   tipspath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
-                                   tipsfile, package = "comparat")) |>
+                                   tipsfile, package = "SIconfronta")) |>
     eval()
 
   togetpath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
-                                    togetfile, package = "comparat")) |>
+                                    togetfile, package = "SIconfronta")) |>
     eval()
 
   bslib::accordion(

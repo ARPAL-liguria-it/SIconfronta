@@ -2,7 +2,7 @@
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #' The module subsets a {data.table}, loaded by the {mod_loadfile02} module of the
-#' {comparat} package, by a single parameter. The resulting dataset is passed
+#' {SIconfronta} package, by a single parameter. The resulting dataset is passed
 #' to a {mod_compare03x} submodule for different calculations dependantant on the
 #' option choosen in the {mod_aim01} module.
 #'
@@ -141,7 +141,7 @@ mod_compare03_ui <- function(id) {
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #' The module subsets a {data.table}, loaded by the {mod_loadfile02} module of the
-#' {comparat} package, by a single parameter. The resulting dataset is passed
+#' {SIconfronta} package, by a single parameter. The resulting dataset is passed
 #' to a {mod_compare03x} submodule for different calculations dependantant on the
 #' option choosen in the {mod_aim01} module.
 #'

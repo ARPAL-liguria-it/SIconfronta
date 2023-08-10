@@ -4,7 +4,7 @@
 #' @description The function displays the results of a \eqn{t}-test performed
 #'  on two groups of values, for one of which only mean, standard deviation and
 #'  number of samples are reported.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param group1 a character value with the name of the first group.
 #' @param mean1 a numeric value with the mean for the first group.
@@ -173,7 +173,7 @@ fct_ttest_2samples_par <- function(group1,
 #' @description The function displays the results of an \eqn{F}-test performed
 #'  on two groups of values, for one of which only mean, standard deviation and
 #'  number of samples are reported.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param group1 a character value with the name of the first group.
 #' @param sd1 a numeric value with the standard deviation for the first group.

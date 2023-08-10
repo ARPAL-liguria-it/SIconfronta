@@ -1,7 +1,8 @@
-# comparat 1.0.0
+# SIconfronta 1.0.0
 
 * Added the first stable release with the required features for comparing mean
 and variances of one or two sets of single or multiple values.
+* Package renamed from comparat to SIconfronta.
 
 # comparat 0.0.0.9000
 

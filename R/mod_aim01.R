@@ -1,7 +1,7 @@
 #' 01_aim UI Function
 #'
 #' @description A shiny Module for selecting which elaboration will be
-#' performed by the {Comparat} shinyAPP.
+#' performed by the {SIconfronta} shinyAPP.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @param r a {reactiveValues} list.
@@ -116,7 +116,7 @@ mod_aim01_ui <- function(id) {
 #' 01_aim Server Functions
 #'
 #' @description A shiny Module for selecting which elaboration will be
-#' performed by the {Comparat} shinyAPP.
+#' performed by the {SIconfronta} shinyAPP.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #' @return a reactiveValues with the option chosen in UI stored into \code{r$aim01$aim}.

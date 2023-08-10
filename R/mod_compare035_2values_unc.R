@@ -51,7 +51,7 @@ mod_compare035_2values_unc_output_ui <- function(id) {
       help_card(
         card_title = "Cosa devi fare",
         rmdfile = "help_compare035_2values_unc.Rmd",
-        rmdpackage = "comparat"
+        rmdpackage = "SIconfronta"
       )
     ),
 

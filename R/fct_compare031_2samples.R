@@ -2,7 +2,7 @@
 #'
 #' @description The function displays the results of a Shapiro-Wilk test for
 #'  normality.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param values a \code{vector} with the values relevant for testing.
 #'
@@ -41,7 +41,7 @@ fct_shapiro <- function(values) {
 #'
 #' @description The function displays the results of generalised
 #'  extreme studentized deviate (GESD) test for outlier detection.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param values a \code{vector} with the values relevant for testing.
 #' @param significance a number, typically either 0.90, 0.95 (default) or 0.99
@@ -156,7 +156,7 @@ fct_gesd <- function(values,
 #'
 #' @description The function displays the results of a \eqn{t}-test performed
 #'  on two groups of values.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
 #'   relevant for testing. At least a two-levels grouping \code{factor} variable
@@ -292,7 +292,7 @@ fct_ttest_2samples <- function(data,
 #'
 #' @description The function displays the results of an \eqn{F}-test performed
 #'  on two groups of values.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
 #'   relevant for testing. At least a two-levels grouping \code{factor} variable

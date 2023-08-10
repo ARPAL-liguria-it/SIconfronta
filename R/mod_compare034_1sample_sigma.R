@@ -118,7 +118,7 @@ mod_compare034_1sample_sigma_output_ui <- function(id) {
       help_card(
         card_title = "Cosa devi fare",
         rmdfile = "help_compare034_1sample_sigma.Rmd",
-        rmdpackage = "comparat"
+        rmdpackage = "SIconfronta"
       )
     ),
 

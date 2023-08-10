@@ -135,7 +135,7 @@ mod_compare032_2samples_par_output_ui <- function(id) {
       help_card(
         card_title = "Cosa devi fare",
         rmdfile = "help_compare032_2samples_par.Rmd",
-        rmdpackage = "comparat"
+        rmdpackage = "SIconfronta"
       )
     ),
 

@@ -122,7 +122,7 @@ mod_compare033_1sample_mu_output_ui <- function(id) {
       help_card(
         card_title = "Cosa devi fare",
         rmdfile = "help_compare033_1sample_mu.Rmd",
-        rmdpackage = "comparat"
+        rmdpackage = "SIconfronta"
       )
     ),
 
