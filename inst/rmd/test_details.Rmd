@@ -1,0 +1,39 @@
+---
+title: "Untitled"
+author: "Andrea Bazzano"
+date: "2023-08-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Verifiche eseguite nella fase di validazione dell'applicazione SIconfronta
+
+### Verifica per il test di normalità di Shapiro-Wilk
+
+Dati da Shapiro S. S., Wilk M. B., An analysis of variance test for normality (complete samples). Biometrika (1965), 52, 3 and 2, p. 591. Section 4 - Examples, pag. 606, Example 1. (<http://links.jstor.org/sici?sici=0006-3444%28196512%2952%3A3%2F4%3C591%3AAAOVTF%3E2.0.CO%3B2-B>).
+
+#### Input
+
+-   valori: 148, 154, 158, 160, 161, 162, 166, 170, 182, 195, 236.
+
+#### Valori attesi
+
+-   W = 0.79
+-   p-value \< 0.01
+-   esito = "I valori non sono compatibili con una distribuzione normale"
+
+### Verifica per il test sui possibili valori anomali (GESD)
+
+Dati da Tietjen G. L., Moore R. H., Some Grubbs-Type Statistics for the Detection of Several Outliers. Technometrics (1972), 14, 3, pp. 583-597 (<https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h1.htm>).
+
+#### Input
+
+-   Valori: 199.31, 199.53, 200.19, 200.82, 201.92, 201.95, 202.18, 245.57.
+-   livello di significatività: 0.99
+
+#### Valori attesi
+
+-   outlier: 245.57

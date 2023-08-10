@@ -38,7 +38,7 @@ The {data} dataframe has the following columns:
 \description{
 The function displays the results of generalised
  extreme studentized deviate (GESD) test for outlier detection.
- The returned text is suitable for the {comparat} {shiny} app.
+ The returned text is suitable for the {SI confronta} {shiny} app.
 }
 \details{
 the GESD test is performed according to section 4.3.2 of

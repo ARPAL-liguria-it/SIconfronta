@@ -57,7 +57,7 @@ A list with the following items:
 \description{
 The function displays the results of a \eqn{\chi^2}-test performed
  on a group of values vs a reference standard deviation value.
- The returned text is suitable for the {comparat} {shiny} app.
+ The returned text is suitable for the {SI confronta} {shiny} app.
 }
 \details{
 \eqn{\chi^2}-test is with the numerically larger variance as numerator.
