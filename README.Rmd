@@ -247,7 +247,7 @@ La frazione di codice coperta dai test è circa il 93% del totale.
 L'esito dei controlli e la percentuale di codice coperta dai test per l'ultima versione rilasciata,
 è riassunto nelle etichette aggiornate automaticamente e presenti a inizio di questo file.
 
-Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un server ad
+Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un server Ubuntu ad
 accesso controllato o distribuirlo mediante _docker_. 
 
 A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali bachi](mailto:andrea.bazzano@arpal.liguria.it).

@@ -270,7 +270,7 @@ rilasciata, è riassunto nelle etichette aggiornate automaticamente e
 presenti a inizio di questo file.
 
 Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un
-server ad accesso controllato o distribuirlo mediante *docker*.
+server Ubuntu ad accesso controllato o distribuirlo mediante *docker*.
 
 A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali
 bachi](mailto:andrea.bazzano@arpal.liguria.it).
