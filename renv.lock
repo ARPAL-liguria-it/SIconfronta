@@ -228,30 +228,6 @@
       "Repository": "CRAN",
       "Hash": "d691c61bff84bd63c383874d2d0c3307"
     },
-    "comparat": {
-      "Package": "comparat",
-      "Version": "1.0.0",
-      "Source": "unknown",
-      "Requirements": [
-        "DT",
-        "R",
-        "bslib",
-        "config",
-        "data.table",
-        "devtools",
-        "future",
-        "ggplot2",
-        "golem",
-        "markdown",
-        "plotly",
-        "promises",
-        "rmarkdown",
-        "shiny",
-        "shinyjs",
-        "stats"
-      ],
-      "Hash": "83acd67599643b42284387d2ed4a95c4"
-    },
     "config": {
       "Package": "config",
       "Version": "0.3.1",
@@ -1812,7 +1788,7 @@
       "Package": "yaml",
       "Version": "2.3.7",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "0d0056cc5383fbc240ccd0cb584bf436"
     },
     "zip": {
