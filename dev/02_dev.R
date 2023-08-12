@@ -56,7 +56,7 @@ usethis::use_test("app_ui")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("comparat")
+usethis::use_vignette("SIconfronta")
 devtools::build_vignettes()
 
 ## Code Coverage----

@@ -6,7 +6,7 @@
 \alias{SIconfronta-package}
 \title{SIconfronta: SIconfronta}
 \description{
-Comparat provides a Shiny application for comparing means and variances for two indipendent samples.
+SIconfronta provides a Shiny application for comparing means and variances for two indipendent samples.
 }
 \author{
 \strong{Maintainer}: Andrea Bazzano \email{andrea.bazzano@arpal.liguria.it}

@@ -1,14 +1,14 @@
 # library(shinytest2)
 #
-# test_that("{shinytest2} recording: comparat_2samples", {
+# test_that("{shinytest2} recording: SIconfronta_2samples", {
 #   skip_on_ci()
 #   skip_on_covr()
 #   skip_on_cran()
 #
-#   shiny_app <- comparat::run_app()
+#   shiny_app <- SIconfronta::run_app()
 #
 #   app <- AppDriver$new(app_dir = shiny_app,
-#                        name = "comparat_2samples",
+#                        name = "SIconfronta_2samples",
 #                        height = 627,
 #                        width = 995)
 #   app$set_inputs(`scopo-aim` = "2samples", wait_ = FALSE)
@@ -39,15 +39,15 @@
 # })
 #
 #
-# test_that("{shinytest2} recording: comparat_2samples_par", {
+# test_that("{shinytest2} recording: SIconfronta_2samples_par", {
 #   skip_on_ci()
 #   skip_on_covr()
 #   skip_on_cran()
 #
-#   shiny_app <- comparat::run_app()
+#   shiny_app <- SIconfronta::run_app()
 #
 #   app <- AppDriver$new(app_dir = shiny_app,
-#                        name = "comparat_2samples_par",
+#                        name = "SIconfronta_2samples_par",
 #                        height = 627,
 #                        width = 995)
 #   app$set_inputs(`scopo-aim` = "2samples_par")
@@ -89,15 +89,15 @@
 # })
 #
 #
-# test_that("{shinytest2} recording: comparat_1sample_mu", {
+# test_that("{shinytest2} recording: SIconfronta_1sample_mu", {
 #   skip_on_ci()
 #   skip_on_covr()
 #   skip_on_cran()
 #
-#   shiny_app <- comparat::run_app()
+#   shiny_app <- SIconfronta::run_app()
 #
 #   app <- AppDriver$new(app_dir = shiny_app,
-#                        name = "comparat_1sample_mu",
+#                        name = "SIconfronta_1sample_mu",
 #                        height = 627,
 #                        width = 995)
 #   app$set_inputs(`scopo-aim` = "1sample_mu")
@@ -136,15 +136,15 @@
 # })
 #
 #
-# test_that("{shinytest2} recording: comparat_1sample_sigma", {
+# test_that("{shinytest2} recording: SIconfronta_1sample_sigma", {
 #   skip_on_ci()
 #   skip_on_covr()
 #   skip_on_cran()
 #
-#   shiny_app <- comparat::run_app()
+#   shiny_app <- SIconfronta::run_app()
 #
 #   app <- AppDriver$new(app_dir = shiny_app,
-#                        name = "comparat_1sample_sigma",
+#                        name = "SIconfronta_1sample_sigma",
 #                        height = 627,
 #                        width = 995)
 #   app$set_inputs(`scopo-aim` = "1sample_sigma")
@@ -185,15 +185,15 @@
 # })
 #
 #
-# test_that("{shinytest2} recording: comparat_2values_unc", {
+# test_that("{shinytest2} recording: SIconfronta_2values_unc", {
 #   skip_on_ci()
 #   skip_on_covr()
 #   skip_on_cran()
 #
-#   shiny_app <- comparat::run_app()
+#   shiny_app <- SIconfronta::run_app()
 #
 #   app <- AppDriver$new(app_dir = shiny_app,
-#                        name = "comparat_2values_unc",
+#                        name = "SIconfronta_2values_unc",
 #                        height = 627,
 #                        width = 995)
 #   app$set_inputs(`scopo-aim` = "2values_unc")

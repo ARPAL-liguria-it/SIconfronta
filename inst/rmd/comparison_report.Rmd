@@ -154,7 +154,7 @@ Il rilascio avviene solo nel caso in cui tutti i test risultino superati.
 L'applicazione è distribuita in un ambiente protetto da aggiornamenti o modifiche
 accidentali.
 
-Maggiori dettagli sono consultabili all'indirizzo (https://github.com/andreabz/comparat/actions)
+Maggiori dettagli sono consultabili all'indirizzo (https://github.com/andreabz/SIconfronta/actions)
 o eseguendo `devtools::check()` e `covr::report()` sulla macchina su cui risiede l'applicazione,
 all'interno della cartella `/srv/shiny-server/SIconfronta`.
 
@@ -207,7 +207,7 @@ Report creato il `r sysdate` alle `r systime`.
 cat(
   paste0(
   "© 2023. Questo report è stato prodotto con il pacchetto SIconfronta ",
-  utils::packageVersion("comparat"), 
+  utils::packageVersion("SIconfronta"), 
   " e rilasciato con licenza [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). Per informazioni o segnalazioni, rivolgersi ad Andrea Bazzano ([andrea.bazzano@arpal.liguria.it](mailto:andre.bazzano@arpal.liguria.it))."
   )
 )
