@@ -3,7 +3,7 @@
 \docType{data}
 \name{ftest_reference}
 \alias{ftest_reference}
-\title{F.Test data}
+\title{F-Test data}
 \format{
 a dataframe with 5 rows and 2 columns:
 \describe{
@@ -18,7 +18,7 @@ a dataframe with 5 rows and 2 columns:
 ftest_reference
 }
 \description{
-A dataset with 10 values divided in two groups 5 values. The dataset is
+A dataset with 10 values divided in two groups of 5 values. The dataset is
 provided for testing the \code{fct_test} results.
 }
 \keyword{data}

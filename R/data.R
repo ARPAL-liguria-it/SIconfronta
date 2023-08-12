@@ -22,9 +22,9 @@
 #' @keywords data
 "tomato_yields"
 
-#' F.Test data
+#' F-Test data
 #'
-#' A dataset with 10 values divided in two groups 5 values. The dataset is
+#' A dataset with 10 values divided in two groups of 5 values. The dataset is
 #' provided for testing the \code{fct_test} results.
 #'
 #' @format a dataframe with 5 rows and 2 columns:
@@ -38,7 +38,6 @@
 #' @source \url{https://support.microsoft.com/en-us/office/f-test-function-100a59e7-4108-46f8-8443-78ffacb6c0a7}.
 #' @keywords data
 "ftest_reference"
-
 
 #' Shapiro-Wilk test data
 #'
@@ -57,3 +56,54 @@
 #'  \url{http://links.jstor.org/sici?sici=0006-3444\%28196512\%2952\%3A3\%2F4\%3C591\%3AAAOVTF\%3E2.0.CO\%3B2-B}.
 #' @keywords data
 "shapirotest_reference"
+
+#' Mass spectrometer measurements on a Uranium isotope
+#'
+#' A dataset containing the results expressed counts per seconds for mass spectrometer measurements on a Uranium isotope.
+#' The variable are as follows:
+#'
+#' @format a vector with 8 numerical values:
+#'
+#' @name uranium_cps
+#' @docType data
+#' @author Gary L. Tietjen
+#' @author Roger H. Moore
+#' @source Some Grubbs-Type Statistics for the Detection of Several Outliers.
+#'  Technometrics, 14(3), 1972, pp. 583-597.
+#'  Also available at
+#'  \url{https://www.itl.nist.gov/div898/handbook/eda/section3/eda35h1.htm}.
+#' @keywords data
+"uranium_cps"
+
+#' Observations from UNI ISO 16269-4:2019 - Section 4.3.2
+#'
+#' A dataset containing 20 observations for outliers detection.
+#' The variable are as follows:
+#'
+#' @format a vector with 20 numerical values:
+#'
+#' @name uniiso_16269_4_432
+#' @docType data
+#' @author ISO/TC 69 - Applications of statistical methods
+#' @source UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4:
+#'  Detection and treatment of outliers. Section 4.3.2.
+#'  \url{https://store.uni.com/uni-iso-16269-4-2019}.
+#' @keywords data
+"uniiso_16269_4_432"
+
+#' UNI ISO 2854:1988 Section X
+#'
+#' A dataset with 22 values divided in two groups with 10 and 12 values, respectively.
+#' The dataset is provided for testing the \code{fct_test} results.
+#'
+#' @format a dataframe with 12 rows and 2 columns:
+#' \describe{
+#'    \item{group}{the grouping variable, either \code{a} or \code{b}}
+#'    \item{value}{the breaking load numerical values for the tested yarns, expressed in Newton.}
+#' }
+#'
+#' @name uniiso_2854_x
+#' @docType data
+#' @source \url{https://store.uni.com/uni-iso-2854-1988}
+#' @keywords data
+"uniiso_2854_x"

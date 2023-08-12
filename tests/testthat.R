@@ -7,6 +7,8 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(comparat)
+# library(shinytest2)
+library(SIconfronta)
 
-test_check("comparat")
+test_check("SIconfronta")
+# shinytest2::test_app(check_setup = FALSE)

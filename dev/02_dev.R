@@ -16,10 +16,11 @@
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing
 ## install.package('attachment') # if needed.
-attachment::att_amend_desc()
+# attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
+golem::add_module(name = "01_aim", with_test = TRUE) # Name of the module
 golem::add_module(name = "loadfile", with_test = TRUE) # Name of the module
 golem::add_module(name = "compare", with_test = TRUE) # Name of the module
 golem::add_module(name = "save", with_test = TRUE) # Name of the module
@@ -44,19 +45,23 @@ usethis::use_data_raw(name = "tomato_yields", open = FALSE)
 ## Tests ----
 ## Add one line by test you want to create
 usethis::use_test("app")
-usethis::use_test("mod_loadfile")
+usethis::use_test("mod_aim01")
+usethis::use_test("mod_loadfile02")
+usethis::use_test("mod_compare03")
+usethis::use_test("mod_compare031_2samples")
+usethis::use_test("mod_report04")
 usethis::use_test("app_server")
 usethis::use_test("app_ui")
 
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("comparat")
+usethis::use_vignette("SIconfronta")
 devtools::build_vignettes()
 
 ## Code Coverage----
 ## Set the code coverage service ("codecov" or "coveralls")
-usethis::use_coverage()
+usethis::use_coverage("codecov")
 
 # Create a summary readme for the testthat subdirectory
 #covrpage::covrpage()
@@ -72,19 +77,10 @@ usethis::use_github()
 usethis::use_github_action()
 # Chose one of the three
 # See https://usethis.r-lib.org/reference/use_github_action.html
-usethis::use_github_action_check_release()
-usethis::use_github_action_check_standard()
-usethis::use_github_action_check_full()
-# Add action for PR
-usethis::use_github_action_pr_commands()
-
-# Travis CI
-usethis::use_travis()
-usethis::use_travis_badge()
-
-# AppVeyor
-usethis::use_appveyor()
-usethis::use_appveyor_badge()
+usethis::use_github_action("check-standard", badge = TRUE)
+usethis::use_github_action("test-coverage", badge = TRUE)
+usethis::use_github_action("document")
+usethis::use_github_action("style")
 
 # Circle CI
 usethis::use_circleci()

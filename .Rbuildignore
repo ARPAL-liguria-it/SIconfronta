@@ -12,3 +12,6 @@ $run_dev.*
 ^app\.R$
 ^rsconnect$
 ^\.github$
+^codecov\.yml$
+^README\.html$
+_\.new\.png$
