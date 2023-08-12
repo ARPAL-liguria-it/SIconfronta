@@ -19,6 +19,9 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/SIconfronta-package.html</loc>
+  </url>
+  <url>
     <loc>/reference/boxplot_1sample_mu.html</loc>
   </url>
   <url>
@@ -32,9 +35,6 @@
   </url>
   <url>
     <loc>/reference/boxplot_2values_unc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/comparat-package.html</loc>
   </url>
   <url>
     <loc>/reference/fct_chitest_1sample_sigma.html</loc>
