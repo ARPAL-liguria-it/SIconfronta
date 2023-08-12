@@ -214,7 +214,7 @@ La correttezza dei risultati forniti dalle funzioni impiegate da SIconfronta, l'
 tra le funzioni e la stabilità dell'interfaccia utente, sono oggetto di oltre 650 test.
 Tali test sono eseguiti in automatico a ogni nuovo rilascio di versione.
 
-L'esito dei controlli del 2023-08-10 per la versione 1.0.0,
+L'esito dei controlli del 2023-08-14 per la versione 1.0.0,
 è riassunto nelle seguenti etichette aggiornate automaticamente:
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/andreabz/SIconfronta/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/SIconfronta/actions/workflows/check-standard.yaml) [![test-coverage](https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml)
