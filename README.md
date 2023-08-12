@@ -10,26 +10,25 @@
 Il software SIconfronta è stato sviluppato per ARPAL allo scopo di
 effettuare confronti di medie e varianze tra:
 
--   due serie di misure;
--   una serie di misure e un valore noto esattamente;
--   due valori dotati di incertezze estese.
+- due serie di misure;
+- una serie di misure e un valore noto esattamente;
+- due valori dotati di incertezze estese.
 
 Il software permette di sottoporre a test sequenziali più di un analita,
 riassumendo i risultati in un unico report in formato pdf.
 
 #### Cosa può fare SIconfronta?
 
--   ottenere statistiche di base sulle serie di valori;
--   effettuare un test di normalità (Shapiro-Wilk) sulle serie di
-    valori;
--   identificare mediante il test *generalized extreme studentized
-    deviate* (GESD) la presenza di potenziali valori anomali;
--   escludere manualmente i valori potenzialmente anomali;
--   effettuare un test ( *t*-test, Welch test o calcolo
-    dell’*E*<sub>*n*</sub>) per il confronto delle medie;
--   effettuare un test ( *F*-test o *χ*<sup>2</sup>-test) per il
-    confronto delle varianze;
--   esportare i risultati in un report .pdf.
+- ottenere statistiche di base sulle serie di valori;
+- effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
+- identificare mediante il test *generalized extreme studentized
+  deviate* (GESD) la presenza di potenziali valori anomali;
+- escludere manualmente i valori potenzialmente anomali;
+- effettuare un test ( $t$-test, Welch test o calcolo dell’ $E_n$) per
+  il confronto delle medie;
+- effettuare un test ( $F$-test o $\chi^2$-test) per il confronto delle
+  varianze;
+- esportare i risultati in un report .pdf.
 
 #### Di cosa ha bisogno SIconfronta?
 
@@ -46,10 +45,10 @@ per entrambe le serie, clicca qui
 
 Ti servirà organizzare il file con:
 
--   una colonna testuale con i nomi degli analiti di interesse;
--   una colonna testuale con due soli valori, di modo da permettere
-    l’identificazione del gruppo di appartenenza dei singoli valori;
--   una colonna numerica con i valori delle misure.
+- una colonna testuale con i nomi degli analiti di interesse;
+- una colonna testuale con due soli valori, di modo da permettere
+  l’identificazione del gruppo di appartenenza dei singoli valori;
+- una colonna numerica con i valori delle misure.
 
 Ognuna delle due serie potrà avere da un minimo di 5 a un massimo di 30
 valori per ogni coppia formata dall’identificativo dell’analita e del
@@ -70,10 +69,10 @@ delle misure.
 Inoltre, nel corso dell’esecuzione dei test, per la serie di misure per
 cui non si dispongono i singoli valori, si dovranno inserire:
 
--   il nome del gruppo;
--   il valore della media;
--   il valore di deviazione standard;
--   la numerosità.
+- il nome del gruppo;
+- il valore della media;
+- il valore di deviazione standard;
+- la numerosità.
 
 La serie per cui sono disponibili le singole misure, potrà avere da un
 minimo di 5 a un massimo di 30 valori per ogni coppia formata
@@ -87,15 +86,15 @@ se vuoi confrontare una serie di misure con un valore noto, clicca qui
 
 Ti servirà organizzare il file con:
 
--   una colonna testuale con i nomi degli analiti di interesse;
--   una colonna testuale con il nome del gruppo di appartenenza dei
-    valori disponibili;
--   una colonna numerica con i valori delle misure.
+- una colonna testuale con i nomi degli analiti di interesse;
+- una colonna testuale con il nome del gruppo di appartenenza dei valori
+  disponibili;
+- una colonna numerica con i valori delle misure.
 
 Inoltre, nel corso dell’esecuzione dei test si dovranno inserire:
 
--   il nome da assegnare al valore noto;
--   il valore noto con cui operare il confronto.
+- il nome da assegnare al valore noto;
+- il valore noto con cui operare il confronto.
 
 La serie di misure potrà avere da un minimo di 5 a un massimo di 30
 valori per ogni coppia formata dall’identificativo dell’analita e del
@@ -109,12 +108,12 @@ se vuoi confrontare due misure dotate di incertezza estesa, clicca qui
 
 Ti servirà organizzare il file con:
 
--   una colonna testuale con i nomi degli analiti di interesse;
--   una colonna testuale con il nome del gruppo di appartenenza dei
-    valori disponibili;
--   una colonna numerica con i valori delle misure;
--   una colonna numerica con i valori delle incertezze estese delle
-    misure.
+- una colonna testuale con i nomi degli analiti di interesse;
+- una colonna testuale con il nome del gruppo di appartenenza dei valori
+  disponibili;
+- una colonna numerica con i valori delle misure;
+- una colonna numerica con i valori delle incertezze estese delle
+  misure.
 
 Può essere presente solo un valore per ogni coppia formata
 dall’identificativo dell’analita e del gruppo
@@ -156,18 +155,18 @@ varianza di Fisher (tipicamente poco potente per numerosità campionarie
 ridotte). Ulteriori informazioni in merito sono disponibili nei seguenti
 articoli:
 
--   Welch, B. L. (1951). *On the Comparison of Several Mean Values: An
-    Alternative Approach*. Biometrika. *38* (3/4): 330–336. doi:
-    [10.2307/2332579](https://doi.org/10.2307%2F2332579)
--   Zimmerman, D. W. (2004). *A note on preliminary tests of equality of
-    variances*. British Journal of Mathematical and Statistical
-    Psychology. *57* (Pt 1): 173–181. doi:
-    [10.1348/000711004849222](https://doi.org/10.1348%2F000711004849222)
+- Welch, B. L. (1951). *On the Comparison of Several Mean Values: An
+  Alternative Approach*. Biometrika. *38* (3/4): 330–336. doi:
+  [10.2307/2332579](https://doi.org/10.2307%2F2332579)
+- Zimmerman, D. W. (2004). *A note on preliminary tests of equality of
+  variances*. British Journal of Mathematical and Statistical
+  Psychology. *57* (Pt 1): 173–181. doi:
+  [10.1348/000711004849222](https://doi.org/10.1348%2F000711004849222)
 
 Il test per il confronto tra una varianza e un valore assegnato è stato
-implementato sulla base del test del *χ*<sup>2</sup> riportato nel
-prospetto E della norma UNI ISO 2854:1988. Il test implementato è stato
-in grado di replicare i risultati riportati nella medesima norma.
+implementato sulla base del test del $\chi^2$ riportato nel prospetto E
+della norma UNI ISO 2854:1988. Il test implementato è stato in grado di
+replicare i risultati riportati nella medesima norma.
 
 Il test per il confronto tra due varianze è stato implementato
 utilizzando la funzione `var.test` della libreria `stats` del software
@@ -176,10 +175,10 @@ linea con quanto riportato nella norma UNI ISO 2854:1988 (prospetti G e
 H).
 
 Il test per il confronto di due valori dotati di incertezza estesa, il
-calcolo dell’*E*<sub>*n*</sub> è stato implementato sulla base di quanto
-riportato nella norma ISO 13528:2022, al paragrafo 9.7. Il calcolo
-implementato è stato in grado di replicare i risultati riportati nella
-sezione E.4. della medesima norma.
+calcolo dell’ $E_n$ è stato implementato sulla base di quanto riportato
+nella norma ISO 13528:2022, al paragrafo 9.7. Il calcolo implementato è
+stato in grado di replicare i risultati riportati nella sezione E.4.
+della medesima norma.
 
 #### Come funziona Calibrat?
 

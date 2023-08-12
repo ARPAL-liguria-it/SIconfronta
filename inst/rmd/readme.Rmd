@@ -20,6 +20,7 @@ i risultati in un unico report in formato pdf.
 * effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
 * identificare mediante il test _genaralised extreme studentized deviate_ (GESD) la presenza di potenziali valori anomali;
 * escludere manualmente i valori potenzialmente anomali;
+
 * effettuare un test ( $t$-test, Welch test o calcolo dell' $E_n$ ) per il confronto delle medie;
 * effettuare un test ( $F$-test o $\chi^2$-test) per il confronto delle varianze;
 * esportare i risultati in un report .pdf.

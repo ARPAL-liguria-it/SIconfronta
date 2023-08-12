@@ -4,7 +4,7 @@ author: "Andrea Bazzano"
 date: "2023-03-29"
 output:
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 
 ## SIconfronta
@@ -31,7 +31,7 @@ i risultati in un unico report in formato pdf.
 * effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
 * identificare mediante il test _generalized extreme studentized deviate_ (GESD) la presenza di potenziali valori anomali;
 * escludere manualmente i valori potenzialmente anomali;
-* effettuare un test ( $t$-test, Welch test o calcolo dell'$E_n$) per il confronto delle medie;
+* effettuare un test ( $t$-test, Welch test o calcolo dell' $E_n$) per il confronto delle medie;
 * effettuare un test ( $F$-test o $\chi^2$-test) per il confronto delle varianze;
 * esportare i risultati in un report .pdf.
 
@@ -163,7 +163,7 @@ Il test per il confronto tra due varianze è stato implementato utilizzando la f
 L'implementazione risulta coerente e in grado di fornire risultati in linea con quanto riportato
 nella norma UNI ISO 2854:1988 (prospetti G e H).
 
-Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell'$E_n$ è
+Il test per il confronto di due valori dotati di incertezza estesa, il calcolo dell' $E_n$ è
 stato implementato sulla base di quanto riportato nella norma ISO 13528:2022, al paragrafo 9.7.
 Il calcolo implementato è stato in grado di replicare i risultati riportati nella sezione
 E.4. della medesima norma.
