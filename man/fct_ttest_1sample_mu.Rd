@@ -22,7 +22,7 @@ and a \code{numeric} vector with the measurements should be included.}
 \item{response}{the name of a numeric vector in \code{data}.
 Quotation (" ") is not required.}
 
-\item{group}{the name of a single-level factor variable that identifies the
+\item{group}{the name of a single-level factor variable that identifies
 the group in \code{data}. Quotation (" ") is not required.}
 
 \item{reflabel}{a character value with the name of the reference value.}
@@ -32,7 +32,7 @@ the group in \code{data}. Quotation (" ") is not required.}
 \item{significance}{a number, typically either 0.90, 0.95 (default) or 0.99
 indicating the confidence level for the test.}
 
-\item{alternative}{a character string specifying the alternative hypotesis,
+\item{alternative}{a character string specifying the alternative hypothesis,
 must be one of \code{"different"} or \code{"greater"}.}
 }
 \value{
@@ -58,7 +58,7 @@ A list with the following items:
 \description{
 The function displays the results of a \eqn{t}-test performed
  on a group of values compared with a known value.
- The returned text is suitable for the {comparat} {shiny} app.
+ The returned text is suitable for the {SI confronta} {shiny} app.
 }
 \details{
 \eqn{t}-test is calculated using the base-R function \code{t.test}.

@@ -162,3 +162,95 @@ render_report <- function(input, output, params) {
 #'
 #' @noRd
 `%notin%` = Negate(`%in%`)
+
+#' Bslib card with help tips
+#'
+#' @description The function provides a {bslib} card with help text.
+#' The help text is stored in Rmarkwdown file placed into the \code{/inst/rmd}
+#' package folder.
+#'
+#' @param card_title the title of the card. Default is "Help".
+#' @param rmdfile the name of the Rmarkdown file with the help instructions.
+#' The file must be placed in the \code{/inst/rmd} folder of the package.
+#' @param rmdpackage the package name.
+#'
+#' @return a {bslib} card with the help text.
+#'
+#' @noRd
+#' @importFrom bslib card card_header card_body
+#' @importFrom shiny icon
+help_card <- function(card_title,
+                      rmdfile,
+                      rmdpackage) {
+
+  rmdpath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                  rmdfile, rmdpackage)) |>
+    eval()
+
+  bslib::card(
+    bslib::card_header(icon("hammer"), card_title),
+    bslib::card_body(
+      includeMarkdown(rmdpath)
+      )
+    )
+
+}
+
+#' Bslib accordion with help tips
+#'
+#' @description The function provides a {bslib} accordion with help text
+#' arranged on three panels.
+#' The help text is stored in Rmarkwdown files placed into the \code{/inst/rmd}
+#' package folder.
+#'
+#' @param todotitle the title for the first panel.
+#' @param tipstitle the title for the second panel.
+#' @param togettitle the title for the third panel.
+#' @param todofile the name of the Rmarkdown file with the help instructions.
+#' @param tipsfile the name of the Rmarkdown file with the help instructions.
+#' @param togetfile the name of the Rmarkdown file with the help instructions.
+#'
+#' @details Files must be placed in the \code{/inst/rmd} folder of the package.
+#'
+#' @return a {bslib} accordion with three panels.
+#'
+#' @noRd
+#' @importFrom bslib accordion accordion_panel
+#' @importFrom shiny icon includeMarkdown
+help_accordion <- function(todotitle,
+                           tipstitle,
+                           togettitle,
+                           todofile,
+                           tipsfile,
+                           togetfile) {
+
+  todopath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                   todofile, package = "SIconfronta")) |>
+    eval()
+
+  tipspath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                   tipsfile, package = "SIconfronta")) |>
+    eval()
+
+  togetpath <- parse(text = sprintf("system.file('rmd', '%s', package = '%s')",
+                                    togetfile, package = "SIconfronta")) |>
+    eval()
+
+  bslib::accordion(
+    id = "help",
+    open = "todo",
+    bslib::accordion_panel(icon = shiny::icon("hammer"),
+                    title = todotitle,
+                    value = "todo",
+                    shiny::includeMarkdown(todopath)),
+    bslib::accordion_panel(icon = shiny::icon("lightbulb"),
+                    title = tipstitle,
+                    value = "tips",
+                    shiny::includeMarkdown(tipspath)),
+    bslib::accordion_panel(icon = shiny::icon("vials"),
+                    title = togettitle,
+                    tips = "toget",
+                    shiny::includeMarkdown(togetpath))
+  )
+
+}

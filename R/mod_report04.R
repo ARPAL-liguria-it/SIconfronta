@@ -10,27 +10,63 @@
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bslib card card_header card_body layout_columns layout_column_wrap
 mod_report04_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h4("Informazioni aggiuntive"),
-    textInput(ns("title"), label = "Titolo del report", width = "80%"),
-    textAreaInput(ns("description"), label = "Descrizione dell'esperimento", width = "80%"),
-    textAreaInput(ns("discussion"), label = "Interpretazione dei risultati", width = "80%"),
 
-    hr(),
+    bslib::layout_columns(
+      col_widths = c(7, 5),
+      fill = FALSE,
 
-    checkboxGroupInput(ns("content"),
+    bslib::card(
+      bslib::card_header(icon("hand-point-down"), "Aggiungi qualche informazione"),
+      bslib::card_body(
+        textInput(ns("title"), label = "Titolo del report", width = "100%"),
+        textAreaInput(ns("description"), label = "Descrizione dell'esperimento",
+                      rows = 10, width = "100%"),
+        textAreaInput(ns("discussion"), label = "Interpretazione dei risultati",
+                      rows = 10, width = "100%")
+      )
+    ),
+
+    bslib::layout_column_wrap(
+      width = 1,
+      heights_equal = "row",
+
+    bslib::card(
+      bslib::card_header(icon("hand-point-down"), "Seleziona cosa salvare"),
+      bslib::card_body(
+
+        checkboxGroupInput(ns("content"),
                        label = h4("Test da includere nel report"),
                        width = "80%",
                        choices = "",
-                       selected = ""),
+                       selected = "")
+        )
+      ),
 
-    hr(),
+    bslib::card(
+      bslib::card_header(icon("lightbulb"), "Suggerimento"),
+      bslib::card_body(
+        "Una volta cliccato il tasto 'Crea il report',
+        non chiudere o ricaricare la pagina finch\u00E9 non troverai
+        nella tua cartella Download un file con il nome
+        'comparison-report_' seguito dalla data di oggi.
 
-    downloadButton(ns("makereport"), label = "Crea il report",
-      icon = icon("wand-magic-sparkles"),
-      width = '25%')
+        A seconda di quanti parametri hai salvato, potrebbero volerci
+        fino a un massimo di dieci minuti,
+        anche se tipicamente ne bastano un paio."
+      )
+    )
+    )
+    ),
+
+    tags$div(
+      downloadButton(ns("makereport"), label = "Crea il report",
+                     icon = icon("wand-magic-sparkles"),
+                     width = '25%')
+    )
 
   )
 }
@@ -43,7 +79,7 @@ mod_report04_ui <- function(id){
 #' @param inputreport a list of saved results to be passed to the {rmd}
 #'  report template. Additionally, the module uses a report template named
 #'  {comparison_report.Rmd} and a pdf logo named {"logoarpal.pdf"} located in
-#'  the {"comparat/inst"} folder.
+#'  the {"SIconfronta/inst"} folder.
 #' @return a {pdf} report compiled following the {comparison_report.Rmd} template.
 #'  The report compilation is performed as a \code{future_promise} from package
 #'  {promises}.
@@ -103,9 +139,9 @@ mod_report04_server <- function(id, r){
         # The report template is copied in a temporary directory to prevent
         # user permission issues
         reportpath <- system.file("rmd", "comparison_report.Rmd",
-                                  package = "comparat")
+                                  package = "SIconfronta")
         logopath <- system.file("rmd", "logo.pdf",
-                                package = "comparat")
+                                package = "SIconfronta")
 
         tempReport <- tempfile(fileext = ".Rmd")
         tempLogo <- tempfile(fileext = ".pdf")

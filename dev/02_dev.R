@@ -16,7 +16,7 @@
 ## Dependencies ----
 ## Amend DESCRIPTION with dependencies read from package code parsing
 ## install.package('attachment') # if needed.
-attachment::att_amend_desc()
+# attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
@@ -56,7 +56,7 @@ usethis::use_test("app_ui")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("comparat")
+usethis::use_vignette("SIconfronta")
 devtools::build_vignettes()
 
 ## Code Coverage----
@@ -64,7 +64,7 @@ devtools::build_vignettes()
 usethis::use_coverage("codecov")
 
 # Create a summary readme for the testthat subdirectory
-covrpage::covrpage()
+#covrpage::covrpage()
 
 ## CI ----
 ## Use this part of the script if you need to set up a CI

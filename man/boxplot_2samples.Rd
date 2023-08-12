@@ -20,7 +20,7 @@ the two groups and a column named *outlier* with a logical vector.}
 }
 \value{
 A {plotly} boxplot for comparing two group of values. Raw data values
-are overlayed on top of the boxes.
+are overlaid on top of the boxes.
 }
 \description{
 The function provides a simple {plotly} boxplot for comparing

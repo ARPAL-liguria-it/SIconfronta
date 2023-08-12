@@ -2,7 +2,7 @@
 output: html_document
 ---
 
-In attesa di un file .csv con tre colonne:
+Carica un file .csv con tre colonne:
   - una colonna con il nome o i nomi dei parametri di interesse;
   - una colonna con il nome dei due gruppi da confrontare;
   - una colonna con i valori numerici derivanti dalle misure effettuate per i diversi parametri;

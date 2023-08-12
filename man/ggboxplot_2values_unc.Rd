@@ -22,7 +22,7 @@ column named *rimosso* with "sì" or "no" values.}
 }
 \value{
 A {ggplot2} boxplot for comparing two values with extended uncertainties.
-Raw data values are overlayed on top of the box.
+Raw data values are overlaid on top of the box.
 }
 \description{
 The function provides a simple {ggplot2} boxplot for comparing

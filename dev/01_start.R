@@ -19,9 +19,9 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ##
 golem::fill_desc(
-  pkg_name = "comparat", # The Name of the package containing the App
-  pkg_title = "comparat", # The Title of the package containing the App
-  pkg_description = "Comparat provides a Shiny application for t-test and F-test",
+  pkg_name = "SIconfronta", # The Name of the package containing the App
+  pkg_title = "SIconfronta", # The Title of the package containing the App
+  pkg_description = "SIconfronta provides a Shiny application for t-test and F-test",
   # The Description of the package containing the App
   author_first_name = "Andrea", # Your First Name
   author_last_name = "Bazzano", # Your Last Name

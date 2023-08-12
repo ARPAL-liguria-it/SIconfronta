@@ -27,14 +27,16 @@
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bslib layout_sidebar navset_hidden nav_panel card card_header card_body
 mod_loadfile02_ui <- function(id) {
   ns <- NS(id)
 
-  tagList(sidebarLayout(
-    sidebarPanel(
-      width = 2,
+  tagList(
 
+    bslib::layout_sidebar(
+    sidebar = list(
 
+      ## sidebar
       # control for choosing the file to be uploaded
       fileInput(
         ns("file"),
@@ -47,13 +49,12 @@ mod_loadfile02_ui <- function(id) {
 
 
       # Conditional panel for assigning the column names to their role
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("columnnames"),
-        type = "hidden",
 
-        tabPanel(""),
+        bslib::nav_panel(""),
 
-        tabPanel(
+        bslib::nav_panel(
           "dataloaded",
           ## 1. Select the variable for the parameter
           selectizeInput(
@@ -86,13 +87,12 @@ mod_loadfile02_ui <- function(id) {
       ),
 
 
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("ext_unc"),
-        type = "hidden",
 
-        tabPanel("not_2values"),
+        bslib::nav_panel("not_2values"),
 
-        tabPanel(
+        bslib::nav_panel(
           "2values",
           selectizeInput(
             ns("uncertaintyvar"),
@@ -106,36 +106,42 @@ mod_loadfile02_ui <- function(id) {
       ),
 
 
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("next"),
-        type = "hidden",
 
-        tabPanel(""),
+        bslib::nav_panel(""),
 
-        tabPanel(
-          "dataloaded",
-          actionButton(
-            ns("nextbtn"),
-            label = "Avanti",
-            icon = icon("circle-right")
-          )
-        )
+        bslib::nav_panel("dataloaded",
+                         hr(),
+                         actionButton(
+                           ns("nextbtn"),
+                           label = "Avanti",
+                           icon = icon("circle-right")
+                         ))
       )
 
     ),
 
-
-    mainPanel(tabsetPanel(
+    ## main panel
+    bslib::navset_hidden(
       id = ns("data"),
-      type = "hidden",
 
-      tabPanel("",
-               htmlOutput(ns("waiting"))),
+      bslib::nav_panel("",
+                       bslib::card(
+                         bslib::card_header(icon("hammer"), "Cosa devi fare"),
+                         bslib::card_body(htmlOutput(ns("waiting")))
+                         )
+                       ),
 
 
-      tabPanel("dataloaded",
-               DT::DTOutput(ns("datatable")))
-    ))
+      bslib::nav_panel("dataloaded",
+                      bslib::card(
+                        bslib::card_header(icon("vials"), "Dati caricati"),
+                        bslib::card_body(
+                          DT::DTOutput(ns("datatable")))
+                       )
+                      )
+    )
   ))
 }
 
@@ -193,11 +199,11 @@ mod_loadfile02_server <- function(id, r) {
 
       switch(
         r$aim01$aim,
-        "2samples" = includeMarkdown(system.file("rmd", "help_loadfile02_2samples.Rmd", package = "comparat")),
-        "2samples_par" = includeMarkdown(system.file("rmd", "help_loadfile02_2samples_par.Rmd", package = "comparat")),
-        "1sample_mu" = includeMarkdown(system.file("rmd", "help_loadfile02_1sample_mu.Rmd", package = "comparat")),
-        "1sample_sigma" = includeMarkdown(system.file("rmd", "help_loadfile02_1sample_sigma.Rmd", package = "comparat")),
-        "2values_unc" = includeMarkdown(system.file("rmd", "help_loadfile02_2values_unc.Rmd", package = "comparat"))
+        "2samples" = includeMarkdown(system.file("rmd", "help_loadfile02_2samples.Rmd", package = "SIconfronta")),
+        "2samples_par" = includeMarkdown(system.file("rmd", "help_loadfile02_2samples_par.Rmd", package = "SIconfronta")),
+        "1sample_mu" = includeMarkdown(system.file("rmd", "help_loadfile02_1sample_mu.Rmd", package = "SIconfronta")),
+        "1sample_sigma" = includeMarkdown(system.file("rmd", "help_loadfile02_1sample_sigma.Rmd", package = "SIconfronta")),
+        "2values_unc" = includeMarkdown(system.file("rmd", "help_loadfile02_2values_unc.Rmd", package = "SIconfronta"))
       )
     })
 
@@ -523,7 +529,8 @@ mod_loadfile02_server <- function(id, r) {
       DT::datatable(
       datafile(),
       rownames = FALSE,
-      style = "bootstrap5",
+      style = "bootstrap4",
+      fillContainer = TRUE,
       options = list(
         language = list(
           search = "Cerca",

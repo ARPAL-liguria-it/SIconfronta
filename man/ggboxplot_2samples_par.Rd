@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_compare032_2samples_par.R
 \name{ggboxplot_2samples_par}
 \alias{ggboxplot_2samples_par}
-\title{GGplot2 boxplots for comparing two groups of values for one of which only mean,
+\title{GGplot2 boxplots for comparing two groups of values, for one of which only mean,
 standard deviation and number of samples are reported.}
 \usage{
 ggboxplot_2samples_par(data, group, response, udm, group2, dfsummary)
@@ -28,7 +28,7 @@ name of the group1 and name of the group2.}
 }
 \value{
 A {ggplot2} boxplot for comparing two group of values. Raw data values
-are overlayed on top of the boxes.
+are overlaid on top of the boxes.
 }
 \description{
 The function provides a simple {ggplot2} boxplot for comparing

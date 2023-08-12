@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_compare031_2samples.R
 \name{fct_ftest_2samples}
 \alias{fct_ftest_2samples}
-\title{Displays the results of a \eqn{F}-test for two groups of values}
+\title{Displays the results of an \eqn{F}-test for two groups of values}
 \usage{
 fct_ftest_2samples(
   data,
@@ -26,7 +26,7 @@ in \code{data}. Quotation (" ") is not required.}
 \item{significance}{a number, typically either 0.90, 0.95 (default) or 0.99
 indicating the confidence level for the test.}
 
-\item{alternative}{a character string specifying the alternative hypotesis,
+\item{alternative}{a character string specifying the alternative hypothesis,
 must be one of \code{"different"} or \code{"greater"}.}
 }
 \value{
@@ -48,16 +48,16 @@ A list with the following items:
  }
 }
 \description{
-The function displays the results of a \eqn{F}-test performed
+The function displays the results of an \eqn{F}-test performed
  on two groups of values.
- The returned text is suitable for the {comparat} {shiny} app.
+ The returned text is suitable for the {SI confronta} {shiny} app.
 }
 \details{
 \eqn{F}-test is calculated using the base-R function \code{var.test},
  with the group with the numerically larger variance as first argument.
  As a consequence, for the variances of two series of values \eqn{A} and \eqn{B},
  being the first one numerically greater than the second one, the alternative
- hypotheses tested can only be \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}
+ hypothesis tested can only be \eqn{\mathrm{Var}(A) \neq \mathrm{Var}(B)}
  (\code{alternative = "different"}) or \eqn{\mathrm{Var}(A) > \mathrm{Var}(B)}
  (\code{alternative = "greater"}).
 }

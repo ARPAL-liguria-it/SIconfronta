@@ -2,7 +2,7 @@
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #' The module subsets a {data.table}, loaded by the {mod_loadfile02} module of the
-#' {comparat} package, by a single parameter. The resulting dataset is passed
+#' {SIconfronta} package, by a single parameter. The resulting dataset is passed
 #' to a {mod_compare03x} submodule for different calculations dependantant on the
 #' option choosen in the {mod_aim01} module.
 #'
@@ -20,12 +20,14 @@
 #' @noRd
 #'
 #' @import shiny
+#' @importFrom bslib layout_sidebar navset_hidden nav_panel
 mod_compare03_ui <- function(id) {
   ns <- NS(id)
-  tagList(sidebarLayout(
-    sidebarPanel(
-      width = 2,
+  tagList(
+    bslib::layout_sidebar(
+    sidebar = list(
 
+      ## sidebar
       # select the parameter
       selectizeInput(
         ns("parameter"),
@@ -37,43 +39,38 @@ mod_compare03_ui <- function(id) {
       ),
 
       # different controls for the different data options ----
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("ctrls"),
-        type = "hidden",
 
-        tabPanel(
-          "2samples",
+        bslib::nav_panel("2samples",
           mod_compare031_2samples_inputs_ui(ns("2samples"))),
 
-        tabPanel(
-          "2samples_par",
+        bslib::nav_panel("2samples_par",
           mod_compare032_2samples_par_inputs_ui(ns("2samples_par"))
         ),
 
-        tabPanel(
-          "1sample_mu",
+        bslib::nav_panel("1sample_mu",
           mod_compare033_1sample_mu_inputs_ui(ns("1sample_mu"))),
 
-        tabPanel(
-          "1sample_sigma",
+        bslib::nav_panel("1sample_sigma",
           mod_compare034_1sample_sigma_inputs_ui(ns("1sample_sigma"))
         ),
 
-        tabPanel(
-          "2values_unc",
+        bslib::nav_panel("2values_unc",
           mod_compare035_2values_unc_inputs_ui(ns("2values_unc")))
 
       ),
 
 
       # save and delete buttons ----
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("savedel"),
-        type = "hidden",
 
-        tabPanel("cantsave"),
+
+        bslib::nav_panel("cantsave"),
         # show the save button when data is not saved
-        tabPanel("save",
+        bslib::nav_panel("save",
+                br(),
                  # 5. click on the save button
                  actionButton(
                    ns("save"),
@@ -82,7 +79,8 @@ mod_compare03_ui <- function(id) {
                  )),
 
         # show the delete button when data has been saved
-        tabPanel("delete",
+        bslib::nav_panel("delete",
+                 br(),
                  # 6. click on the delete buttons (if you spot a mistake)
                  actionButton(
                    ns("delete"),
@@ -94,14 +92,16 @@ mod_compare03_ui <- function(id) {
 
 
       # showing a next button when something has been saved ----
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("nextpanel"),
-        type = "hidden",
 
-        tabPanel("not_saved"),
+        bslib::nav_panel("not_saved",
+                hr()
+                ),
 
-        tabPanel("saved",
-                 hr(),
+        bslib::nav_panel("saved",
+                hr(),
+
                  actionButton(
                    ns("nextbtn"),
                    label = "Avanti",
@@ -112,44 +112,36 @@ mod_compare03_ui <- function(id) {
     ),
 
 
-    mainPanel(
-      width = 10,
-
+      ## Main panel
       # different outputs for the different data options
-      tabsetPanel(
+      bslib::navset_hidden(
         id = ns("outputs"),
-        type = "hidden",
 
-        tabPanel(
-          "2samples",
+        bslib::nav_panel("2samples",
           mod_compare031_2samples_output_ui(ns("2samples"))),
 
-        tabPanel(
-          "2samples_par",
+        bslib::nav_panel("2samples_par",
           mod_compare032_2samples_par_output_ui(ns("2samples_par"))),
 
-        tabPanel(
-          "1sample_mu",
+        bslib::nav_panel("1sample_mu",
           mod_compare033_1sample_mu_output_ui(ns("1sample_mu"))),
 
-        tabPanel(
-          "1sample_sigma",
+        bslib::nav_panel("1sample_sigma",
           mod_compare034_1sample_sigma_output_ui(ns("1sample_sigma"))),
 
-        tabPanel(
-          "2values_unc",
+        bslib::nav_panel("2values_unc",
           mod_compare035_2values_unc_output_ui(ns("2values_unc")))
 
       )
     )
-  ))
+  )
 }
 
 #' compare Server Function
 #'
 #' @description A shiny Module for basic two-sample hypothesis testing.
 #' The module subsets a {data.table}, loaded by the {mod_loadfile02} module of the
-#' {comparat} package, by a single parameter. The resulting dataset is passed
+#' {SIconfronta} package, by a single parameter. The resulting dataset is passed
 #' to a {mod_compare03x} submodule for different calculations dependantant on the
 #' option choosen in the {mod_aim01} module.
 #'

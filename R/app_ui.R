@@ -7,7 +7,7 @@
 #'
 #' @import shiny
 #' @importFrom future plan multisession
-#' @importFrom bslib bs_theme
+#' @importFrom bslib bs_theme page_navbar nav_panel nav_menu nav_spacer
 future::plan(future::multisession)
 
 app_ui <- function(request) {
@@ -16,28 +16,36 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
 
-    navbarPage(
+    bslib::page_navbar(
       id = "navbar",
-      theme = bslib::bs_theme(version = 5, bootswatch = "sandstone"),
-      title = tags$div(class = "navbar-brand", href = "#",
-                       tags$img(src = "www/comparatlogo.png",
-                                alt = "Comparat",
-                                height = 50)),
-      windowTitle = "Comparat",
-      padding = 50,
-      inverse = FALSE,
-      position = "static-top",
-      fluid = FALSE,
+      theme = bslib::bs_theme(bootswatch = "cosmo",
+                              version = 5,
+                              "navbar-bg" = "#2780E3",
+                              "navbar-brand-font-size" = "2rem"),
+      title = "SI confronta",
+      window_title = "SI confronta",
+      inverse = TRUE,
+      fluid = TRUE,
       collapsible = TRUE,
       lang = "it",
 
       # Navbar items ----
-      tabPanel("Scopo", value = "aim", mod_aim01_ui("scopo")),
-      tabPanel("Dati", value = "data", mod_loadfile02_ui("dati")),
-      tabPanel("Confronti", value = "compare", mod_compare03_ui("confronto")),
-      tabPanel("Report", value = "report", mod_report04_ui("report")),
-      tabPanel("Leggimi", value = "readme",
-               includeMarkdown(system.file("rmd", "readme.Rmd",package = "comparat")))
+      bslib::nav_panel("Scopo", value = "aim", mod_aim01_ui("scopo")),
+      bslib::nav_panel("Dati", value = "data", mod_loadfile02_ui("dati")),
+      bslib::nav_panel("Confronti", value = "compare", mod_compare03_ui("confronto")),
+      bslib::nav_panel("Report", value = "report", mod_report04_ui("report")),
+      bslib::nav_spacer(),
+      bslib::nav_menu("Leggimi",
+                      align = "right",
+        bslib::nav_panel("Per iniziare", value = "readme",
+                        includeMarkdown(
+                          system.file("rmd", "readme.Rmd", package = "SIconfronta")
+                       )),
+        bslib::nav_panel("Validazione", value = "tests",
+                         includeMarkdown(
+                           system.file("rmd", "test_details.Rmd", package = "SIconfronta")
+                         ))
+      )
 
     )
   )
@@ -63,7 +71,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "Comparat",
+      app_title = "SI confronta",
     ),
     # Add here other external resources
     shinyjs::useShinyjs()

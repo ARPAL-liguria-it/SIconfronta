@@ -8,7 +8,7 @@
 
 library(testthat)
 # library(shinytest2)
-library(comparat)
+library(SIconfronta)
 
-test_check("comparat")
+test_check("SIconfronta")
 # shinytest2::test_app(check_setup = FALSE)

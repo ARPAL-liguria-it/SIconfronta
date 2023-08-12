@@ -2,7 +2,7 @@
 % Please edit documentation in R/fct_compare031_2samples.R
 \name{fct_gesd}
 \alias{fct_gesd}
-\title{Displays the results of generelised extreme strudentized deviate (GESD) test}
+\title{Displays the results of a generalised extreme studentized deviate (GESD) test}
 \source{
 UNI ISO 16269-4:2019 - Statistical interpretation of data -
  Part 4: Detection and treatment of outliers. Section 4.3.2 and Annex A.
@@ -31,17 +31,17 @@ The {data} dataframe has the following columns:
 \describe{
    \item{I}{Numeric values inspected by the test.}
    \item{R}{Numeric values for the extreme studentized deviate.}
-   \item{lambda}{numberic values with the critical values of the test statistics.}
+   \item{lambda}{numeric values with the critical values of the test statistics.}
    \item{outliers}{a logical vector with the result of the test.}
  }
 }
 \description{
-The function displays the results of generelised
- extreme strudentized deviate (GESD) test for outlier detection.
- The returned text is suitable for the {comparat} {shiny} app.
+The function displays the results of generalised
+ extreme studentized deviate (GESD) test for outlier detection.
+ The returned text is suitable for the {SI confronta} {shiny} app.
 }
 \details{
-the GESD test is performed according to secton 4.3.2 of
+the GESD test is performed according to section 4.3.2 of
  UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4: Detection
  and treatment of outliers. The software implementation in performed in
  accordance to Annex A of the same document.

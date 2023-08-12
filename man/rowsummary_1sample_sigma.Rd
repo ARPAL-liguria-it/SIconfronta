@@ -27,7 +27,7 @@ rowsummary_1sample_sigma(
 
 \item{udm}{a string with the unit of measurement.}
 
-\item{signif}{a integer with the number of desired significant figures.}
+\item{signif}{an integer with the number of desired significant figures.}
 }
 \value{
 a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
@@ -35,6 +35,6 @@ a \code{data.table} with 6 rows and \eqn{n + 1} columns for \eqn{n}
 }
 \description{
 The function returns a table with max, mean, median, min, sd and n
- values arranged on rows while groups are on columns. Numbers are formatted as
+ values arranged on rows whereas groups are on columns. Numbers are formatted as
  text in order to provide the desired significant figures.
 }

@@ -1,10 +1,10 @@
 values2unc <- data.table::fread(
-  system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+  system.file("extdata", "raw_2values_unc.csv", package = "SIconfronta"),
   header = "auto",
   stringsAsFactors = TRUE)
 
 sample1 <- data.table::fread(
-  system.file("extdata", "raw_1sample.csv", package = "comparat"),
+  system.file("extdata", "raw_1sample.csv", package = "SIconfronta"),
   header = "auto",
   stringsAsFactors = TRUE)
 
@@ -25,7 +25,7 @@ testServer(mod_loadfile02_server,
 
              # checking the upload process
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_tomato_yields.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_tomato_yields.csv", package = "SIconfronta"),
                name = "raw_tomato_yields.csv"
              ))
 
@@ -34,7 +34,7 @@ testServer(mod_loadfile02_server,
              # datapath
              expect_equal(
                input$file$datapath,
-               system.file("extdata", "raw_tomato_yields.csv", package = "comparat")
+               system.file("extdata", "raw_tomato_yields.csv", package = "SIconfronta")
              )
 
              # column names
@@ -129,7 +129,7 @@ testServer(mod_loadfile02_server,
 
              # checking the upload process
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_1sample.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_1sample.csv", package = "SIconfronta"),
                name = "raw_1sample.csv"
              ))
 
@@ -138,7 +138,7 @@ testServer(mod_loadfile02_server,
              # datapath
              expect_equal(
                input$file$datapath,
-               system.file("extdata", "raw_1sample.csv", package = "comparat")
+               system.file("extdata", "raw_1sample.csv", package = "SIconfronta")
              )
 
              # column names
@@ -230,7 +230,7 @@ testServer(mod_loadfile02_server,
 
              # checking the upload process
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2values_unc.csv", package = "SIconfronta"),
                name = "raw_2values_unc.csv"
              ))
 
@@ -239,7 +239,7 @@ testServer(mod_loadfile02_server,
              # datapath
              expect_equal(
                input$file$datapath,
-               system.file("extdata", "raw_2values_unc.csv", package = "comparat")
+               system.file("extdata", "raw_2values_unc.csv", package = "SIconfronta")
              )
 
              # column names
@@ -333,7 +333,7 @@ testServer(mod_loadfile02_server,
 
              # 1 group instead of 2
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_1sample.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_1sample.csv", package = "SIconfronta"),
                name = "raw_1sample.csv"
              ))
 
@@ -341,7 +341,7 @@ testServer(mod_loadfile02_server,
 
              # 3 groups on some parameters instead of 2 on all parameters
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2samples_wronggroups.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2samples_wronggroups.csv", package = "SIconfronta"),
                name = "raw_2samples_wronggroups.csv"
              ))
 
@@ -349,7 +349,7 @@ testServer(mod_loadfile02_server,
 
              # no grouping variable
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_nogroups.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_nogroups.csv", package = "SIconfronta"),
                name = "raw_nogroups.csv"
              ))
 
@@ -358,7 +358,7 @@ testServer(mod_loadfile02_server,
 
              # 2 numerical variable instead of 1
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2values_unc.csv", package = "SIconfronta"),
                name = "raw_2values_unc.csv"
              ))
 
@@ -366,7 +366,7 @@ testServer(mod_loadfile02_server,
 
              # 5 values for a parameter and group pair insted of a minimum of 6 values
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2samples_4rows.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2samples_4rows.csv", package = "SIconfronta"),
                name = "raw_2samples_4rows.csv"
              ))
 
@@ -385,7 +385,7 @@ testServer(mod_loadfile02_server,
 
              # 2 groups instead of 1
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2samples.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2samples.csv", package = "SIconfronta"),
                name = "raw_2samples.csv"
              ))
 
@@ -393,7 +393,7 @@ testServer(mod_loadfile02_server,
 
              # 3 groups on some parameters instead of 1 on all parameters
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_1sample_wronggroups.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_1sample_wronggroups.csv", package = "SIconfronta"),
                name = "raw_1sample_wronggroups.csv"
              ))
 
@@ -401,7 +401,7 @@ testServer(mod_loadfile02_server,
 
              # no grouping variable
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_nogroups.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_nogroups.csv", package = "SIconfronta"),
                name = "raw_nogroups.csv"
              ))
 
@@ -410,7 +410,7 @@ testServer(mod_loadfile02_server,
 
              # 2 numerical variable instead of 1
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2values_unc.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2values_unc.csv", package = "SIconfronta"),
                name = "raw_2values_unc.csv"
              ))
 
@@ -419,7 +419,7 @@ testServer(mod_loadfile02_server,
 
              # 5 values for a parameter and group pair insted of a minimum of 6 values
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_1sample_4rows.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_1sample_4rows.csv", package = "SIconfronta"),
                name = "raw_1sample_4rows.csv"
              ))
 
@@ -438,7 +438,7 @@ testServer(mod_loadfile02_server,
 
              # 1 numerical variable instead of 2
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2samples.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2samples.csv", package = "SIconfronta"),
                name = "raw_2samples.csv"
              ))
 
@@ -446,7 +446,7 @@ testServer(mod_loadfile02_server,
 
              # 3 groups on some parameters instead of 1 on all parameters
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_2values_unc_wronggroups.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_2values_unc_wronggroups.csv", package = "SIconfronta"),
                name = "raw_2values_unc_wronggroups.csv"
              ))
 
@@ -454,7 +454,7 @@ testServer(mod_loadfile02_server,
 
              # no grouping variable
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_nogroups.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_nogroups.csv", package = "SIconfronta"),
                name = "raw_nogroups.csv"
              ))
 
@@ -464,7 +464,7 @@ testServer(mod_loadfile02_server,
 
              # 2 values for a parameter and group pair insted of a minimum of 1 value
              session$setInputs(file = list(
-               datapath = system.file("extdata", "raw_1sample_4rows.csv", package = "comparat"),
+               datapath = system.file("extdata", "raw_1sample_4rows.csv", package = "SIconfronta"),
                name = "raw_1sample_4rows.csv"
              ))
 

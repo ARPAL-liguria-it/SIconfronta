@@ -1,13 +1,13 @@
-## CompaRat
+## SIconfronta
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/check-standard.yaml)
-[![test-coverage](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/comparat/actions/workflows/test-coverage.yaml)
-[![codecov](https://codecov.io/gh/andreabz/comparat/branch/master/graph/badge.svg?token=XLFI6Z4IBG)](https://codecov.io/gh/andreabz/comparat)
+[![R-CMD-check](https://github.com/andreabz/SIconfronta/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/SIconfronta/actions/workflows/check-standard.yaml)
+[![test-coverage](https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/gh/andreabz/SIconfronta/branch/master/graph/badge.svg?token=XLFI6Z4IBG)](https://codecov.io/gh/andreabz/SIconfronta)
 <!-- badges: end -->
 
-Il software CompaRat è stato sviluppato per ARPAL allo scopo di
+Il software SIconfronta è stato sviluppato per ARPAL allo scopo di
 effettuare confronti di medie e varianze tra:
 
 - due serie di misure;
@@ -17,7 +17,7 @@ effettuare confronti di medie e varianze tra:
 Il software permette di sottoporre a test sequenziali più di un analita,
 riassumendo i risultati in un unico report in formato pdf.
 
-#### Cosa può fare CompaRat?
+#### Cosa può fare SIconfronta?
 
 - ottenere statistiche di base sulle serie di valori;
 - effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
@@ -30,7 +30,7 @@ riassumendo i risultati in un unico report in formato pdf.
   varianze;
 - esportare i risultati in un report .pdf.
 
-#### Di cosa ha bisogno CompaRat?
+#### Di cosa ha bisogno SIconfronta?
 
 Un file .csv con il punto (.) come separatore decimale e la virgola (,)
 come separatore di campo. Ogni colonna presente nel file deve avere
@@ -253,28 +253,28 @@ Dalla scheda <b> Report </b>, clicca qui
 
 <br>
 
-#### CompaRat è validato?
+#### SIconfronta è validato?
 
-CompaRat è basato sull’ambiente software R e molte delle sue funzioni
+SIconfronta è basato sull’ambiente software R e molte delle sue funzioni
 sono utilizzate in ambito professionale da milioni di persone, da circa
 30 anni.
 
 La correttezza dei risultati forniti dalle funzioni impiegate da
-Comparat, l’interazione tra le funzioni e la stabilità dell’interfaccia
-utente, sono oggetto di oltre 650 test. Tali test sono eseguiti in
-automatico a ogni nuovo rilascio di versione. La frazione di codice
-coperta dai test è circa il 93% del totale. L’esito dei controlli e la
-percentuale di codice coperta dai test per l’ultima versione rilasciata,
-è riassunto nelle etichette aggiornate automaticamente e presenti a
-inizio di questo file.
+SIconfronta, l’interazione tra le funzioni e la stabilità
+dell’interfaccia utente, sono oggetto di oltre 650 test. Tali test sono
+eseguiti in automatico a ogni nuovo rilascio di versione. La frazione di
+codice coperta dai test è circa il 93% del totale. L’esito dei controlli
+e la percentuale di codice coperta dai test per l’ultima versione
+rilasciata, è riassunto nelle etichette aggiornate automaticamente e
+presenti a inizio di questo file.
 
-Si consiglia, inoltre, di rendere disponibile Comparat attraverso un
-server ad accesso controllato o distribuirlo mediante *docker*.
+Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un
+server Ubuntu ad accesso controllato o distribuirlo mediante *docker*.
 
 A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali
 bachi](mailto:andrea.bazzano@arpal.liguria.it).
 
-#### Con quale licenza è rilasciato CompaRat?
+#### Con quale licenza è rilasciato SIconfronta?
 
 Con la Affero GPL versione 3.
 

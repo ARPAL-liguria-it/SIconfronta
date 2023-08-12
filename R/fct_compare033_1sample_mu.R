@@ -2,7 +2,7 @@
 #'
 #' @description The function displays the results of a \eqn{t}-test performed
 #'  on a group of values compared with a known value.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
 #'   relevant for testing. A single-levels grouping \code{factor} variable
@@ -224,7 +224,7 @@ boxplot_1sample_mu <- function(data,
       type = "box",
       boxmean = TRUE,
       boxpoints = FALSE,
-      color = I("#D55E00"),
+      color = I("#2780E3"),
       showlegend = FALSE,
       key = NULL
     ) |>

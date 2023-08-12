@@ -2,14 +2,14 @@
 % Please edit documentation in R/fct_compare035_2values_unc.R
 \name{fct_entest_2values_unc}
 \alias{fct_entest_2values_unc}
-\title{Displays the results of a \eqn{E_n}-test for two values with
+\title{Displays the results of an \eqn{E_n}-test for two values with
 extended uncertainties}
 \usage{
 fct_entest_2values_unc(data, response, uncertainty, group)
 }
 \arguments{
 \item{data}{a \code{data.frame} or \code{data.table} with the results
-relevant for testing. A single-levels grouping \code{factor} variable
+relevant for testing. A single-level grouping \code{factor} variable
 and two \code{numeric} vectors with the measurements values and their
 uncertainties should be included.}
 
@@ -19,7 +19,7 @@ Quotation (" ") is not required.}
 \item{uncertainty}{the name of a numeric vector in \code{data}.
 Quotation (" ") is not required.}
 
-\item{group}{the name of a single-level factor variable that identifies the
+\item{group}{the name of a single-level factor variable that identifies
 the group in \code{data}. Quotation (" ") is not required.}
 }
 \value{
@@ -41,12 +41,12 @@ A list with the following items:
 \description{
 The function displays the results of a \eqn{E_n}-test for two
 values with extended uncertainty.
- The returned text is suitable for the {comparat} {shiny} app.
+ The returned text is suitable for the {SI confronta} {shiny} app.
 }
 \details{
 \eqn{E_n}-test is calculated with the following equation:
 \deqn{E_n = \frac{|x - y|}{\sqrt{U(x)^2 + U(y)^2}}}
-for \eqn{E_n \leq 1} the difference of the two values \eqn{x} and \eqn{y} is
+for \eqn{E_n \leq 1}, the difference of the two values \eqn{x} and \eqn{y} is
 accounted by their extended uncertainties (\eqn{U}) and the null hypothesis is
 not rejected. When \eqn{E_n > 1} the two values are different and the null
 hypothesis is rejected.

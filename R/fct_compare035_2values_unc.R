@@ -3,7 +3,7 @@
 #'
 #' @description The function displays the results of a \eqn{E_n}-test for two
 #' values with extended uncertainty.
-#'  The returned text is suitable for the {comparat} {shiny} app.
+#'  The returned text is suitable for the {SI confronta} {shiny} app.
 #'
 #' @param data a \code{data.frame} or \code{data.table} with the results
 #'   relevant for testing. A single-level grouping \code{factor} variable
@@ -154,7 +154,7 @@ boxplot_2values_unc <- function(data,
         symbol = "square"
         ),
       name = "valori",
-      color = I("#D55E00"),
+      color = I("#2780E3"),
       showlegend = FALSE,
       hoverinfo = "y",
       hovertemplate = paste('%{y:.3s}', udm)
