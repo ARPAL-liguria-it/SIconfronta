@@ -96,8 +96,8 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "SIconfronta",
       "RemoteUsername": "andreabz",
-      "RemoteRef": "v1.0.0",
-      "RemoteSha": "3d1ebb04a08f92576a34479fd37202423e75445b",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "2fa048af51b55bf47785d245e9d198647abf1dbb",
       "Requirements": [
         "DT",
         "R",
@@ -116,7 +116,7 @@
         "shinyjs",
         "stats"
       ],
-      "Hash": "e01258d8f85c7cda6a45d675cdc85d45"
+      "Hash": "963b9042a70749536be653d07cc1c501"
     },
     "askpass": {
       "Package": "askpass",
