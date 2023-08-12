@@ -7,7 +7,7 @@
 #'
 #' @import shiny
 #' @importFrom future plan multisession
-#' @importFrom bslib bs_theme page_navbar nav_panel
+#' @importFrom bslib bs_theme page_navbar nav_panel nav_menu nav_spacer
 future::plan(future::multisession)
 
 app_ui <- function(request) {
@@ -34,10 +34,18 @@ app_ui <- function(request) {
       bslib::nav_panel("Dati", value = "data", mod_loadfile02_ui("dati")),
       bslib::nav_panel("Confronti", value = "compare", mod_compare03_ui("confronto")),
       bslib::nav_panel("Report", value = "report", mod_report04_ui("report")),
-      bslib::nav_panel("Leggimi", value = "readme",
-                       includeMarkdown(
-                         system.file("rmd", "readme.Rmd", package = "SIconfronta")
-                       ))
+      bslib::nav_spacer(),
+      bslib::nav_menu("Leggimi",
+                      align = "right",
+        bslib::nav_panel("Per iniziare", value = "readme",
+                        includeMarkdown(
+                          system.file("rmd", "readme.Rmd", package = "SIconfronta")
+                       )),
+        bslib::nav_panel("Validazione", value = "tests",
+                         includeMarkdown(
+                           system.file("rmd", "test_details.Rmd", package = "SIconfronta")
+                         ))
+      )
 
     )
   )
