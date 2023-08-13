@@ -97,14 +97,13 @@
       "RemoteRepo": "SIconfronta",
       "RemoteUsername": "andreabz",
       "RemoteRef": "HEAD",
-      "RemoteSha": "2fa048af51b55bf47785d245e9d198647abf1dbb",
+      "RemoteSha": "53a4030ce974ae347309eb46714bad3fd90718c9",
       "Requirements": [
         "DT",
         "R",
         "bslib",
         "config",
         "data.table",
-        "devtools",
         "future",
         "ggplot2",
         "golem",
@@ -112,11 +111,12 @@
         "plotly",
         "promises",
         "rmarkdown",
+        "sessioninfo",
         "shiny",
         "shinyjs",
         "stats"
       ],
-      "Hash": "963b9042a70749536be653d07cc1c501"
+      "Hash": "9afa5e530eea0244946d7802a8581a7c"
     },
     "askpass": {
       "Package": "askpass",
