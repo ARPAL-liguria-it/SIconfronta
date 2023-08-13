@@ -87,7 +87,7 @@ mod_report04_ui <- function(id){
 #' @noRd
 #'
 #' @import data.table
-#' @importFrom devtools session_info
+#' @importFrom sessioninfo session_info
 mod_report04_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
@@ -149,7 +149,7 @@ mod_report04_server <- function(id, r){
         file.copy(logopath, tempLogo, overwrite = TRUE)
 
         r$report04$logo <- logopath
-        r$report04$info <- devtools::session_info()
+        r$report04$info <- sessioninfo::session_info()
         r$report04$title <- input$title
         r$report04$description <- input$description
         r$report04$discussion <- input$discussion
