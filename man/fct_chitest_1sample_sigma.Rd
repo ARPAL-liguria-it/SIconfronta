@@ -41,15 +41,15 @@ A list with the following items:
  \describe{
    \item{hypotheses}{a named vector of strings, being \code{h0} and \code{h1}
    the null and alternative hypothesis, respectively.}
-   \item{difference}{a named vector of numbers, being \code{ratio},
-   \code{lwrci} and \code{uprci} the ratio of the variances of the two groups and
+   \item{ratio}{a named vector of numbers, being \code{sd},
+   \code{lwrci} and \code{uprci} the variance of the provided numeric values and
    the lower and upper ends of the confidence interval, respectively.
    The confidence interval is calculated considering both the \code{significance}
    and \code{alternative} arguments. For \code{alternative = "greater"} only the
    lower end of the confidence interval will be calculated.}
-   \item{test}{a named vector of numbers, being \code{dof}, \code{fsper},
-   \code{ftheo} and \code{pvalue} the degrees of freedom, the calculated value
-   of the \eqn{F} statistic, the tabulated value of the \eqn{F} statistic and
+   \item{test}{a named vector of numbers, being \code{dof}, \code{chisper},
+   \code{chitheo} and \code{pvalue} the degrees of freedom, the calculated value
+   of the \eqn{\chi^2} statistic, the tabulated value of the \eqn{\chi^2} statistic and
    the \eqn{p}-value associated to the test.}
    \item{result}{a string indicating whether H0 should be rejected or not.}
  }

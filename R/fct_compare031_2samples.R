@@ -317,7 +317,7 @@ fct_ttest_2samples <- function(data,
 #'  \describe{
 #'    \item{hypotheses}{a named vector of strings, being \code{h0} and \code{h1}
 #'    the null and alternative hypothesis, respectively.}
-#'    \item{difference}{a named vector of numbers, being \code{ratio},
+#'    \item{ratio}{a named vector of numbers, being \code{mean},
 #'    \code{lwrci} and \code{uprci} the ratio of the variances of the two groups and
 #'    the lower and upper ends of the confidence interval, respectively.
 #'    The confidence interval is calculated considering both the \code{significance}

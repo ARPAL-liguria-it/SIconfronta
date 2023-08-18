@@ -44,6 +44,10 @@ app_ui <- function(request) {
         bslib::nav_panel("Validazione", value = "tests",
                          includeMarkdown(
                            system.file("rmd", "test_details.Rmd", package = "SIconfronta")
+                         )),
+        bslib::nav_panel("Struttura", value = "structure",
+                         includeMarkdown(
+                           system.file("rmd", "app_structure.Rmd", package = "SIconfronta")
                          ))
       )
 
