@@ -4,7 +4,7 @@ on:
   push:
     branches: [master, main]
   pull_request:
-    branches: [master, main]
+    branches: [stable, master, main]
 
 name: test-coverage
 
@@ -21,10 +21,16 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::covr
-          needs: coverage
+      - uses: r-lib/actions/setup-renv@v2
+
+      #- uses: r-lib/actions/setup-r-dependencies@v2
+      #  with:
+      #    extra-packages: any::covr
+      #    needs: coverage
+
+      - name: Install covr
+        run: install.packages("covr")
+        shell: Rscript {0}
 
       - name: Test coverage
         run: |

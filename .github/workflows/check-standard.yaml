@@ -4,7 +4,7 @@ on:
   push:
     branches: [master, main]
   pull_request:
-    branches: [master, main]
+    branches: [stable, master, main]
 
 name: R-CMD-check
 
@@ -20,7 +20,7 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           #- {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          #- {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
           - {os: ubuntu-latest,   r: 'oldrel-1'}
 
@@ -53,11 +53,13 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+          
+      - uses: r-lib/actions/setup-renv@v2
+      
+     # - uses: r-lib/actions/setup-r-dependencies@v2
+     #   with:
+     #     extra-packages: any::rcmdcheck
+     #     needs: check
 
       - uses: r-lib/actions/check-r-package@v2
         with:
