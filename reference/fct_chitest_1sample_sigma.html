@@ -111,18 +111,18 @@ must be one of <code>"different"</code> or <code>"greater"</code>.</p></dd>
 <dd><p>a named vector of strings, being <code>h0</code> and <code>h1</code>
    the null and alternative hypothesis, respectively.</p></dd>
 
-   <dt>difference</dt>
-<dd><p>a named vector of numbers, being <code>ratio</code>,
-   <code>lwrci</code> and <code>uprci</code> the ratio of the variances of the two groups and
+   <dt>ratio</dt>
+<dd><p>a named vector of numbers, being <code>sd</code>,
+   <code>lwrci</code> and <code>uprci</code> the variance of the provided numeric values and
    the lower and upper ends of the confidence interval, respectively.
    The confidence interval is calculated considering both the <code>significance</code>
    and <code>alternative</code> arguments. For <code>alternative = "greater"</code> only the
    lower end of the confidence interval will be calculated.</p></dd>
 
    <dt>test</dt>
-<dd><p>a named vector of numbers, being <code>dof</code>, <code>fsper</code>,
-   <code>ftheo</code> and <code>pvalue</code> the degrees of freedom, the calculated value
-   of the \(F\) statistic, the tabulated value of the \(F\) statistic and
+<dd><p>a named vector of numbers, being <code>dof</code>, <code>chisper</code>,
+   <code>chitheo</code> and <code>pvalue</code> the degrees of freedom, the calculated value
+   of the \(\chi^2\) statistic, the tabulated value of the \(\chi^2\) statistic and
    the \(p\)-value associated to the test.</p></dd>
 
    <dt>result</dt>
