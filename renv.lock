@@ -268,26 +268,6 @@
       ],
       "Hash": "31d77b09f63550cee9ecb5a08bf76e8f"
     },
-    "covr": {
-      "Package": "covr",
-      "Version": "3.6.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "crayon",
-        "digest",
-        "httr",
-        "jsonlite",
-        "methods",
-        "rex",
-        "stats",
-        "utils",
-        "withr",
-        "yaml"
-      ],
-      "Hash": "a0d8f9a55add5311d48227b6f7f38e34"
-    },
     "cpp11": {
       "Package": "cpp11",
       "Version": "0.4.6",
@@ -1326,16 +1306,6 @@
         "utils"
       ],
       "Hash": "4b22ac016fe54028b88d0c68badbd061"
-    },
-    "rex": {
-      "Package": "rex",
-      "Version": "1.2.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "lazyeval"
-      ],
-      "Hash": "ae34cd56890607370665bee5bd17812f"
     },
     "rlang": {
       "Package": "rlang",

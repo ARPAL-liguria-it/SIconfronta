@@ -9,7 +9,6 @@
 library(testthat)
 # library(shinytest2)
 library(SIconfronta)
-library(covr) # just for github actions
 
 test_check("SIconfronta")
 # shinytest2::test_app(check_setup = FALSE)
