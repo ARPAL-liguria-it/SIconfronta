@@ -272,7 +272,7 @@ Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un
 server Ubuntu ad accesso controllato o distribuirlo mediante *docker*.
 
 A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali
-bachi](mailto:andrea.bazzano@arpal.liguria.it).
+bachi](https://github.com/andreabz/SIconfronta/issues).
 
 #### Con quale licenza è rilasciato SIconfronta?
 

@@ -250,7 +250,7 @@ L'esito dei controlli e la percentuale di codice coperta dai test per l'ultima v
 Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un server Ubuntu ad
 accesso controllato o distribuirlo mediante _docker_. 
 
-A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali bachi](mailto:andrea.bazzano@arpal.liguria.it).
+A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali bachi](https://github.com/andreabz/SIconfronta/issues).
 
 
 #### Con quale licenza è rilasciato SIconfronta?
