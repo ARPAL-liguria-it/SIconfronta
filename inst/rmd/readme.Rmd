@@ -98,7 +98,7 @@ dell'analita e del gruppo
 <br>
 
 
-#### Come sono stati scelti i test di Calibrat?
+#### Come sono stati scelti i test di SIconfronta?
 
 Il test per verificare la normalità di una serie di dati è stato implementato utilizzando
 la funzione `shapiro.test` della libreria `stats` del software R.

@@ -52,7 +52,7 @@ Dati da UNI ISO 16269-4:2019 - Statistical interpretation of data - Part 4: Dete
 
 ### Verifica per il test sul confronto tra le medie di due serie di dati
 
-Dati da Statistics for Experimenters - design, innovation, and discovery. Second Edition, Wiley 2005. pag. 78 and 101.
+Dati da Box G. E. P., Hunter J. S., Hunter W. G., Statistics for Experimenters - design, innovation, and discovery. Second Edition, Wiley 2005. pag. 78 and 101.
 
 #### Input per due serie di dati complete
 
