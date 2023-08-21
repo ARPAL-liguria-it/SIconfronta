@@ -147,8 +147,7 @@ for (i in ordered_analytes) {
 # Validazione dei calcoli
 
 A ogni rilascio il codice viene sottoposto a una serie di test per la verifica
-della correttezza dei risultati forniti. I test coprono oltre il 90% del codice 
-di cui è composta l'applicazione.
+della correttezza dei risultati forniti.
 Il rilascio avviene solo nel caso in cui tutti i test risultino superati.
 
 L'applicazione è distribuita in un ambiente protetto da aggiornamenti o modifiche

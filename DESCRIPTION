@@ -1,8 +1,11 @@
 Package: SIconfronta
 Title: SIconfronta
 Version: 1.0.0
-Authors@R: person('Andrea', 'Bazzano', email = 'andrea.bazzano@arpal.liguria.it', role = c('cre', 'aut'))
-Description: SIconfronta provides a Shiny application for comparing means and variances for two indipendent samples.
+Authors@R: person('Andrea', 'Bazzano', email = 'andrea.bazzano@arpal.liguria.it', role = c('cre', 'aut'),
+                  comment = c(ORCID = "0000-0002-9353-3919"))
+Description: SIconfronta provides a Shiny application for comparing means and variances for one or two indipendent samples.
+URL: https://andreabz.github.io/SIconfronta/, https://github.com/andreabz/SIconfronta
+BugReports: https://github.com/andreabz/SIconfronta/issues
 License: AGPL (>= 3)
 Imports: 
     bslib,
