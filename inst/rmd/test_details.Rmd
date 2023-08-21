@@ -1,5 +1,5 @@
 ---
-title: "Validazione calcoli"
+title: "Validazione dei risultati"
 author: "Andrea Bazzano"
 date: "2023-08-10"
 output: 
