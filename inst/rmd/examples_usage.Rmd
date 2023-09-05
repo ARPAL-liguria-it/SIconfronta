@@ -57,14 +57,14 @@ ci sia una differenza statisticamente significativa al 95% tra i valori
 medi e tra le deviazioni standard delle loro misure.
 
 1.  I due operatori prelevano 10 aliquote ciascuno a partire da un
-    campione di acqua stabilizzato e omogeneo.
-2.  Gli operatori effettuano una aggiunta nota e costante degli analiti
-    di interesse sulle rispettive aliquote.
+    campione di acqua stabilizzato e omogeneo;
+2.  gli operatori effettuano una aggiunta nota e costante degli analiti
+    di interesse sulle rispettive aliquote;
 3.  Edward e Paolino portano a termine l'intera preparazione del
     campione per le diverse aliquote. Una delle aliquote preparata da
     Edward viene persa a causa di un problema in fase di manipolazione
-    del campione.
-4.  L'analisi viene effettuata su un singolo strumento, disponendo le
+    del campione;
+4.  l'analisi viene effettuata su un singolo strumento, disponendo le
     aliquote preparate dai due operatori in ordine casuale.
 
 Per quanto riguarda la determinazione della concentrazione di boro, si
@@ -127,7 +127,7 @@ I valori vengono organizzati nella seguente tabella:
 2.  nella scheda *Dati* si seleziona il file con la tabella dei dati in
     formato csv. Si identificano le colonne relative alle informazioni
     sugli analiti, gruppo e risposte rispettivamente come "analita",
-    "operatore" e "misura".
+    "operatore" e "misura";
 3.  nella scheda *Confronti* si seleziona l'ipotesi alternativa $\neq$,
     il livello di confidenza 95% e si visualizzano i risultati ottenuti;
 4.  nella scheda *Report* si procede all'eventuale creazione di un
@@ -203,7 +203,7 @@ La tabella dei dati viene così organizzata:
 2.  nella scheda *Dati* si seleziona il file con la tabella dei dati in
     formato csv. Si identificano le colonne relative alle informazioni
     sugli analiti, gruppo e risposte rispettivamente come "analita",
-    "metodo" e "misura".
+    "metodo" e "misura";
 3.  nella scheda *Confronti* si digita "riferimento", 2.08, 0.17 e 20
     rispettivamente nei campi Nome del secondo gruppo, Valore medio,
     Deviazione standard e Numero di misure. Si seleziona l'ipotesi
@@ -280,7 +280,7 @@ maggiore del valore nominale, organizza i dati nel seguente modo:
 2.  nella scheda *Dati* seleziona il file con la tabella dei dati in
     formato csv. Identifica le colonne relative alle informazioni sugli
     analiti, gruppo e risposte rispettivamente come "analita", "valore"
-    e "misura".
+    e "misura";
 3.  nella scheda *Confronti* digita "riferimento" e 2.00 rispettivamente
     nei campi Nome del valore di riferimento e Valore di riferimento.
     Seleziona l'ipotesi alternativa $>$, il livello di confidenza 95%,
@@ -297,12 +297,12 @@ $t$ = 2.6282, $p$-value = 0.0151).
 
 ------------------------------------------------------------------------
 
-L'operatore Pasquale Dinatale vuole verificare che i due strumenti con
+L'operatore Pino Dinatale vuole verificare che i due strumenti con
 cui determina la concentrazione di berillio e vanadio nei suoli
 producano valori tra loro non significativamente differenti a un livello
 di significatività del 95%.
 
-Pasquale non si può permettere di fermare le due linee di analisi per
+Pino non si può permettere di fermare le due linee di analisi per
 effettuare tale verifica, inoltre, vorrebbe verificare se i risultati
 siano effettivamente uguali anche con campioni reali, caratterizzati da
 matrici tra loro leggermente diverse. Decide, così, di sottoporre alle
@@ -314,16 +314,16 @@ essere analizzato con i due strumenti.
 I risultati per lo strumento A sono i seguenti:
 
 -   berillio: 1.80, 1.74, 2.27, 1.95, 2.31, 2.26, 2.05, 1.99, 1.68, 2.73
-    mg/kg
+    mg/kg;
 -   vanadio: 77.0, 106.9, 100.5, 98.0, 85.5, 96.3, 98.3, 75.2, 83.7,
-    84.7 mg/kg
+    84.7 mg/kg.
 
 Lo strumento B ha prodotto i seguenti risultati:
 
 -   berillio: 2.25, 2.48, 1.50, 2.21, 1.55, 1.79, 2.01, 2.03, 1.75, 1.64
-    mg/kg
+    mg/kg;
 -   vanadio: 106.6, 110.1, 113.2, 104.3, 111.3, 86.1, 87.3, 97.2, 114.5,
-    104.1 mg/kg
+    104.1 mg/kg.
 
 Si tratta a tutti gli effetti di risultati appaiati: non considerarli
 come tali, ricorrendo all'opzione per i confronti tra due serie di dati
@@ -338,7 +338,7 @@ robuste. Tuttavia, la variabilità tra i campioni è solo una condizione
 in cui si svolge l'esperimento, mentre il risultato che si vuole
 valutare è la differenza tra le due risposte strumentali. Per non
 includere nei calcoli la variabilità dovuta ai diversi campioni
-Pasquale, che queste cose le sa, calcola la differenza tra le due serie
+Pino, che queste cose le sa, calcola la differenza tra le due serie
 di valori e sistema i dati nella seguente tabella:
 
 | parametro | gruppo | valore |
@@ -368,7 +368,7 @@ di valori e sistema i dati nella seguente tabella:
 2.  nella scheda *Dati* seleziona il file con la tabella dei dati in
     formato csv. Identifica le colonne relative alle informazioni sugli
     analiti, gruppo e risposte rispettivamente come "parametro",
-    "gruppo" e "valore".
+    "gruppo" e "valore";
 3.  nella scheda *Confronti* digita "uguale" e 0 rispettivamente nei
     campi Nome del valore di riferimento e Valore di riferimento.
     Seleziona l'ipotesi alternativa $\neq$, il livello di confidenza
@@ -392,9 +392,8 @@ da zero ( $\nu$ = 9, $t$ = 2.6414, $p$-value = 0.0269) e pertanto le due
 risposte strumentali risultano essere tra loro differenti.
 
 In particolare, essendo il valore medio della differenza delle misure
-$A - B < 0$, possiamo concludere che lo strumento B produca valori di
-concentrazione sovrastimati rispetto a quelli prodotti dallo strumento
-A.
+$A - B < 0$, Pino può concludere che lo strumento B produce valori di
+concentrazione sovrastimati rispetto a quelli prodotti dallo strumento A.
 
 ------------------------------------------------------------------------
 
@@ -413,7 +412,7 @@ paese che, se non riuscirà a fare 10 misure della concentrazione di
 crisene in un'acqua sotterranea con concentrazione di 2.00
 $\mathrm{\mu g/l}$, tali da risultare caratterizzate da una deviazione
 standard relativa (RSD) non superiore al 5%, con un livello di
-confidenza del 95%, porterà alla Berta un mazzo di ortiche in segno
+confidenza del 95%, porterà alla Berta un mazzo di ortiche, in segno
 della sua pungente passione.
 
 Paolino esegue un'aggiunta nota su un'acqua sotterranea priva di
@@ -448,7 +447,7 @@ La tabella dei dati viene così organizzata:
 2.  nella scheda *Dati* seleziona il file con la tabella dei dati in
     formato csv. Identifica le colonne relative alle informazioni sugli
     analiti, gruppo e risposte rispettivamente come "analita", "valore"
-    e "misura".
+    e "misura";
 3.  nella scheda *Confronti* digita "riferimento" e 0.10 rispettivamente
     nei campi Nome del valore di riferimento e Deviazione standard di
     riferimento. Seleziona l'ipotesi alternativa $>$, il livello di
@@ -513,7 +512,7 @@ $\mathrm{\mu g/l}$):
 2.  nella scheda *Dati* si seleziona il file con la tabella dei dati in
     formato csv. Si identificano le colonne relative alle informazioni
     sugli analiti, gruppo, risposte e incertezza estese rispettivamente
-    come "parametro", "acqualercia", "valore" e "incertezza".
+    come "parametro", "acqualercia", "valore" e "incertezza";
 3.  nella scheda *Confronti* si visualizzano i risultati ottenuti per i
     vari analiti;
 4.  nella scheda *Report* si procede all'eventuale creazione di un
