@@ -162,18 +162,18 @@ campioni preparati da Paolino Precisino ( $p$-value = 0.0145).
 Concettualmente, questa opzione ha un campo di applicazione e possibili
 esempi del tutto analoghi a quelli presentati nella precedente sezione.
 L'unica differenza è legata a un aspetto pratico: per una delle due
-serie non sono disponili i valori delle singole misure ma bensì solo la
+serie non sono disponibili i valori delle singole misure, bensì solo la
 loro media, deviazione standard e numerosità.
 :::
 
 Nel laboratorio di analisi ambientali di Caprazoppa Superiore si è
 sviluppato un metodo di analisi per la misura della concentrazione di
 benzene nei suoli. Per verificare l'idoneità della nuova metodica, i
-risultati di una serie di misure sono stati confrontanti con le
+risultati di una serie di misure sono stati confrontati con le
 prestazioni riportate in un metodo di riferimento.
 
-Sul metodo di riferimento viene riportata la media, la deviazione
-standard, rispettivamente pari a 2.08 mg/kg, 0.17 mg/kg per 20 misure
+Sul metodo di riferimento vengono riportate la media e la deviazione
+standard, rispettivamente pari a 2.08 mg/kg e 0.17 mg/kg per 20 misure
 effettuate su un campione fortificato a 2.00 mg/kg.
 
 Un campione di suolo privo dell'analita è stato fortificato con
@@ -400,8 +400,8 @@ concentrazione sovrastimati rispetto a quelli prodotti dallo strumento A.
 ### Confrontare una serie di dati con un valore di deviazione standard noto esattamente
 
 ::: {.minipage style="border:5px solid #2780E3; border-radius: 12px; width: 80%; margin: 25px; padding: 10px"}
-In questa opzione, la media di una serie di misure viene paragonata a un
-valore di deviazione standard noto, privo quindi di incertezza.
+In questa opzione, la deviazione standard di una serie di misure viene 
+paragonata a un valore di deviazione standard noto, privo quindi di incertezza.
 
 Un esempio di applicazioni può riguardare la valutazione se una serie di
 dati abbia una deviazione standard inferiore a un requisito.
@@ -443,7 +443,7 @@ La tabella dei dati viene così organizzata:
 | crisene | scommessa | 1.90   |
 | crisene | scommessa | 1.84   |
 
-1.  Nella scheda *Scopo* di SIconfronta seleziona la terza opzione;
+1.  Nella scheda *Scopo* di SIconfronta seleziona la quarta opzione;
 2.  nella scheda *Dati* seleziona il file con la tabella dei dati in
     formato csv. Identifica le colonne relative alle informazioni sugli
     analiti, gruppo e risposte rispettivamente come "analita", "valore"
@@ -481,10 +481,10 @@ Alcuni esempi di applicazioni possono riguardare:
     assegnata.
 :::
 
-Tra i due comuni di Acqualercia Soprana e Acqualercia Sottana infuria
+Tra i due comuni di Acqualaida Soprana e Acqualaida Sottana infuria
 una disputa su chi abbia l'acqua più buona.
 
-Il laboratorio di analisi chimiche di Capracotta superiore si offre di
+Il laboratorio di analisi chimiche di Caprazoppa Superiore si offre di
 dirimere la questione prelevando un campione di acqua potabile
 rappresentativa in entrambi i comuni e sottoponendoli alla
 determinazione della concentrazione di arsenico, cadmio, nichel e
@@ -497,7 +497,7 @@ incertezza estesa affidabile.
 I risultati vengono così riassunti (valori e incertezze sono espressi in
 $\mathrm{\mu g/l}$):
 
-| parametro | acqualercia | valore | incertezza |
+| parametro | acqualaida | valore | incertezza |
 |-----------|-------------|--------|------------|
 | arsenico  | soprana     | 15.22  | 0.76       |
 | arsenico  | sottana     | 14.44  | 0.72       |
@@ -508,11 +508,11 @@ $\mathrm{\mu g/l}$):
 | piombo    | soprana     | 18.10  | 0.90       |
 | piombo    | sottana     | 21.1   | 1.0        |
 
-1.  Nella scheda *Scopo* di SIconfronta si seleziona l'ultima opzione;
+1.  Nella scheda *Scopo* di SIconfronta si seleziona la quinta e ultima opzione;
 2.  nella scheda *Dati* si seleziona il file con la tabella dei dati in
     formato csv. Si identificano le colonne relative alle informazioni
     sugli analiti, gruppo, risposte e incertezza estese rispettivamente
-    come "parametro", "acqualercia", "valore" e "incertezza";
+    come "parametro", "acqualaida", "valore" e "incertezza";
 3.  nella scheda *Confronti* si visualizzano i risultati ottenuti per i
     vari analiti;
 4.  nella scheda *Report* si procede all'eventuale creazione di un
@@ -521,6 +521,6 @@ $\mathrm{\mu g/l}$):
 I valori misurati evidenziano concentrazioni non statisticamente
 differenti di arsenico e cadmio nei due comuni ( $E_n$ pari
 rispettivamente a 0.7451 e 0.9976). Al contrario, i valori di nichel e
-piombo misurati nel campione prelevato in Acqualercia Sottana, risultano
+piombo misurati nel campione prelevato in Acqualaida Sottana, risultano
 maggiori di quelli misurati nel campione prelevato nel comune di
-Acqualercia Soprana ( $E_n$ pari rispettivamente a 1.167 e 2.230).
+Acqualaida Soprana ( $E_n$ pari rispettivamente a 1.167 e 2.230).
