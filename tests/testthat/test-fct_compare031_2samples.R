@@ -26,7 +26,7 @@ test_that("Calculations are correct for t-test on samples and alternative = diff
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[1]],
                "7.3369")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[2]],
-               "0.975")
+               "0.025")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[3]],
                "0.4313")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[4]],
@@ -68,7 +68,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and alterna
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
               alternative = "greater")$test[[2]],
-    "0.950"
+    "0.050"
   )
   expect_equal(
     fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
@@ -112,7 +112,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and confide
                "7.3369")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[2]],
-               "0.995")
+               "0.005")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer",
                          significance = 0.99)$test[[3]],
                "0.4313")
@@ -148,7 +148,7 @@ test_that("Calculations are correct for t-test on 2 groups of values", {
                "18.8994")
   expect_equal(
     fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[2]],
-               "0.975")
+               "0.025")
   expect_equal(
     fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[3]],
                "2.1982")
@@ -189,7 +189,7 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$dof,
                c("numeratore" = "4", "denominatore" = "4"))
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$alpha,
-                "0.975")
+                "0.025")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$fsper,
                "1.6281")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$ftheo,
@@ -217,7 +217,7 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$dof,
                c("numeratore" = "9", "denominatore" = "11"))
   expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$alpha,
-               "0.975")
+               "0.025")
   expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$fsper,
                "1.1049")
   expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$ftheo,

@@ -617,6 +617,15 @@ mod_compare032_2samples_par_server <- function(id, r) {
 
     })
 
+    # text for alpha or alpha/2
+    alpha_txt <- reactive({
+      req(r$compare03x$alternative)
+
+      switch (r$compare03x$alternative,
+              "different" = "\u03b1/2",
+              "greater" = "\u03b1"
+      )
+    })
 
     #### results for the t-test ----
     ttest_list <- reactive({
@@ -649,7 +658,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
 <ul>
   <li> Differenza tra le medie (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
   <li> <i>t</i> sperimentale = %s </li>
-  <li> <i>t</i> critico (\u03b1 = %s, \u03bd = %s) = %s </li>
+  <li> <i>t</i> critico (%s = %s, \u03bd = %s) = %s </li>
   <li> <i>p</i>-value = %s </li>
 </ul>
 \u21e8 %s"
@@ -667,6 +676,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
         ttest_list()$difference[[3]],
         r$compare03x$udm,
         ttest_list()$test[[3]],
+        alpha_txt(),
         ttest_list()$test[[2]],
         ttest_list()$test[[1]],
         ttest_list()$test[[4]],
@@ -734,7 +744,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
 <ul>
   <li> Rapporto tra le varianze (valore e intervallo di confidenza) = %s, %s \u2013 %s</li>
   <li> <i>F</i> sperimentale = %s </li>
-  <li> <i>F</i> critico (\u03b1 = %s, \u03bd = %s, %s) = %s </li>
+  <li> <i>F</i> critico (%s = %s, \u03bd = %s, %s) = %s </li>
   <li> <i>p</i>-value = %s </li>
 </ul>
 \u21e8 %s"
@@ -749,6 +759,7 @@ mod_compare032_2samples_par_server <- function(id, r) {
         ftest_list()$ratio[[2]],
         ftest_list()$ratio[[3]],
         ftest_list()$test$fsper,
+        alpha_txt(),
         ftest_list()$test$alpha,
         ftest_list()$test$dof[[1]],
         ftest_list()$test$dof[[2]],
