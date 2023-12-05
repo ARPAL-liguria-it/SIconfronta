@@ -299,7 +299,7 @@ mod_compare031_2samples_server <- function(id, r) {
     minval <- reactive({
       req(!is.null(selected_data()))
 
-      sapply(levels(selected_data()$group),
+      sapply(droplevels(selected_data()$group) |> levels(),
                  function(x) {
                    selected_data()[selected_data()$group == x, ] |>
                      nrow()
@@ -377,7 +377,7 @@ mod_compare031_2samples_server <- function(id, r) {
     lvl <- reactive({
       req(selected_data())
 
-      levels(selected_data()$group)
+      droplevels(selected_data()$group) |> levels()
     })
 
     shapirotest_list <- reactive({

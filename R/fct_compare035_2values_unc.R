@@ -286,7 +286,10 @@ rowsummary_2values_unc <- function(data,
     group %in% colnames(data)
   )
 
-  group_level <- data[[group]] |> factor(levels = unique(data[[group]])) |> levels()
+  group_level <- data[[group]] |> factor(levels = unique(data[[group]])) |>
+    droplevels() |>
+    levels()
+
   values <- data[[response]]
   uncertainties <- data[[uncertainty]]
 

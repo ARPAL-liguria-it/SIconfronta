@@ -484,7 +484,7 @@ boxplot_2samples <- function(data,
     plotly::add_boxplot(
       data = data[data$outlier == FALSE, ],
       y = ~ response,
-      x = ~ group,
+      x = ~ group |> droplevels(),
       name = "boxplot",
       type = "box",
       boxmean = TRUE,
@@ -496,7 +496,7 @@ boxplot_2samples <- function(data,
     plotly::add_markers(
       data = data,
       y = ~ response,
-      x = ~ group,
+      x = ~ group |> droplevels(),
       name = "valori",
       marker = list(
         color = I(cols),
@@ -620,7 +620,7 @@ rowsummary_2samples <- function(data,
 
   statistica <- NULL
   mydata <- data.table(data)
-  lvl <- levels(as.factor(mydata[[group]]))
+  lvl <- as.factor(mydata[[group]]) |> droplevels() |> levels()
   roworder <- c("n", "massimo", "media", "mediana", "minimo", "deviazione standard")
   fm <- as.formula(paste("statistica", '~', group))
 
