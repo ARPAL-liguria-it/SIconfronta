@@ -229,9 +229,7 @@ mod_loadfile02_server <- function(id, r) {
 
     # data are imported as a data.table with fread
     datafile <- reactive({
-      data.table::fread(userFile()$datapath,
-                        header = "auto",
-                        stringsAsFactors = TRUE)
+      csvimport(userFile()$datapath)
     })
 
 
