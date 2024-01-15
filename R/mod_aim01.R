@@ -31,7 +31,7 @@ mod_aim01_ui <- function(id) {
           choices = c(
             "Confrontare due serie di dati complete" = "2samples",
             "Confrontare due serie di dati di cui una completa e l'altra riassunta nei suoi parametri" = "2samples_par",
-            "Cofrontare una serie di dati con un valore medio noto esattamente" = "1sample_mu",
+            "Confrontare una serie di dati con un valore medio noto esattamente" = "1sample_mu",
             "Confrontare una serie di dati con un valore di deviazione standard noto esattamente" = "1sample_sigma",
             "Confrontare due valori dotati di incertezza estesa" = "2values_unc"
           ),
