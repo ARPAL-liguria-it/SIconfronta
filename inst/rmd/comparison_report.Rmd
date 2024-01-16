@@ -3,6 +3,7 @@ documentclass: scrartcl
 output:
    pdf_document:
      latex_engine: pdflatex
+     fig_caption: true
 header-includes:
   - \usepackage{graphicx}
   - \usepackage[italian]{babel}
@@ -20,7 +21,7 @@ params:
   compare03: NA
   compare03x: NA
   report04: NA
-title: "`r params$report04$title`"
+title: "Confronto fra serie di misure"
 ---
 \addtolength{\headheight}{0.8cm} <!--  make more space for the header -->
 \pagestyle{fancyplain} <!-- use fancy for all pages except chapter start -->
@@ -40,6 +41,31 @@ systime <- ifelse(params$report04$testmode, "testtime",
                   strsplit(as.character(Sys.time()), " ")[[1]][2])
 ```
 
+```{r aim, echo=FALSE, results = "asis"}
+cat("**Scopo:** ", params$report04$expaim, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r method, echo=FALSE, results = "asis"}
+cat("**Metodo:** ", params$report04$method, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r samples, echo=FALSE, results = "asis"}
+cat("**Campioni:** ", params$report04$samples, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r workers, echo=FALSE, results = "asis"}
+cat("**Operatori:** ", params$report04$workers, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r instrument, echo=FALSE, results = "asis"}
+cat("**Strumento di misura:** ", params$report04$instrument, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
 ```{r description, echo=FALSE, results = "asis"}
 cat("**Descrizione:** ", params$report04$description, "\n")
 cat('\n\n<!-- -->\n\n')
@@ -53,7 +79,7 @@ cat('\n\n<!-- -->\n\n')
 ---
 \newpage
 
-```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), "Boxplot per l'analita ", ordered_analytes, ".")}
+```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.pos="p", fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), "Boxplot per l'analita ", ordered_analytes, ".")}
 
 data_caption <- "Valori per l'analita %s."
 summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
@@ -139,7 +165,7 @@ for (i in ordered_analytes) {
   cat('\n\n<!-- -->\n\n')
 
   }
-  cat("\\newpage")
+  cat("\\clearpage")
 }
 ```
 \newpage
