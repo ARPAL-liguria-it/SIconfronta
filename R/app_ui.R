@@ -49,6 +49,10 @@ app_ui <- function(request) {
                          includeMarkdown(
                            system.file("rmd", "test_details.Rmd", package = "SIconfronta")
                          )),
+        bslib::nav_panel("Versioni", value = "news",
+                         includeMarkdown(
+                           system.file("rmd", "news.Rmd", package = "SIconfronta")
+                         )),
         bslib::nav_panel("Struttura", value = "structure",
                          includeMarkdown(
                            system.file("rmd", "app_structure.Rmd", package = "SIconfronta")
