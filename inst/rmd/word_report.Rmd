@@ -1,0 +1,229 @@
+---
+output:
+  word_document: default
+params:
+  aim01: NA
+  loadfile02: NA
+  compare03: NA
+  compare03x: NA
+  report04: NA
+title: "Confronto fra serie di misure"
+---
+
+---
+```{r libraries, include=FALSE}
+library(data.table)
+`%notin%` = Negate(`%in%`)
+sysdate <- ifelse(params$report04$testmode, "testdate", 
+                  Sys.Date() |> as.character())
+systime <- ifelse(params$report04$testmode, "testtime", 
+                  strsplit(as.character(Sys.time()), " ")[[1]][2])
+```
+
+Questo riepilogo in formato Word è liberamente modificabile e quindi non è 
+utilizzabile per l'archiviazione di informazioni rilevanti circa il confronto tra
+serie di misure. A tale scopo, è possibile utilizzare il
+report in formato pdf prodotto da SIconfronta.
+
+```{r aim, echo=FALSE, results = "asis"}
+cat("**Scopo:** ", params$report04$expaim, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r method, echo=FALSE, results = "asis"}
+cat("**Metodo:** ", params$report04$method, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r samples, echo=FALSE, results = "asis"}
+cat("**Campioni:** ", params$report04$samples, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r workers, echo=FALSE, results = "asis"}
+cat("**Operatori:** ", params$report04$workers, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r instrument, echo=FALSE, results = "asis"}
+cat("**Strumento di misura:** ", params$report04$instrument, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r description, echo=FALSE, results = "asis"}
+cat("**Descrizione:** ", params$report04$description, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+```{r discussion, echo=FALSE, results = "asis"}
+cat("**Interpretazione:** ", params$report04$discussion, "\n")
+cat('\n\n<!-- -->\n\n')
+```
+
+---
+\newpage
+
+```{r dataresults, echo=FALSE, results="asis"}
+
+data_caption <- "Valori per l'analita %s."
+summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
+boxplot_caption <- "Boxplot per l'analita %s."
+ttest_title <- ifelse(params$aim01 == "1sample_mu", 
+                      "Test per la differenza tra medie (t-test)",
+                      ifelse(params$aim01$aim == "2values_unc",
+                             "Test per la differenza tra valori ($E_n$)",
+                              "Test per la differenza tra medie (t-test, Welch)"))
+ftest_title <- ifelse(params$aim01 == "1sample_sigma", 
+                      "Test per il rapporto tra varianze ($\\chi^2$)",
+                      "Test per il rapporto tra varianze (Fisher)")
+
+analytes <- names(params$compare03)[names(params$compare03) %notin% c("myparameter", "saved_flag")]
+myorder <- as.character(params$loadfile02$parlist)
+
+ordered_analytes <- analytes[order(match(analytes, myorder))]
+for (i in ordered_analytes) {
+
+  if (params$compare03[[i]]$saved == TRUE) {
+
+  # title with analyte name
+  cat(paste("#", i, "\n"))
+  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
+
+  # table with raw data
+  print(knitr::kable(params$compare03[[i]]$data,
+                     caption = sprintf(data_caption, i)))
+  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
+
+  # table with summary statistics
+  print(knitr::kable(params$compare03[[i]]$summary,
+                     caption = sprintf(summary_caption, i)))
+  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
+
+  if("normality" %in% params$report04$content) {
+
+  # checking normality and outliers with Shapiro-Wilk and GESD test
+  cat(paste("#", "Test per la verifica della normalità (Shapiro-Wilk)", "\n"))
+  cat(params$compare03[[i]]$normality)
+  cat('\n\n<!-- -->\n\n')
+
+  cat(paste("#", "Test per l'identificazione di possibili outliers (GESD)", "\n"))
+  cat(params$compare03[[i]]$outliers)
+  cat('\n\n<!-- -->\n\n')
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
+  }
+
+
+  if("ttest" %in% params$report04$content) {
+
+  # comparing means by t-test
+  cat(paste("#", ttest_title, "\n"))
+  cat(params$compare03[[i]]$ttest)
+  cat('\n\n<!-- -->\n\n')
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
+  }
+
+
+  if("ftest" %in% params$report04$content) {
+
+  # comparing variances by F-test
+  cat(paste("#", ftest_title, "\n"))
+  cat(params$compare03[[i]]$ftest)
+  cat('\n\n<!-- -->\n\n')
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
+  }
+
+  } else {
+
+  cat('\n\n<!-- -->\n\n')
+
+  }
+  cat("\\clearpage")
+}
+```
+\newpage
+
+# Validazione dei calcoli
+
+A ogni rilascio il codice viene sottoposto a una serie di test per la verifica
+della correttezza dei risultati forniti.
+Il rilascio avviene solo nel caso in cui tutti i test risultino superati.
+
+L'applicazione è distribuita in un ambiente protetto da aggiornamenti o modifiche
+accidentali.
+
+Maggiori dettagli sono consultabili all'indirizzo (https://github.com/andreabz/SIconfronta/actions)
+o eseguendo `devtools::check()` e `covr::report()` sulla macchina su cui risiede l'applicazione,
+all'interno della cartella `/srv/shiny-server/SIconfronta`.
+
+## Informazioni sulla sessione
+
+Al fine di migliorare la riproducibilità dei risultati e risalire alla causa di
+eventuali problemi, in questa sezione vengono riportate alcune informazioni di 
+base sulla sessione dell'utente che ha richiesto la generazione di
+questo report.
+
+<br>
+
+\renewcommand{\arraystretch}{0.8} <!-- decrease line spacing for the table -->
+```{r session_platform, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
+
+df_session_platform <- params$report04$info$platform |> 
+  unlist() |>
+  data.frame() |>
+  data.table::data.table(keep.rownames = TRUE)
+
+colnames(df_session_platform) <- c("Impostazione", "Valore")
+
+knitr::kable(
+        df_session_platform, 
+        booktabs = T, 
+        align = "l",
+        caption = "Informazioni sulla sessione: sistema operativo e varibili di sistema."
+)
+```
+<br>
+
+\renewcommand{\arraystretch}{0.6} <!-- decrease line spacing for the table -->
+```{r session_packages, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
+df_session_packages <- params$report04$info$packages |> 
+  data.table::data.table(keep.rownames = TRUE) |>
+  (\(x) x[attached == TRUE, .(package, loadedversion, date)])()
+
+colnames(df_session_packages) <- c("Pacchetto", "Versione caricata", "Data")
+
+knitr::kable(
+        df_session_packages, 
+        booktabs = T, 
+        align = "l",
+        caption = "Informazione sulla sessione: pacchetti caricati."
+)
+```
+\renewcommand{\arraystretch}{1} <!-- reset row height/line spacing -->
+
+Report creato il `r sysdate` alle `r systime`.
+
+\vfill
+```{r end, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+cat(
+  paste0(
+  "© 2023. Questo report è stato prodotto con il pacchetto SIconfronta ",
+  utils::packageVersion("SIconfronta"), 
+  " e rilasciato con licenza [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). Per informazioni o segnalazioni, rivolgersi ad Andrea Bazzano ([andrea.bazzano@arpal.liguria.it](mailto:andre.bazzano@arpal.liguria.it))."
+  )
+)
+```
