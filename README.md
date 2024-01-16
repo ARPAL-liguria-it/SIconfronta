@@ -122,7 +122,7 @@ dall’identificativo dell’analita e del gruppo
 
 <br>
 
-#### Come sono stati scelti i test di Calibrat?
+#### Come sono stati scelti i test di SIconfronta?
 
 Il test per verificare la normalità di una serie di dati è stato
 implementato utilizzando la funzione `shapiro.test` della libreria
@@ -180,7 +180,7 @@ nella norma ISO 13528:2022, al paragrafo 9.7. Il calcolo implementato è
 stato in grado di replicare i risultati riportati nella sezione E.4.
 della medesima norma.
 
-#### Come funziona Calibrat?
+#### Come funziona SIconfronta?
 
 L’applicazione è suddivisa in quattro schede con cui l’utente deve
 interagire in sequenza. Ogni scheda possiede un pulsante *Avanti*

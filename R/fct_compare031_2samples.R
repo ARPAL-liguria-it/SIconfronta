@@ -280,7 +280,7 @@ fct_ttest_2samples <- function(data,
                       "lwrci" = diffconfint[1],
                       "uprci" = diffconfint[2]),
        test = c("dof" = dof |> (\(x) sprintf("%.4f", x))(),
-                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
+                "alpha" = (1 - alpha) |> (\(x) sprintf("%.3f", x))(),
                 "tsper" = unname(tvalue),
                 "ttheo" = tcritical,
                 "pvalue" = pvalue),
@@ -432,7 +432,7 @@ fct_ftest_2samples <- function(data,
                       "uprci" = ratioconfint[2]),
        test = list("dof" = c("numeratore" = dof[[1]] |> (\(x) sprintf("%.0f", x))(),
                              "denominatore" = dof[[2]] |> (\(x) sprintf("%.0f", x))()),
-                "alpha" = alpha |> (\(x) sprintf("%.3f", x))(),
+                "alpha" = (1 - alpha) |> (\(x) sprintf("%.3f", x))(),
                 "fsper" = unname(fvalue),
                 "ftheo" = ftheo,
                 "pvalue" = pvalue),
@@ -484,7 +484,7 @@ boxplot_2samples <- function(data,
     plotly::add_boxplot(
       data = data[data$outlier == FALSE, ],
       y = ~ response,
-      x = ~ group,
+      x = ~ group |> droplevels(),
       name = "boxplot",
       type = "box",
       boxmean = TRUE,
@@ -496,7 +496,7 @@ boxplot_2samples <- function(data,
     plotly::add_markers(
       data = data,
       y = ~ response,
-      x = ~ group,
+      x = ~ group |> droplevels(),
       name = "valori",
       marker = list(
         color = I(cols),
@@ -620,7 +620,7 @@ rowsummary_2samples <- function(data,
 
   statistica <- NULL
   mydata <- data.table(data)
-  lvl <- levels(as.factor(mydata[[group]]))
+  lvl <- as.factor(mydata[[group]]) |> droplevels() |> levels()
   roworder <- c("n", "massimo", "media", "mediana", "minimo", "deviazione standard")
   fm <- as.formula(paste("statistica", '~', group))
 

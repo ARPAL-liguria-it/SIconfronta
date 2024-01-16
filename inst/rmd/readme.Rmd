@@ -18,16 +18,17 @@ i risultati in un unico report in formato pdf.
 #### Cosa può fare SIconfronta?
 * ottenere statistiche di base sulle serie di valori;
 * effettuare un test di normalità (Shapiro-Wilk) sulle serie di valori;
-* identificare mediante il test _genaralised extreme studentized deviate_ (GESD) la presenza di potenziali valori anomali;
+* identificare la presenza di potenziali valori anomali mediante il test _genaralised extreme studentized deviate_ (GESD);
 * escludere manualmente i valori potenzialmente anomali;
 
-* effettuare un test ( $t$-test, Welch test o calcolo dell' $E_n$ ) per il confronto delle medie;
-* effettuare un test ( $F$-test o $\chi^2$-test) per il confronto delle varianze;
+* effettuare un test per il confronto delle medie ( $t$-test, Welch test o calcolo dell' $E_n$ );
+* effettuare un test per il confronto delle varianze ( $F$-test o $\chi^2$-test) ;
 * esportare i risultati in un report .pdf.
 
 #### Di cosa ha bisogno SIconfronta?
 Un file .csv con il punto (.) come separatore decimale e la virgola (,) come 
-separatore di campo. 
+separatore di campo, oppure con la virgola (,) come separatore decimale e il punto
+e virgola come separatore di campo (;).
 Ogni colonna presente nel file deve avere un'intestazione testuale ma il numero
 e la tipologia di colonne dipende dallo scopo:
 
@@ -98,7 +99,7 @@ dell'analita e del gruppo
 <br>
 
 
-#### Come sono stati scelti i test di Calibrat?
+#### Come sono stati scelti i test di SIconfronta?
 
 Il test per verificare la normalità di una serie di dati è stato implementato utilizzando
 la funzione `shapiro.test` della libreria `stats` del software R.

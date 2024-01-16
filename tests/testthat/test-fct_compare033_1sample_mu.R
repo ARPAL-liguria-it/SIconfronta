@@ -19,7 +19,7 @@ test_that("Calculations are correct for t-test on one sample and alternative = d
   expect_equal(ttest_result1$mean[[2]], "1.909")
   expect_equal(ttest_result1$mean[[3]], "2.443")
   expect_equal(ttest_result1$test[[1]], "9")
-  expect_equal(ttest_result1$test[[2]], "0.975")
+  expect_equal(ttest_result1$test[[2]], "0.025")
   expect_equal(ttest_result1$test[[3]], "1.8950") # not reported on the reference
   expect_equal(ttest_result1$test[[4]], "2.2622")
   expect_equal(ttest_result1$test[[5]], "0.0906") # not reported on the reference
@@ -38,7 +38,7 @@ test_that("Calculations are correct for t-test on one sample and confidence = 0.
   expect_equal(ttest_result2$mean[[2]], "1.792")
   expect_equal(ttest_result2$mean[[3]], "2.560")
   expect_equal(ttest_result2$test[[1]], "9")
-  expect_equal(ttest_result2$test[[2]], "0.995")
+  expect_equal(ttest_result2$test[[2]], "0.005")
   expect_equal(ttest_result2$test[[3]], "1.8950") # not reported on the reference
   expect_equal(ttest_result2$test[[4]], "3.2498")
   expect_equal(ttest_result2$test[[5]], "0.0906") # not reported on the reference

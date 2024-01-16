@@ -21,7 +21,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result1$ratio[[2]], "4.341") # 8.84471^0.5
   expect_equal(chitest_result1$ratio[[3]], "20.82") # 433.49289^0.5
   expect_equal(chitest_result1$test[[1]], "4")
-  expect_equal(chitest_result1$test[[2]], "0.975")
+  expect_equal(chitest_result1$test[[2]], "0.025")
   expect_equal(chitest_result1$test[[3]], "0.4840") # 0.4838525
   expect_equal(chitest_result1$test[[4]], "0.4844, 11.1433") # not reported
   expect_equal(chitest_result1$test[[5]], "0.0499") # 0.04989244
@@ -40,7 +40,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result2$ratio[[2]], "4.705") # 22.13301^0.5
   expect_equal(chitest_result2$ratio[[3]], "Inf") # Inf
   expect_equal(chitest_result2$test[[1]], "4")
-  expect_equal(chitest_result2$test[[2]], "0.950")
+  expect_equal(chitest_result2$test[[2]], "0.050")
   expect_equal(chitest_result2$test[[3]], "0.4840") # 0.4838525
   expect_equal(chitest_result2$test[[4]], "9.4877") # not reported
   expect_equal(chitest_result2$test[[5]], "0.9750") # 0.9750538
@@ -58,7 +58,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result3$ratio[[2]], "4.705")
   expect_equal(chitest_result3$ratio[[3]], "Inf")
   expect_equal(chitest_result3$test[[1]], "4")
-  expect_equal(chitest_result3$test[[2]], "0.950")
+  expect_equal(chitest_result3$test[[2]], "0.050")
   expect_equal(chitest_result3$test[[3]], "11.1487") # 11.14868
   expect_equal(chitest_result3$test[[4]], "9.4877") # not reported
   expect_equal(chitest_result3$test[[5]], "0.0249") # 0.02494295
@@ -78,7 +78,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result4$ratio[[2]], "0.2725") # not reported
   expect_equal(chitest_result4$ratio[[3]], "Inf") # not reported
   expect_equal(chitest_result4$test[[1]], "9")
-  expect_equal(chitest_result4$test[[2]], "0.950")
+  expect_equal(chitest_result4$test[[2]], "0.050")
   expect_equal(chitest_result4$test[[3]], "13.9596") # 13.96
   expect_equal(chitest_result4$test[[4]], "16.9190") # 16.92
   expect_equal(chitest_result4$test[[5]], "0.1238") # not reported

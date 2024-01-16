@@ -5,7 +5,7 @@ Prepara un file .csv organizzato su 3 colonne con separatore virgola (,) o punto
 
   1. la prima colonna conterrà un'intestazione e una variabile testuale indicante il nome dei parametri di interesse;
   2. la seconda colonna conterrà un'intestazione e una variabile testuale indicante il nome del gruppo per il quale si possiede l'intera serie di valori numerici;
-  3. la terza colonna conterrà un'intestazione e una variabile numerica indicante i valori impiegati per effettuare il confronto. Il separatore decimale deve essere il punto (.).
+  3. la terza colonna conterrà un'intestazione e una variabile numerica indicante i valori impiegati per effettuare il confronto. Il separatore decimale può essere il punto (.) o, limitatamente all'utilizzo del punto e virgola (;) come separatore di campo, la virgola (,).
   
 Non sono ammessi né meno di 5 valori, né più di 30 valori per ogni coppia di parametro e gruppo.
 

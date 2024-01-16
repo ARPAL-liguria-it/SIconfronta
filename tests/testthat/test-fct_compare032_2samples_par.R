@@ -30,7 +30,7 @@ test_that("Calculations are correct for t-test on samples and alternative = diff
   expect_equal(ttest_result1$difference[[2]], "-7.506")
   expect_equal(ttest_result1$difference[[3]], "10.89")
   expect_equal(ttest_result1$test[[1]], "7.3369")
-  expect_equal(ttest_result1$test[[2]], "0.975")
+  expect_equal(ttest_result1$test[[2]], "0.025")
   expect_equal(ttest_result1$test[[3]], "0.4313")
   expect_equal(ttest_result1$test[[4]], "2.3428")
   expect_equal(ttest_result1$test[[5]], "0.6787")
@@ -47,7 +47,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and alterna
   expect_equal(ttest_result2$difference[[2]], "-5.695")
   expect_equal(ttest_result2$difference[[3]], "Inf")
   expect_equal(ttest_result2$test[[1]], "7.3369")
-  expect_equal(ttest_result2$test[[2]], "0.950")
+  expect_equal(ttest_result2$test[[2]], "0.050")
   expect_equal(ttest_result2$test[[3]], "0.4313")
   expect_equal(ttest_result2$test[[4]], "1.8816")
   expect_equal(ttest_result2$test[[5]], "0.3393")
@@ -63,7 +63,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and confide
   expect_equal(ttest_result3$difference[[2]], "-11.84")
   expect_equal(ttest_result3$difference[[3]], "15.22")
   expect_equal(ttest_result3$test[[1]], "7.3369")
-  expect_equal(ttest_result3$test[[2]], "0.995")
+  expect_equal(ttest_result3$test[[2]], "0.005")
   expect_equal(ttest_result3$test[[3]], "0.4313")
   expect_equal(ttest_result3$test[[4]], "3.4454")
   expect_equal(ttest_result3$test[[5]],  "0.6787")
@@ -79,7 +79,7 @@ test_that("Calculations are correct for t-test on 2 groups of values", {
   expect_equal(ttest_result4$difference[[2]], "0.01635")
   expect_equal(ttest_result4$difference[[3]], "0.6717")
   expect_equal(ttest_result4$test[[1]], "18.8992")
-  expect_equal(ttest_result4$test[[2]], "0.975")
+  expect_equal(ttest_result4$test[[2]], "0.025")
   expect_equal(ttest_result4$test[[3]], "2.1983")
   expect_equal(ttest_result4$test[[4]], "2.0938")
   expect_equal(ttest_result4$test[[5]],  "0.0406") # not reported on the reference
@@ -116,7 +116,7 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(ftest_result1$ratio[[2]], "0.1695")
   expect_equal(ftest_result1$ratio[[3]], "15.64")
   expect_equal(ftest_result1$test$dof, c("numeratore" = "4", "denominatore" = "4"))
-  expect_equal(ftest_result1$test$alpha, "0.975")
+  expect_equal(ftest_result1$test$alpha, "0.025")
   expect_equal(ftest_result1$test$fsper, "1.6281")
   expect_equal(ftest_result1$test$ftheo, "0.1041, 9.6045")
   expect_equal(ftest_result1$test$pvalue, "0.6483")
@@ -133,7 +133,7 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(ftest_result2$ratio[[2]], "0.3080") # 0.31
   expect_equal(ftest_result2$ratio[[3]], "4.323") # 4.4
   expect_equal(ftest_result2$test$dof, c("numeratore" = "9", "denominatore" = "11"))
-  expect_equal(ftest_result2$test$alpha, "0.975")
+  expect_equal(ftest_result2$test$alpha, "0.025")
   expect_equal(ftest_result2$test$fsper, "1.1050")
   expect_equal(ftest_result2$test$ftheo, "0.2556, 3.5879") # 0.25, 3.6
   expect_equal(ftest_result2$test$pvalue, "0.8612") # not reported

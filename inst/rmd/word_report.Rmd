@@ -1,20 +1,6 @@
 ---
-documentclass: scrartcl
 output:
-   pdf_document:
-     latex_engine: pdflatex
-     fig_caption: true
-header-includes:
-  - \usepackage{graphicx}
-  - \usepackage[italian]{babel}
-  - \usepackage[utf8]{inputenc}
-  - \usepackage[T1]{fontenc}
-  - \usepackage{microtype}
-  - \usepackage{tgpagella}
-  - \usepackage{fancyhdr}
-  - \usepackage{lastpage}
-  - \usepackage{booktabs}
-  - \usepackage{array}
+  word_document: default
 params:
   aim01: NA
   loadfile02: NA
@@ -23,13 +9,6 @@ params:
   report04: NA
 title: "Confronto fra serie di misure"
 ---
-\addtolength{\headheight}{0.8cm} <!--  make more space for the header -->
-\pagestyle{fancyplain} <!-- use fancy for all pages except chapter start -->
-`r paste0("\\lhead{\\includegraphics[height=0.8cm]{", params$report04$logo, "}}")`
-\rhead{} <!-- right empty -->
-\renewcommand{\headrulewidth}{0pt} <!-- remove rule below header -->
-\let\oldrule=\rule \renewcommand{\rule}[1]{\vspace{-25pt}\oldrule{\linewidth}}
-\cfoot{\thepage\ di \pageref{LastPage}} <!-- page 1 of n pages -->
 
 ---
 ```{r libraries, include=FALSE}
@@ -40,6 +19,11 @@ sysdate <- ifelse(params$report04$testmode, "testdate",
 systime <- ifelse(params$report04$testmode, "testtime", 
                   strsplit(as.character(Sys.time()), " ")[[1]][2])
 ```
+
+Questo riepilogo in formato Word è liberamente modificabile e quindi non è 
+utilizzabile per l'archiviazione di informazioni rilevanti circa il confronto tra
+serie di misure. A tale scopo, è possibile utilizzare il
+report in formato pdf prodotto da SIconfronta.
 
 ```{r aim, echo=FALSE, results = "asis"}
 cat("**Scopo:** ", params$report04$expaim, "\n")
@@ -79,7 +63,7 @@ cat('\n\n<!-- -->\n\n')
 ---
 \newpage
 
-```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.pos="p", fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), "Boxplot per l'analita ", ordered_analytes, ".")}
+```{r dataresults, echo=FALSE, results="asis"}
 
 data_caption <- "Valori per l'analita %s."
 summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
@@ -103,17 +87,20 @@ for (i in ordered_analytes) {
 
   # title with analyte name
   cat(paste("#", i, "\n"))
+  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
 
   # table with raw data
   print(knitr::kable(params$compare03[[i]]$data,
                      caption = sprintf(data_caption, i)))
+  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
 
   # table with summary statistics
   print(knitr::kable(params$compare03[[i]]$summary,
                      caption = sprintf(summary_caption, i)))
-
-  # boxplot
-  print(params$compare03[[i]]$boxplot)
+  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
 
   if("normality" %in% params$report04$content) {
 
@@ -190,6 +177,8 @@ eventuali problemi, in questa sezione vengono riportate alcune informazioni di
 base sulla sessione dell'utente che ha richiesto la generazione di
 questo report.
 
+<br>
+
 \renewcommand{\arraystretch}{0.8} <!-- decrease line spacing for the table -->
 ```{r session_platform, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}
 
@@ -207,6 +196,7 @@ knitr::kable(
         caption = "Informazioni sulla sessione: sistema operativo e varibili di sistema."
 )
 ```
+<br>
 
 \renewcommand{\arraystretch}{0.6} <!-- decrease line spacing for the table -->
 ```{r session_packages, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", out.width='100%', results='asis'}

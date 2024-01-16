@@ -348,7 +348,7 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
     minval <- reactive({
       req(!is.null(selected_data()))
 
-      sapply(levels(selected_data()$group),
+      sapply(droplevels(selected_data()$group) |> levels(),
              function(x) {
                selected_data()[selected_data()$group == x, ] |>
                  nrow()
@@ -445,7 +445,7 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
     lvl <- reactive({
       req(selected_data())
 
-      levels(selected_data()$group)
+      droplevels(selected_data()$group) |> levels()
     })
 
     shapirotest_list <- reactive({
@@ -534,6 +534,15 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
       }
     })
 
+    # text for alpha or alpha/2
+    alpha_txt <- reactive({
+      req(r$compare03x$alternative)
+
+      switch (r$compare03x$alternative,
+              "different" = "\u03b1/2",
+              "greater" = "\u03b1"
+      )
+    })
 
     #### results for the chi^2-test ----
     chitest_list <- reactive({
@@ -563,7 +572,7 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
 <ul>
   <li> Deviazione standard dei valori (valore e intervallo di confidenza) = %s %s, %s \u2013 %s %s</li>
   <li> \u03C7<sup>2</sup> sperimentale = %s </li>
-  <li> \u03C7<sup>2</sup> critico (\u03b1 = %s, \u03bd = %s) = %s </li>
+  <li> \u03C7<sup>2</sup> critico (%s = %s, \u03bd = %s) = %s </li>
   <li> <i>p</i>-value = %s </li>
 </ul>
 \u21e8 %s"
@@ -581,6 +590,7 @@ mod_compare034_1sample_sigma_server <- function(id, r) {
         chitest_list()$ratio[[3]],
         r$compare03x$udm,
         chitest_list()$test[[3]],
+        alpha_txt(),
         chitest_list()$test[[2]],
         chitest_list()$test[[1]],
         chitest_list()$test[[4]],
