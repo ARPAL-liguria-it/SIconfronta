@@ -15,6 +15,7 @@ Imports:
     DT,
     future,
     ggplot2,
+    gh,
     golem (>= 0.3.5),
     markdown,
     plotly,
