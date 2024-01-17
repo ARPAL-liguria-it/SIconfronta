@@ -6,10 +6,19 @@
 \alias{SIconfronta-package}
 \title{SIconfronta: SIconfronta}
 \description{
-SIconfronta provides a Shiny application for comparing means and variances for two indipendent samples.
+SIconfronta provides a Shiny application for comparing means and variances for one or two indipendent samples.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://andreabz.github.io/SIconfronta/}
+  \item \url{https://github.com/andreabz/SIconfronta}
+  \item Report bugs at \url{https://github.com/andreabz/SIconfronta/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: Andrea Bazzano \email{andrea.bazzano@arpal.liguria.it}
+\strong{Maintainer}: Andrea Bazzano \email{andrea.bazzano@arpal.liguria.it} (\href{https://orcid.org/0000-0002-9353-3919}{ORCID})
 
 }
 \keyword{internal}
