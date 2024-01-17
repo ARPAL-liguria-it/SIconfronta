@@ -6,7 +6,7 @@ output: html_document
 
 ## Versioni di SIconfronta con relative modifiche
 
--   v1.0.1 del 16 gennaio 2024:
+-   v1.0.1 del 17 gennaio 2024:
     -   report in formato word;
     -   csv con separatore di campo punto e virgola e separatore decimale virgola.
 -   v1.0.0 del 21 agosto 2023: primo rilascio.
