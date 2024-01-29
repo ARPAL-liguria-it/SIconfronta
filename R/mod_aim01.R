@@ -43,6 +43,17 @@ mod_aim01_ui <- function(id) {
           label = "Avanti",
           icon = icon("circle-right")
         ))
+      ),
+
+      bslib::card_footer(
+        shiny::tags$div(
+          shiny::tags$span(style = "font-size:smaller",
+                           paste0("SI confronta ", get_gh_version("andreabz", "SIconfronta"),
+                                  ", validato al momento del rilascio ")),
+          shiny::tags$a(href = "https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml",
+                        shiny::tags$img(src = "https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg",
+                                        alt = "esito della validazione")
+          ))
       )
     ),
 
