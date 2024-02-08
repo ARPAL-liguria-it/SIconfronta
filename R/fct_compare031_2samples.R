@@ -416,14 +416,7 @@ fct_ftest_2samples <- function(data,
                       "greater" = sprintf("la varianza di %s non \u00E8 statisticamente maggiore della varianza di %s", max_sd, min_sd)
   )
 
-  result <- switch (alternative,
-                    "different" = ifelse(fvalue > fcritical[1] & fvalue < fcritical[2],
-                                         negative,
-                                         positive),
-                    "greater" = ifelse(fvalue < fcritical[2],
-                                       negative,
-                                       positive)
-  )
+  result <- ifelse(pvalue > (1 - significance), negative, positive)
 
   ftheo <- switch (alternative,
                     "different" = paste0(fcritical[1] |> (\(x) sprintf("%.4f", x))(),

@@ -107,13 +107,16 @@ for (i in ordered_analytes) {
   # table with raw data
   print(knitr::kable(params$compare03[[i]]$data,
                      caption = sprintf(data_caption, i)))
+  cat('\n\n<!-- -->\n\n')
 
   # table with summary statistics
   print(knitr::kable(params$compare03[[i]]$summary,
                      caption = sprintf(summary_caption, i)))
+  cat('\n\n<!-- -->\n\n')
 
   # boxplot
   print(params$compare03[[i]]$boxplot)
+  cat('\n\n<!-- -->\n\n')
 
   if("normality" %in% params$report04$content) {
 
@@ -137,6 +140,7 @@ for (i in ordered_analytes) {
 
   # comparing means by t-test
   cat(paste("#", ttest_title, "\n"))
+  cat('\n\n<!-- -->\n\n')
   cat(params$compare03[[i]]$ttest)
   cat('\n\n<!-- -->\n\n')
 

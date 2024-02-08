@@ -124,6 +124,7 @@ for (i in ordered_analytes) {
 
   # comparing means by t-test
   cat(paste("#", ttest_title, "\n"))
+  cat("\n")
   cat(params$compare03[[i]]$ttest)
   cat('\n\n<!-- -->\n\n')
 
@@ -138,6 +139,7 @@ for (i in ordered_analytes) {
 
   # comparing variances by F-test
   cat(paste("#", ftest_title, "\n"))
+  cat("\n")
   cat(params$compare03[[i]]$ftest)
   cat('\n\n<!-- -->\n\n')
 
