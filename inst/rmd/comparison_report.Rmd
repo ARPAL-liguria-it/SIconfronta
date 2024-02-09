@@ -79,17 +79,16 @@ cat('\n\n<!-- -->\n\n')
 ---
 \newpage
 
-```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.pos="p", fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), "Boxplot per l'analita ", ordered_analytes, ".")}
 
+```{r figureproperties, echo=FALSE}
 data_caption <- "Valori per l'analita %s."
 summary_caption <- "Statistiche di base per i due gruppi dell'analita %s."
-boxplot_caption <- "Boxplot per l'analita %s."
-ttest_title <- ifelse(params$aim01 == "1sample_mu", 
+ttest_title <- ifelse(params$aim01$aim == "1sample_mu", 
                       "Test per la differenza tra medie (t-test)",
                       ifelse(params$aim01$aim == "2values_unc",
                              "Test per la differenza tra valori ($E_n$)",
                               "Test per la differenza tra medie (t-test, Welch)"))
-ftest_title <- ifelse(params$aim01 == "1sample_sigma", 
+ftest_title <- ifelse(params$aim01$aim == "1sample_sigma", 
                       "Test per il rapporto tra varianze ($\\chi^2$)",
                       "Test per il rapporto tra varianze (Fisher)")
 
@@ -97,6 +96,19 @@ analytes <- names(params$compare03)[names(params$compare03) %notin% c("myparamet
 myorder <- as.character(params$loadfile02$parlist)
 
 ordered_analytes <- analytes[order(match(analytes, myorder))]
+
+boxplot_text <- switch (params$aim01$aim,
+  "2samples" = "Boxplot dei valori misurati per l'analita %s.",
+  "2samples_par" = "Boxplot dei valori misurati per l'analita %s.",
+  "1sample_mu" = "Confronto tra il boxplot dei valori misurati e il relativo valore di riferimento per l'analita %s.",
+  "1sample_sigma" = "Confronto tra il boxplot dei valori misurati per l'analita %s e il valore di riferimento di dispersione, espresso come $2 \\sigma$.",
+  "2values_unc" = "Confronto tra i valori misurati per l'analita %s. Le barre di errore rappresentano le incertezze estese."
+)
+
+boxplot_caption <- sprintf(boxplot_text, ordered_analytes) 
+```
+
+```{r dataresults, echo=FALSE, results="asis", out.width='250px', fig.pos="p", fig.align="center", fig.cap=paste0(sprintf("\\label{%s}", ordered_analytes), boxplot_caption)}
 for (i in ordered_analytes) {
 
   if (params$compare03[[i]]$saved == TRUE) {
@@ -140,7 +152,6 @@ for (i in ordered_analytes) {
 
   # comparing means by t-test
   cat(paste("#", ttest_title, "\n"))
-  cat('\n\n<!-- -->\n\n')
   cat(params$compare03[[i]]$ttest)
   cat('\n\n<!-- -->\n\n')
 
@@ -172,7 +183,7 @@ for (i in ordered_analytes) {
   cat("\\clearpage")
 }
 ```
-\newpage
+\clearpage
 
 # Validazione dei calcoli
 
