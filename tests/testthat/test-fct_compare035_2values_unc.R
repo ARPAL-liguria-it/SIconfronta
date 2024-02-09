@@ -23,6 +23,7 @@ test_that("Calculations are correct for En-test when no differences are expected
   expect_equal(noeffect_result$difference[[3]], "0.02237") # 0.02237 not reported
   expect_equal(noeffect_result$test[[1]], "0.4554") # 0.46
   expect_equal(noeffect_result$test[[2]], "1.000") # 1
+  expect_equal(noeffect_result$result, "pt e L03 non sono statisticamente differenti")
 })
 
 # from ISO 13528:2022(E) Section E4
@@ -40,6 +41,7 @@ test_that("Calculations are correct for En-test when a difference is expected", 
   expect_equal(yeseffect_result$difference[[3]], "0.02906") # 0.02906 not reported
   expect_equal(yeseffect_result$test[[1]], "2.244") #  2.24
   expect_equal(yeseffect_result$test[[2]], "1.000") # 1
+  expect_equal(yeseffect_result$result, "pt e L12 sono differenti")
 })
 
 

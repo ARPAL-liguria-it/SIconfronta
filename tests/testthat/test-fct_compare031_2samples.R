@@ -33,6 +33,8 @@ test_that("Calculations are correct for t-test on samples and alternative = diff
                "2.3428")
   expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$test[[5]],
                "0.6787")
+  expect_equal(fct_ttest_2samples(tomato_yields, "pounds", "fertilizer")$result,
+               "la media di b e la media di a non sono statisticamente differenti")
 })
 
 test_that("Calculations are correct for t-test on 2 groups of values and alternative = greater", {
@@ -158,6 +160,9 @@ test_that("Calculations are correct for t-test on 2 groups of values", {
   expect_equal(
     fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$test[[5]],
                "0.0406")
+  expect_equal(
+    fct_ttest_2samples(uniiso_2854_x, response = "value", group = "group")$result,
+    "la media di b e la media di a sono statisticamente differenti")
 })
 
 test_that("Errors are correctly handled for F-test on two groups of values", {
@@ -196,6 +201,8 @@ test_that("Calculations are correct for f-test and alternative = different", {
                "0.1041, 9.6045")
   expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$test$pvalue,
                "0.6483")
+  expect_equal(fct_ftest_2samples(ftest_reference, "value", "group")$result,
+               "la varianza di b e la varianza di a non sono statisticamente differenti")
 })
 
 # results from prospect G and H of UNI ISO 2854:1988 (pag. 40)
@@ -224,6 +231,8 @@ test_that("Calculations are correct for f-test and alternative = different", {
                "0.2556, 3.5879") # 0.25 e 3.6
   expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$test$pvalue,
                "0.8613") # not reported
+  expect_equal(fct_ftest_2samples(uniiso_2854_x, "value", "group")$result,
+               "la varianza di a e la varianza di b non sono statisticamente differenti")
 })
 
 test_that("Calculations are correct for f-test and alternative = different

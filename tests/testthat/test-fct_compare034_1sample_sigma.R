@@ -25,6 +25,8 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result1$test[[3]], "0.4840") # 0.4838525
   expect_equal(chitest_result1$test[[4]], "0.4844, 11.1433") # not reported
   expect_equal(chitest_result1$test[[5]], "0.0499") # 0.04989244
+  expect_equal(chitest_result1$result, "la varianza di a e la varianza di riferimento ref sono statisticamente differenti"
+)
 })
 
 
@@ -44,6 +46,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result2$test[[3]], "0.4840") # 0.4838525
   expect_equal(chitest_result2$test[[4]], "9.4877") # not reported
   expect_equal(chitest_result2$test[[5]], "0.9750") # 0.9750538
+  expect_equal(chitest_result2$result, "la varianza di a non è statisticamente maggiore della varianza di riferimento ref")
 })
 
 ref_sd2 <- 4.34
@@ -62,6 +65,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result3$test[[3]], "11.1487") # 11.14868
   expect_equal(chitest_result3$test[[4]], "9.4877") # not reported
   expect_equal(chitest_result3$test[[5]], "0.0249") # 0.02494295
+  expect_equal(chitest_result3$result, "la varianza di a è statisticamente maggiore della varianza di riferimento ref")
 })
 
 ref_sd4 <- sqrt(0.0900)
@@ -82,6 +86,7 @@ test_that("Calculations are correct for chi^2-test on one sample and alternative
   expect_equal(chitest_result4$test[[3]], "13.9596") # 13.96
   expect_equal(chitest_result4$test[[4]], "16.9190") # 16.92
   expect_equal(chitest_result4$test[[5]], "0.1238") # not reported
+  expect_equal(chitest_result4$result, "la varianza di a non è statisticamente maggiore della varianza di riferimento iso") # not reported
 })
 
 chitest_result5 <- fct_chitest_1sample_sigma(uniiso_2854_x[which(uniiso_2854_x$group == "a"), ],

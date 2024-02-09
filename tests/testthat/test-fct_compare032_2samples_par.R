@@ -34,6 +34,7 @@ test_that("Calculations are correct for t-test on samples and alternative = diff
   expect_equal(ttest_result1$test[[3]], "0.4313")
   expect_equal(ttest_result1$test[[4]], "2.3428")
   expect_equal(ttest_result1$test[[5]], "0.6787")
+  expect_equal(ttest_result1$result, "la media di b e la media di a non sono statisticamente differenti")
 })
 
 ttest_result2 <- fct_ttest_2samples_par(group1 = "a", mean1 = first_mean, sd1 = first_sd, n1 = first_n,
@@ -51,6 +52,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and alterna
   expect_equal(ttest_result2$test[[3]], "0.4313")
   expect_equal(ttest_result2$test[[4]], "1.8816")
   expect_equal(ttest_result2$test[[5]], "0.3393")
+  expect_equal(ttest_result2$result, "la media di b non è statisticamente maggiore della media di a")
 })
 
 ttest_result3 <- fct_ttest_2samples_par(group1 = "a", mean1 = first_mean, sd1 = first_sd, n1 = first_n,
@@ -67,6 +69,7 @@ test_that("Calculations are correct for t-test on 2 groups of values and confide
   expect_equal(ttest_result3$test[[3]], "0.4313")
   expect_equal(ttest_result3$test[[4]], "3.4454")
   expect_equal(ttest_result3$test[[5]],  "0.6787")
+  expect_equal(ttest_result3$result,  "la media di b e la media di a non sono statisticamente differenti")
 })
 
 # results from prospect C' and D' (pag. 39) of UNI ISO 2854:1988
@@ -82,7 +85,8 @@ test_that("Calculations are correct for t-test on 2 groups of values", {
   expect_equal(ttest_result4$test[[2]], "0.025")
   expect_equal(ttest_result4$test[[3]], "2.1983")
   expect_equal(ttest_result4$test[[4]], "2.0938")
-  expect_equal(ttest_result4$test[[5]],  "0.0406") # not reported on the reference
+  expect_equal(ttest_result4$test[[5]], "0.0406") # not reported on the reference
+  expect_equal(ttest_result4$result,  "la media di b e la media di a sono statisticamente differenti")
 })
 
 test_that("Errors are correctly handled for F-test on two groups of values", {
@@ -120,6 +124,7 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(ftest_result1$test$fsper, "1.6281")
   expect_equal(ftest_result1$test$ftheo, "0.1041, 9.6045")
   expect_equal(ftest_result1$test$pvalue, "0.6483")
+  expect_equal(ftest_result1$result, "la varianza di b e la varianza di a non sono statisticamente differenti")
 })
 
 # results from prospect G and H of UNI ISO 2854:1988 (pag 40)
@@ -137,6 +142,7 @@ test_that("Calculations are correct for f-test and alternative = different", {
   expect_equal(ftest_result2$test$fsper, "1.1050")
   expect_equal(ftest_result2$test$ftheo, "0.2556, 3.5879") # 0.25, 3.6
   expect_equal(ftest_result2$test$pvalue, "0.8612") # not reported
+  expect_equal(ftest_result2$result, "la varianza di a e la varianza di b non sono statisticamente differenti")
 })
 
 

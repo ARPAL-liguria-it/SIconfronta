@@ -137,14 +137,7 @@ fct_chitest_1sample_sigma <- function(data,
                       "greater" = sprintf("la varianza di %s non \u00E8 statisticamente maggiore della varianza di riferimento %s", data_lbl, reflabel)
   )
 
-  result <- switch (alternative,
-                    "different" = ifelse(chivalue > chicritical[1] & chivalue < chicritical[2],
-                                         negative,
-                                         positive),
-                    "greater" = ifelse(chivalue < chicritical,
-                                       negative,
-                                       positive)
-  )
+  result <- ifelse(pvalue > (1 - significance), negative, positive)
 
   chitheo <- switch (alternative,
                      "different" = paste0(chicritical[1] |> (\(x) sprintf("%.4f", x))(), ", ",

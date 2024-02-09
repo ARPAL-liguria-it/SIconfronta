@@ -9,7 +9,7 @@ UNI ISO 16269-4:2019 - Statistical interpretation of data -
  \url{https://store.uni.com/uni-iso-16269-4-2019}
 }
 \usage{
-fct_gesd(values, significance = 0.95, m = round(length(values)/3, 0))
+fct_gesd(values, significance = 0.95, m = round(length(values)/9 * 2, 0))
 }
 \arguments{
 \item{values}{a \code{vector} with the values relevant for testing.}

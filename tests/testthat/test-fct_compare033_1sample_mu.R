@@ -23,6 +23,7 @@ test_that("Calculations are correct for t-test on one sample and alternative = d
   expect_equal(ttest_result1$test[[3]], "1.8950") # not reported on the reference
   expect_equal(ttest_result1$test[[4]], "2.2622")
   expect_equal(ttest_result1$test[[5]], "0.0906") # not reported on the reference
+  expect_equal(ttest_result1$result, "valore di riferimento iso e media di a non sono statisticamente differenti")
 })
 
 # from prospect B' of UNI ISO 2854:1988 (pag. 37)
@@ -42,6 +43,7 @@ test_that("Calculations are correct for t-test on one sample and confidence = 0.
   expect_equal(ttest_result2$test[[3]], "1.8950") # not reported on the reference
   expect_equal(ttest_result2$test[[4]], "3.2498")
   expect_equal(ttest_result2$test[[5]], "0.0906") # not reported on the reference
+  expect_equal(ttest_result2$result, "valore di riferimento iso e media di a non sono statisticamente differenti")
 })
 
 
