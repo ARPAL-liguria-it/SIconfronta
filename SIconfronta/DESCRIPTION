@@ -13,21 +13,19 @@ Imports:
     config (>= 0.3.1),
     data.table,
     DT,
-    future,
     ggplot2,
     gh,
-    golem (>= 0.3.5),
+    golem (>= 0.4.1),
     markdown,
     plotly,
-    promises,
     rmarkdown,
     sessioninfo,
-    shiny (>= 1.7.4),
+    shiny (>= 1.7.5),
     shinyjs,
     stats
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     knitr,
     testthat (>= 3.0.0)
@@ -35,3 +33,4 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
+Language: it-IT

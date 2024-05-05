@@ -118,8 +118,6 @@ mod_report04_ui <- function(id){
 #'  {comparison_report.Rmd} and a pdf logo named {"logoarpal.pdf"} located in
 #'  the {"SIconfronta/inst"} folder.
 #' @return a {pdf} or {word} report compiled following the {comparison_report.Rmd} template.
-#'  The report compilation is performed as a \code{future_promise} from package
-#'  {promises}.
 #'
 #' @noRd
 #'
