@@ -5,7 +5,8 @@ output: html_document
 ---
 
 ## Versioni di SIconfronta con relative modifiche
-
+-   v1.2.0 del 10 maggio 2024:
+    -   aggiunto dockerfile per deploy mediante shinyproxy.
 -   v1.1.2 del 09 febbraio 2024:
     -   risolto un errore di formattazione nei report;
     -   aggiunti controlli sul risultato testuale dei test statistici.
