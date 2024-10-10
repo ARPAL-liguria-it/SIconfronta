@@ -56,8 +56,8 @@ usethis::use_test("app_ui")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("SIconfronta")
-devtools::build_vignettes()
+#usethis::use_vignette("SIconfronta")
+#devtools::build_vignettes()
 
 ## Code Coverage----
 ## Set the code coverage service ("codecov" or "coveralls")
