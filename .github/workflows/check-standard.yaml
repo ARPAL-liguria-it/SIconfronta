@@ -64,6 +64,7 @@ jobs:
       - name: rcmdcheck dependecies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          working-directory: 'SIconfronta'
           extra-packages: any::rcmdcheck
           needs: check
 
