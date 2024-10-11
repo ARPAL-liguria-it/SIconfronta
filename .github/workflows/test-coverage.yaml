@@ -29,6 +29,9 @@ jobs:
         run: install.packages("covr")
         shell: Rscript {0}
 
+      - run: |
+          cd ./SIconfronta
+
       - name: Test coverage
         run: |
           covr::codecov(

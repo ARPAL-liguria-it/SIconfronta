@@ -63,7 +63,7 @@ jobs:
 
       - name: try
         run: |
-          cd ./SIconfronta/SIconfronta
+          cd ./SIconfronta
           echo "$PWD"
           echo "$(ls)"
 
