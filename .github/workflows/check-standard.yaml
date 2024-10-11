@@ -63,7 +63,7 @@ jobs:
           working-directory: './SIconfronta'
 
       - run: |
-        echo "$PWD"
+          echo "$PWD"
 
       # - name: rcmdcheck dependecies
       #   uses: r-lib/actions/setup-r-dependencies@v2
