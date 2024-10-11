@@ -1,3 +1,16 @@
+# SIconfronta 1.2.0
+
+Dockerfile added for docker and shinyproxy deployment.
+
+# SIconfronta 1.1.2
+
+* bug fixed in report layout;
+* automatic check on output of stat tests.
+  
+# SIconfronta 1.1.1
+
+* bug fixed in outlier tests.
+
 # SIconfronta 1.0.0
 
 * First stable release.

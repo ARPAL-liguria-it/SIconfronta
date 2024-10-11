@@ -10,31 +10,23 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          #- {os: macos-latest,   r: 'release'}
-          #- {os: windows-latest, r: 'release'}
-          #- {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+    runs-on: ubuntu-latest
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: r-lib/actions/setup-pandoc@v2
-      
-      - uses: r-lib/actions/setup-tinytex@v2
-      - run: tlmgr --version
+      - name: Setup Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Setup Latex
+        uses: r-lib/actions/setup-tinytex@v2
+
+      - name: Latex Version
+        run: tlmgr --version
 
       - name: Install additional LaTeX packages
         run: |
@@ -48,19 +40,21 @@ jobs:
           tlmgr install hyphen-italian
           tlmgr list --only-installed
 
-      - uses: r-lib/actions/setup-r@v2
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2-branch
         with:
-          r-version: ${{ matrix.config.r }}
+          working-directory: './SIconfronta'
+          r-version: 'renv'
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          
-      - uses: r-lib/actions/setup-renv@v2
-      
-     # - uses: r-lib/actions/setup-r-dependencies@v2
-     #   with:
-     #     extra-packages: any::rcmdcheck
-     #     needs: check
 
-      - uses: r-lib/actions/check-r-package@v2
+      - name: install packages listed by renv
+        uses: r-lib/actions/setup-renv@v2
         with:
-          upload-snapshots: true
+          working-directory: './SIconfronta'
+
+      - name: Checking the package
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+          working-directory: './SIconfronta'
