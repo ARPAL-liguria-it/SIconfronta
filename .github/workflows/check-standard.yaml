@@ -55,6 +55,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          working-directory: 'SIconfronta'
 
       - name: install packages listed by renv
         uses: r-lib/actions/setup-renv@v2
