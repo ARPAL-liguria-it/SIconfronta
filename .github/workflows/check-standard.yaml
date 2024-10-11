@@ -61,10 +61,12 @@ jobs:
         with:
           working-directory: 'SIconfronta'
 
-     # - uses: r-lib/actions/setup-r-dependencies@v2
-     #   with:
-     #     extra-packages: any::rcmdcheck
-     #     needs: check
+      - name: rcmdchek dependecies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: 'SIconfronta'
+          extra-packages: any::rcmdcheck
+          needs: check
 
       - name: Checking the package
         uses: r-lib/actions/check-r-package@v2
