@@ -62,12 +62,15 @@ jobs:
         with:
           working-directory: './SIconfronta'
 
-      - name: rcmdcheck dependecies
-        uses: r-lib/actions/setup-r-dependencies@v2-branch
-        with:
-          working-directory: './SIconfronta'
-          extra-packages: any::rcmdcheck
-          needs: check
+      - run: |
+        echo "$PWD"
+
+      # - name: rcmdcheck dependecies
+      #   uses: r-lib/actions/setup-r-dependencies@v2
+      #   with:
+      #     extra-packages: any::rcmdcheck
+      #     needs: check
+      #     working-directory: './SIconfronta'
 
       # - name: access the package folder
       #   run: cd /home/runner/work/SIconfronta/SIconfronta
@@ -78,6 +81,7 @@ jobs:
       #   shell: Rscript {0}
 
       - name: Checking the package
-        uses: r-lib/actions/check-r-package@v2-branch
+        uses: r-lib/actions/check-r-package@v2
         with:
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
           working-directory: './SIconfronta'
