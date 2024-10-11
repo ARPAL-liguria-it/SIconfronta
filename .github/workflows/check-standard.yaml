@@ -69,7 +69,7 @@ jobs:
       #     extra-packages: any::rcmdcheck
       #     needs: check
       - name: access the package folder
-        run: cd SIprecisa
+        run: cd /home/runner/work/SIconfronta/SIconfronta
         shell: bash
 
       - name: install Rcmdcheck
