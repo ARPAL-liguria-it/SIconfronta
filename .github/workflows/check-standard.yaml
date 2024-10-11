@@ -50,7 +50,7 @@ jobs:
           tlmgr list --only-installed
 
       - name: Setup R
-        uses: r-lib/actions/setup-r
+        uses: r-lib/actions/setup-r@latest
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
@@ -58,7 +58,7 @@ jobs:
           working-directory: 'SIconfronta'
 
       - name: install packages listed by renv
-        uses: r-lib/actions/setup-renv
+        uses: r-lib/actions/setup-renv@latest
         with:
           working-directory: 'SIconfronta'
 
@@ -70,4 +70,4 @@ jobs:
           needs: check
 
       - name: Checking the package
-        uses: r-lib/actions/check-r-package
+        uses: r-lib/actions/check-r-package@latest
