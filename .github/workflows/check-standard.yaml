@@ -56,8 +56,6 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-
-
       - name: install packages listed by renv
         uses: r-lib/actions/setup-renv@v2
         with:
