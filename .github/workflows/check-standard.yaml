@@ -68,6 +68,10 @@ jobs:
         with:
           working-directory: 'SIconfronta'
 
+      - name: Install rcmdcheck
+        run: install.packages("rcmdcheck")
+        shell: Rscript {0}
+
       - name: Checking the package
         uses: r-lib/actions/check-r-package@v2
         with:
