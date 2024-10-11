@@ -57,17 +57,24 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - name: rcmdcheck dependecies
-        uses: r-lib/actions/setup-r-dependencies@v2-branch
-        with:
-          working-directory: 'SIconfronta'
-          extra-packages: any::rcmdcheck
-          needs: check
-
       - name: install packages listed by renv
         uses: r-lib/actions/setup-renv@v2-branch
         with:
           working-directory: 'SIconfronta'
+
+      # - name: rcmdcheck dependecies
+      #   uses: r-lib/actions/setup-r-dependencies@v2-branch
+      #   with:
+      #     working-directory: 'SIconfronta'
+      #     extra-packages: any::rcmdcheck
+      #     needs: check
+      - name: access the package folder
+        run: cd SIprecisa
+        shell: bash
+
+      - name: install Rcmdcheck
+        run: renv::install("rcmdcheck")
+        shell: Rscript {0}
 
       - name: Checking the package
         uses: r-lib/actions/check-r-package@v2-branch
