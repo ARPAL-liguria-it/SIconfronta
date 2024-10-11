@@ -24,13 +24,13 @@ Imports:
     sessioninfo,
     shiny (>= 1.7.5),
     shinyjs,
-    stats
+    stats,
+    testthat
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
 Suggests: 
-    knitr,
-    testthat (>= 3.0.0)
+    knitr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
