@@ -59,7 +59,7 @@ jobs:
       - name: install packages listed by renv
         uses: r-lib/actions/setup-renv@v2-branch
         with:
-          working-directory: './SIconfronta/SIconfronta'
+          working-directory: './SIconfronta'
 
       - name: try
         run: |
@@ -86,4 +86,4 @@ jobs:
         uses: r-lib/actions/check-r-package@v2
         with:
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
-          working-directory: './SIconfronta/SIconfronta'
+          working-directory: './SIconfronta'
