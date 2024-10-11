@@ -62,9 +62,10 @@ jobs:
           working-directory: './SIconfronta/SIconfronta'
 
       - name: try
-        run: echo "$(ls)"
-        with:
-          working-directory: './SIconfronta/SIconfronta'
+        run: |
+          cd ./SIconfronta/SIconfronta
+          echo "$PWD"
+          echo "$(ls)"
 
       # - name: rcmdcheck dependecies
       #   uses: r-lib/actions/setup-r-dependencies@v2
