@@ -45,7 +45,7 @@ Per maggiori informazioni a riguardo delle funzionalità e caratteristiche di SI
     sudo docker build . -t shinyproxy
     ```
 
-6.  scaricare il ramo `shinyproxy` del repository di [*SIconfronta*](https://github.com/andreabz/SIconfronta/tree/shinyproxy)
+6.  scaricare l'app dal repository di [*SIconfronta*](https://github.com/ARPAL-liguria-it/SIconfronta.git)
 
 7.  dalla cartella `SIconfronta` si crea l'immagine che *shinyproxy* utilizzerà per avviare *SIconfronta*
 
