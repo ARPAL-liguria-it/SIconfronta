@@ -48,10 +48,10 @@ mod_aim01_ui <- function(id) {
       bslib::card_footer(
         shiny::tags$div(
           shiny::tags$span(style = "font-size:smaller",
-                           paste0("SI confronta ", get_gh_version("andreabz", "SIconfronta"),
+                           paste0("SI confronta ", get_gh_version("ARPAL-liguria-it", "SIconfronta"),
                                   ", validato al momento del rilascio ")),
-          shiny::tags$a(href = "https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml",
-                        shiny::tags$img(src = "https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg",
+          shiny::tags$a(href = "https://github.com/ARPAL-liguria-it/SIconfronta/actions/workflows/test-coverage.yaml",
+                        shiny::tags$img(src = "https://github.com/ARPAL-liguria-it/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg",
                                         alt = "esito della validazione")
           ))
       )
@@ -169,7 +169,7 @@ mod_aim01_server <- function(id, r) {
       removeModal()
 
       r$aim01$aim <- input$aim
-      r$aim01$version <- get_gh_version("andreabz", "SIconfronta")
+      r$aim01$version <- get_gh_version("ARPAL-liguria-it", "SIconfronta")
     })
 
   })

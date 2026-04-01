@@ -5,8 +5,8 @@ Date: 2024-01-16
 Authors@R: person('Andrea', 'Bazzano', email = 'andrea.bazzano@arpal.liguria.it', role = c('cre', 'aut'),
                   comment = c(ORCID = "0000-0002-9353-3919"))
 Description: SIconfronta provides a Shiny application for comparing means and variances for one or two indipendent samples.
-URL: https://andreabz.github.io/SIconfronta/, https://github.com/andreabz/SIconfronta
-BugReports: https://github.com/andreabz/SIconfronta/issues
+URL: https://ARPAL-liguria-it.github.io/SIconfronta/, https://github.com/ARPAL-liguria-it/SIconfronta
+BugReports: https://github.com/ARPAL-liguria-it/SIconfronta/issues
 License: AGPL (>= 3)
 Imports: 
     bslib,

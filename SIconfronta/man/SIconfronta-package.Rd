@@ -11,9 +11,9 @@ SIconfronta provides a Shiny application for comparing means and variances for o
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://andreabz.github.io/SIconfronta/}
-  \item \url{https://github.com/andreabz/SIconfronta}
-  \item Report bugs at \url{https://github.com/andreabz/SIconfronta/issues}
+  \item \url{https://ARPAL-liguria-it.github.io/SIconfronta/}
+  \item \url{https://github.com/ARPAL-liguria-it/SIconfronta}
+  \item Report bugs at \url{https://github.com/ARPAL-liguria-it/SIconfronta/issues}
 }
 
 }

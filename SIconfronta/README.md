@@ -2,8 +2,8 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/andreabz/SIconfronta/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andreabz/SIconfronta/actions/workflows/check-standard.yaml)
-[![test-coverage](https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/andreabz/SIconfronta/actions/workflows/test-coverage.yaml)
+[![R-CMD-check](https://github.com/ARPAL-liguria-it/SIconfronta/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/ARPAL-liguria-it/SIconfronta/actions/workflows/check-standard.yaml)
+[![test-coverage](https://github.com/ARPAL-liguria-it/SIconfronta/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ARPAL-liguria-it/SIconfronta/actions/workflows/test-coverage.yaml)
 [![codecov](https://codecov.io/gh/andreabz/SIconfronta/branch/master/graph/badge.svg?token=XLFI6Z4IBG)](https://codecov.io/gh/andreabz/SIconfronta)
 <!-- badges: end -->
 
@@ -272,7 +272,7 @@ Si consiglia, inoltre, di rendere disponibile SIconfronta attraverso un
 server Ubuntu ad accesso controllato o distribuirlo mediante *docker*.
 
 A ogni modo, è sempre meglio rimanere allerta: [segnala eventuali
-bachi](https://github.com/andreabz/SIconfronta/issues).
+bachi](https://github.com/ARPAL-liguria-it/SIconfronta/issues).
 
 #### Con quale licenza è rilasciato SIconfronta?
 
